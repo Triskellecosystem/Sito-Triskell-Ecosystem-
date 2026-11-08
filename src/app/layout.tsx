@@ -47,7 +47,8 @@ const organizationJsonLd = {
   logo: `${site.brand.url}/brand/triskell-medallion.png`,
   description: site.brand.description,
   email: site.brand.email,
-  sameAs: site.footer.social.map((s) => s.href),
+  telephone: site.brand.phone,
+  sameAs: site.footer.social.filter((s) => s.id !== "whatsapp").map((s) => s.href),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

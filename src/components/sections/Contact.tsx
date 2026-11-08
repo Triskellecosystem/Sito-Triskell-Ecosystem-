@@ -3,6 +3,7 @@ import { LogoMark } from "@/components/brand/LogoMark";
 import { BeamCard } from "@/components/ui/BeamCard";
 import { Icon } from "@/components/ui/Icon";
 import { Section } from "@/components/ui/Section";
+import { SocialIcon } from "@/components/ui/SocialIcon";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { ContactForm } from "./ContactForm";
@@ -37,6 +38,15 @@ export function Contact() {
                   </li>
                 ))}
               </ul>
+              <a
+                href={site.brand.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-8 inline-flex w-fit items-center gap-3 rounded-full border border-gold-400/50 px-5 py-3 font-display text-[1rem] font-semibold text-gold-200 transition-[background-color,border-color,box-shadow] duration-[var(--dur-base)] hover:border-gold-300 hover:bg-gold-300/10 hover:shadow-[0_0_30px_-6px_rgb(247_200_92/0.5)]"
+              >
+                <SocialIcon id="whatsapp" className="h-5 w-5" />
+                WhatsApp · {site.brand.phone}
+              </a>
             </div>
 
             <div className="relative">

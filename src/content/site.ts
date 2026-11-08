@@ -136,7 +136,7 @@ export interface Faq {
 }
 
 export interface Social {
-  id: "instagram" | "linkedin" | "tiktok" | "youtube";
+  id: "instagram" | "youtube" | "whatsapp";
   label: string;
   href: string;
 }
@@ -153,6 +153,8 @@ export const site = {
       "Triskell Ecosystem aiuta le aziende a crescere con marketing, intelligenza artificiale, video AI e automazioni. Agency e Academy.",
     url: "https://triskell-ecosystem.vercel.app", // TODO: dominio definitivo
     email: "info@triskellecosystem.com", // TODO: dato reale
+    phone: "+39 348 430 1500",
+    whatsapp: "https://wa.me/393484301500",
     locale: "it_IT",
   },
 
@@ -689,7 +691,7 @@ export const site = {
       submit: "Prenota una call con il team",
       sending: "Invio in corso…",
       success: { title: "Messaggio inviato", text: "Grazie! Ti rispondiamo il prima possibile." },
-      error: { title: "Qualcosa non ha funzionato", text: "Riprova tra poco o scrivici a" },
+      error: { title: "Qualcosa non ha funzionato", text: "Riprova tra poco, scrivici su WhatsApp o a" },
       errors: {
         required: "Campo obbligatorio",
         email: "Inserisci un'email valida",
@@ -732,10 +734,9 @@ export const site = {
     ] satisfies Array<{ title: string; links: NavLink[] }>,
     socialTitle: "Seguici",
     social: [
-      { id: "instagram", label: "Instagram", href: "https://www.instagram.com/" }, // TODO: profilo reale
-      { id: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/" }, // TODO: profilo reale
-      { id: "tiktok", label: "TikTok", href: "https://www.tiktok.com/" }, // TODO: profilo reale
-      { id: "youtube", label: "YouTube", href: "https://www.youtube.com/" }, // TODO: profilo reale
+      { id: "instagram", label: "Instagram", href: "https://www.instagram.com/triskell_ecosystem" },
+      { id: "youtube", label: "YouTube", href: "https://youtube.com/@triskellecosystem" },
+      { id: "whatsapp", label: "WhatsApp", href: "https://wa.me/393484301500" },
     ] satisfies Social[],
     legal: "P.IVA 00000000000", // TODO: dato reale (P.IVA / ragione sociale)
     rights: "Tutti i diritti riservati.",
