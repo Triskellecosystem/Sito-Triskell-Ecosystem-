@@ -24,7 +24,7 @@ const SECTORS = [
   { from: 201, span: 119 },
 ] as const;
 const CORE = { cx: "50.5%", cy: "48.5%", r: "14%" } as const;
-const ICONS: IconName[] = ["cpu", "users", "sparkles", "workflow", "rocket"];
+const ICONS: IconName[] = ["cpu", "users", "sparkles"];
 const smooth = (a: number, b: number, x: number) => {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
@@ -39,46 +39,31 @@ const smooth = (a: number, b: number, x: number) => {
 export function SymbolSection() {
   const { symbol } = site;
   const [spiral, setSpiral] = useState(0);
-  const [stage, setStage] = useState(0);
   const [live, setLive] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
 
-  const items = [
-    ...symbol.spirals.map((s) => ({ name: s.name, tag: symbol.layers[0]!.name, text: s.text })),
-    { name: symbol.layers[1]!.name, tag: "Connessione", text: symbol.layers[1]!.text },
-    { name: symbol.layers[2]!.name, tag: "Continuità", text: symbol.layers[2]!.text },
-  ];
-  const active = stage === 0 ? spiral : 2 + stage;
+  const items = symbol.spirals.map((sp) => ({ name: sp.name, tag: symbol.layersLabel, text: sp.text }));
+  const active = spiral;
 
   useEffect(() => {
     const track = trackRef.current;
     const scene = sceneRef.current;
-    const list = listRef.current;
-    if (!track || !scene || !list) return;
-    const rows = Array.from(list.children) as HTMLElement[];
+    if (!track || !scene) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      scene.style.setProperty("--e", "0.9");
-      rows.forEach((it) => it.style.setProperty("--li", "1"));
+      scene.style.setProperty("--e", "0.5");
       return;
     }
     let raf = 0;
     let near = false;
-    let currentStage = 0;
     const update = () => {
       raf = 0;
       const r = track.getBoundingClientRect();
       const span = Math.max(1, r.height - window.innerHeight);
       const p = Math.min(1, Math.max(0, -r.top / span));
-      scene.style.setProperty("--e", smooth(0.04, 0.8, p).toFixed(3));
-      // Mente, Corpo, Anima sono visibili subito; circuito e cerchio arrivano quando si staccano
-      rows.forEach((it, i) => it.style.setProperty("--li", (i < 3 ? 1 : smooth(0.38 + (i - 3) * 0.25, 0.48 + (i - 3) * 0.25, p)).toFixed(3)));
-      const st = p >= 0.72 ? 2 : p >= 0.46 ? 1 : 0;
-      if (st !== currentStage) {
-        currentStage = st;
-        setStage(st);
-      }
+      // si scompone scendendo, resta aperto per un tratto, poi si RICOMPONE prima della fine
+      const e = smooth(0.06, 0.38, p) * (1 - smooth(0.68, 0.94, p));
+      scene.style.setProperty("--e", e.toFixed(3));
     };
     const onScroll = () => {
       if (near && !raf) raf = requestAnimationFrame(update);
@@ -105,11 +90,11 @@ export function SymbolSection() {
 
   // le tre spirali si illuminano a turno finché siamo nella fase "spirali"
   useEffect(() => {
-    if (!live || stage !== 0) return;
+    if (!live) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const t = window.setInterval(() => setSpiral((s) => (s + 1) % 3), 1900);
     return () => window.clearInterval(t);
-  }, [live, stage]);
+  }, [live]);
 
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.pointerType !== "mouse") return;
@@ -132,12 +117,12 @@ export function SymbolSection() {
       <SectionHeading id="symbol-title" overline={symbol.overline} title={symbol.title} line={symbol.line} align="center" />
 
       <div ref={trackRef} className="sym-track mt-4">
-        <div className="sym sym-sticky" data-active={active} data-stage={stage}>
+        <div className="sym sym-sticky" data-active={active}>
           <div className="grid w-full items-center gap-4 lg:grid-cols-12 lg:gap-12">
             <div className="lg:col-span-6">
               <div ref={sceneRef} className="sym3d" onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
                 <div className="relative mx-auto w-full max-w-[34rem]" role="img" aria-label={site.hero.symbolAlt}>
-                  <div className="relative mx-auto aspect-square w-[min(72vw,15rem)] sm:w-[calc(100%-9.5rem)] lg:w-[calc(100%-9.5rem)]">
+                  <div className="relative mx-auto aspect-square w-[min(72vw,15rem)] sm:w-[min(100%,22rem)]">
                     <div className="sym3d-persp" aria-hidden="true">
                       <div className="sym3d-tilt">
                         <div className="sym3d-scene">
@@ -187,19 +172,11 @@ export function SymbolSection() {
                       </div>
                     </div>
                   </div>
-                  <ul className="mt-5 hidden sm:block" aria-hidden="true">
-                    {symbol.layers.map((l, i) => (
-                      <li key={l.name} data-i={i} className="sym3d-label flex w-[9rem] items-start gap-2" style={{ "--ly": LAYERS[i]!.ly } as CSSVars}>
-                        <span className="mt-[0.45rem] h-px w-5 shrink-0 bg-gold-300/70" />
-                        <span className="sym3d-label-title font-display text-[0.9375rem] font-semibold leading-tight text-fg-2">{l.name}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               </div>
             </div>
 
-            <ul ref={listRef} className="lg:col-span-6">
+            <ul className="lg:col-span-6">
               {items.map((it, i) => (
                 <li
                   key={it.name}

@@ -47,6 +47,8 @@ export interface Impact {
   points: Array<{ icon: IconName; title: string; text: string; stat?: Metric & { still?: true } }>;
   /** Barre che si riempiono (nessun dato: solo progressione). */
   meters?: string[];
+  /** Etichetta finale: compare, dorata, quando tutte le barre sono complete. */
+  goal?: string;
   /** Traguardo finale della catena. */
   finale: { icon: IconName; label: string; text: string };
 }
@@ -158,7 +160,7 @@ export const site = {
         href: "/agency",
         children: [
           { label: "Agency", href: "/agency", hint: "Deleghi tutto a noi" },
-          { label: "Siti web", href: "/agency/siti-web", hint: "I siti realizzati da William" },
+          { label: "Siti web", href: "/agency/siti-web", hint: "I siti web che creiamo" },
           { label: "Portfolio", href: "/agency/portfolio", hint: "Progetti e risultati" },
         ],
       },
@@ -276,7 +278,8 @@ export const site = {
         { icon: "sparkles", title: "Diventi indipendente", text: "Gestisci il tuo business in autonomia." },
       ], // TODO: conferma copy
       impact: {
-        meters: ["Vendite", "Marketing", "Intelligenza artificiale", "Automazioni", "Autonomo"],
+        meters: ["Vendite", "Marketing", "Intelligenza artificiale", "Automazioni"],
+        goal: "Traguardo raggiunto",
         points: [
           { icon: "badge", title: "Autonomia", text: "Gestisci marketing, vendite e AI senza dipendere da nessuno." },
           { icon: "users", title: "Il tuo team al passo", text: "Formi i dipendenti con percorsi pratici, subito applicabili." },
@@ -311,7 +314,7 @@ export const site = {
     line: "Strategia, social, campagne, siti e automazioni: ci pensiamo noi, dall'inizio ai risultati.",
     pathTitle: "Il tuo funnel, [gestito da noi]",
     pathLine: "Ecco cosa facciamo, step dopo step.",
-    servicesTitle: "Cosa possiamo fare [per te]",
+    servicesTitle: "Ecco i nostri [servizi]",
     servicesLine: "Scegliamo insieme cosa serve davvero al tuo business.",
     services: [
       { icon: "smartphone", title: "Gestione social media", text: "Contenuti curati e pubblicati con costanza." },
@@ -351,7 +354,7 @@ export const site = {
       posts: 128,
       followersStart: 12418,
       following: 310,
-      todayGain: 46,
+      todayGain: 200,
       gainLabel: "oggi",
       weekGain: "+312 follower questa settimana",
       follow: "Segui",
@@ -377,7 +380,7 @@ export const site = {
         kpis: [
           { label: "Costo a contatto", value: "2,40 €" },
           { label: "Persone raggiunte", value: "9,8 K" },
-          { label: "Prove prenotate", value: "6" },
+          { label: "Prove prenotate", value: "6", live: true },
         ],
         bars: [32, 44, 38, 56, 62, 58, 74, 88],
       },
@@ -420,7 +423,7 @@ export const site = {
     /** Anteprima di una lezione: dati INVENTATI a scopo dimostrativo. */
     demo: {
       note: "Esempio dimostrativo",
-      lesson: "Lezione 3 · Il funnel di vendita",
+      lesson: "Corsi gratuiti · Triskell Academy",
       modules: ["Processi di vendita", "Marketing", "Intelligenza artificiale", "Automazioni"],
       progress: "Percorso completato",
       badge: "Ora sei autonomo",
@@ -428,8 +431,8 @@ export const site = {
   },
   sitiWeb: {
     overline: "Agency · Siti web",
-    title: "Siti web firmati [William]",
-    line: "Siti veloci, curati e pensati per far contattare: clicca per visitarli.",
+    title: "Ecco i siti web che [creiamo]",
+    line: "Veloci, curati e pensati per far contattare: clicca su un sito per visitarlo.",
     visit: "Apri il sito",
     visitDemo: "Vuoi un sito così?",
     featured: ["sfizi", "mani", "chiodo"],
@@ -512,11 +515,7 @@ export const site = {
       { name: "Corpo", text: "Persone, relazioni e creatività al centro." },
       { name: "Anima", text: "Visione e innovazione per crescere nel tempo." },
     ],
-    layers: [
-      { name: "Le tre spirali", text: "Mente, corpo e anima." },
-      { name: "Il circuito", text: "La rete che unisce persone, dati e idee." },
-      { name: "Il cerchio", text: "Tutto torna: ogni giro migliora il precedente." },
-    ], // TODO: conferma copy (circuito e cerchio sono inventati)
+    layersLabel: "Le tre spirali",
     pillars: [
       { from: "Mente", to: "Digitale", text: "Strumenti, dati e AI al servizio del business.", icon: "cpu" },
       { from: "Corpo", to: "Umano", text: "Persone, relazioni e creatività al centro.", icon: "users" },
@@ -530,6 +529,17 @@ export const site = {
     line: "Un team che il settore lo ha già vissuto da dentro.",
     more: "Leggi il percorso",
     less: "Chiudi il percorso",
+    method: {
+      overline: "Come lavoriamo",
+      title: "Il nostro [metodo]",
+      line: "Quattro passi, dalla prima call ai risultati.",
+      steps: [
+        { title: "Analisi", text: "Capiamo obiettivi, risorse e opportunità.", icon: "search", points: ["Obiettivi e budget", "Situazione di partenza", "Concorrenti e mercato"] },
+        { title: "Strategia", text: "Progettiamo il piano più adatto al tuo business.", icon: "compass", points: ["Canali e messaggi", "Piano e priorità", "Tempi e obiettivi"] },
+        { title: "Produzione", text: "Creiamo contenuti, siti, campagne e automazioni.", icon: "clapperboard", points: ["Contenuti e video AI", "Siti e campagne", "Automazioni attive"] },
+        { title: "Risultati", text: "Misuriamo, ottimizziamo e scaliamo.", icon: "trending", points: ["Report chiari", "Test e ottimizzazione", "Crescita costante"] },
+      ] satisfies Array<{ title: string; text: string; icon: IconName; points: string[] }>,
+    }, // TODO: conferma copy
     team: [
       {
         name: "Tomaso",
@@ -576,7 +586,7 @@ export const site = {
     title: "Il libretto sul [Vibe Coding]",
     line: "Come si costruiscono siti e app descrivendo all'intelligenza artificiale cosa vuoi ottenere.",
     coverAlt: "Libro «Vibe Coding» in 3D",
-    dragHint: "Trascina per ruotarlo · doppio click per rimetterlo dritto",
+    dragHint: "Passa il mouse sul libro per girarlo (o trascinalo) · doppio click per rimetterlo dritto",
     /** Sezione "Da dove partire?": come sul sito originale. */
     guide: {
       overline: "[ 10 ] Vibe Coding · La nostra guida",
@@ -588,6 +598,12 @@ export const site = {
         { icon: "workflow", text: "Il flusso di lavoro completo, dall'idea al prodotto vivo" },
         { icon: "users", text: "Nell'Area Membri altre guide: prompt e reel con AI, gestione contatti e lead, video reel per ADV" },
       ] satisfies Array<{ icon: IconName; text: string }>,
+      specs: [
+        { icon: "book", label: "Guida in PDF", text: "Oltre 10 capitoli, dalla teoria all'azione" },
+        { icon: "download", label: "Tua per sempre", text: "Download offline e accesso permanente all'Area Membri" },
+        { icon: "zap", label: "Subito tra le mani", text: "Dopo il pagamento ricevi il link via email" },
+        { icon: "film", label: "In arrivo", text: "Videocorso, audio overview e slide per capitolo" },
+      ] satisfies Array<{ icon: IconName; label: string; text: string }>,
       primary: { label: "Scopri la Guida", href: "https://www.triskellecosystem.com/vibe-coding" },
       secondary: { label: "Leggi l'estratto gratuito", href: "https://www.triskellecosystem.com/risorse/vibe-coding-estratto" },
       skills: {
@@ -627,18 +643,6 @@ export const site = {
         title: "Velocità sì, ma con metodo",
         text: "Sicurezza, qualità e privacy non si saltano solo perché si fa prima. L'essere umano resta sempre dove si decide. Controlli prima di mettere online qualcosa. Prima il valore, poi lo strumento.",
       },
-    ],
-    stepsTitle: "Prova il percorso, [passo per passo]",
-    stepsLine: "Tocca un passo per vedere cosa fai tu e cosa fa l'AI.",
-    youLabel: "Cosa fai tu",
-    aiLabel: "Cosa fa l'AI",
-    steps: [
-      { n: "Idea", you: "Definisci obiettivo, contesto e vincoli: per chi è, cosa deve fare, cosa non deve fare.", ai: "Niente, per ora: qui decidi tu.", ex: "Esempio: «Un modulo di prenotazione per il mio studio, 4 fasce orarie al giorno»." },
-      { n: "Richiesta", you: "Descrivi il risultato che vuoi, con parole semplici e precise.", ai: "Interpreta che cosa intendi.", ex: "Più la richiesta è chiara, migliore è la prima versione." },
-      { n: "Prima versione", you: "Guardi cosa è uscito.", ai: "Costruisce struttura e codice.", ex: "In minuti, non in settimane: è qui che il Vibe Coding fa la differenza." },
-      { n: "Revisione", you: "Dai indicazioni, chiedi modifiche.", ai: "Corregge e migliora.", ex: "«Il pulsante più grande, aggiungi il campo telefono»: si ripete finché serve." },
-      { n: "Verifica", you: "Controlli qualità, sicurezza, coerenza.", ai: "Aiuta a trovare gli errori.", ex: "È il passaggio che non si salta: il giudizio resta tuo." },
-      { n: "Online", you: "Metti online per davvero.", ai: "Prepara il rilascio.", ex: "Dall'idea al prodotto usabile, con meno intermediari." },
     ],
     faqTitle: "Domande [veloci]",
     faq: [

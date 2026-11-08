@@ -10,7 +10,7 @@ import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Siti web",
-  description: "I siti web realizzati da William, web developer di Triskell Ecosystem: ristorazione, ospitalità, brand e software. Clicca per visitarli.",
+  description: "I siti web che creiamo: ristorazione, ospitalità, brand e software. Clicca per visitarli.",
   alternates: { canonical: "/agency/siti-web" },
 };
 

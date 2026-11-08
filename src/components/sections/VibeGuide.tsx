@@ -39,6 +39,19 @@ export function VibeGuide() {
                 </li>
               ))}
             </ul>
+            <ul className="mt-7 grid gap-2.5 sm:grid-cols-2">
+              {g.specs.map((sp) => (
+                <li key={sp.label} className="flex items-start gap-3 rounded-xl border border-line bg-night/50 p-3">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-gold-400/40 bg-gold-300/10 text-gold-300">
+                    <Icon name={sp.icon} className="h-4 w-4" strokeWidth={1.8} />
+                  </span>
+                  <span className="text-[0.8125rem] leading-snug text-fg-2">
+                    <strong className="block font-display text-[0.9375rem] font-semibold text-fg">{sp.label}</strong>
+                    {sp.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
               <Button href={g.primary.href} target="_blank" rel="noopener noreferrer" size="lg" icon="arrow-right">
                 {g.primary.label}

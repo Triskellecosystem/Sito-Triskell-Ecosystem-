@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { PageHero } from "@/components/sections/PageHero";
 import { VibeGuide } from "@/components/sections/VibeGuide";
-import { VibeStepPath } from "@/components/sections/VibeStepPath";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
@@ -82,15 +81,8 @@ export default function VibeCodingPage() {
         </Reveal>
       </Section>
 
-      <Section id="percorso" labelledBy="percorso-title">
-        <SectionHeading id="percorso-title" overline="02" title={v.stepsTitle} line={v.stepsLine} align="center" />
-        <Reveal className="mt-10" blur={0}>
-          <VibeStepPath />
-        </Reveal>
-      </Section>
-
       <Section id="domande" labelledBy="domande-title">
-        <SectionHeading id="domande-title" overline="03" title={v.faqTitle} align="center" />
+        <SectionHeading id="domande-title" overline="02" title={v.faqTitle} align="center" />
         <Reveal className="mt-10" blur={0}>
           <Disclosure name="faq" items={v.faq.map((f) => ({ title: f.q, text: f.a }))} />
         </Reveal>

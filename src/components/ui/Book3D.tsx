@@ -13,16 +13,18 @@ interface Book3DProps {
 }
 
 /**
- * Libro in vero 3D (CSS): copertina, dorso, taglio delle pagine, retro. Si trascina col mouse o col dito per
- * ruotarlo liberamente nello spazio (con inerzia); da fermo gira piano da solo. Doppio click/tap: riporta in posizione.
+ * Libro in vero 3D (CSS): copertina, dorso, taglio delle pagine, retro. Basta passarci sopra col mouse: il libro segue
+ * il puntatore e lo comandi tu. Si può anche trascinare (mouse o dito) per farlo girare liberamente, con inerzia; se
+ * lo lasci, gira piano da solo. Doppio click/tap: riporta in posizione.
  * Con reduced motion: nessuna rotazione automatica, resta trascinabile.
  */
 export function Book3D({ cover, alt, title, hint, className }: Book3DProps) {
   const stage = useRef<HTMLDivElement>(null);
+  const hit = useRef<HTMLDivElement>(null);
   const book = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = stage.current;
+    const el = hit.current;
     const b = book.current;
     if (!el || !b) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -36,6 +38,9 @@ export function Book3D({ cover, alt, title, hint, className }: Book3DProps) {
     let raf = 0;
     let visible = false;
     let idleSince = performance.now();
+    let hover = false;
+    let tRy = -28;
+    let tRx = -10;
 
     const apply = () => {
       b.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
@@ -43,7 +48,14 @@ export function Book3D({ cover, alt, title, hint, className }: Book3DProps) {
     const loop = () => {
       raf = requestAnimationFrame(loop);
       if (!visible) return;
-      if (!dragging) {
+      if (hover && !dragging) {
+        // il libro segue il mouse: lo comandi tu, spostando il puntatore sopra di lui
+        ry += (tRy - ry) * 0.12;
+        rx += (tRx - rx) * 0.12;
+        vy = 0;
+        vx = 0;
+        idleSince = performance.now();
+      } else if (!dragging) {
         if (Math.abs(vy) > 0.02 || Math.abs(vx) > 0.02) {
           ry += vy;
           rx = Math.max(-80, Math.min(80, rx + vx));
@@ -67,7 +79,19 @@ export function Book3D({ cover, alt, title, hint, className }: Book3DProps) {
       el.style.cursor = "grabbing";
     };
     const move = (e: PointerEvent) => {
-      if (!dragging) return;
+      if (!dragging) {
+        if (e.pointerType === "mouse") {
+          const r = el.getBoundingClientRect();
+          const nx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+          const ny = ((e.clientY - r.top) / r.height - 0.5) * 2;
+          hover = true;
+          // base: il giro attuale (mod 360), così non "riavvolge" tutto
+          const base = Math.round(ry / 360) * 360;
+          tRy = base + nx * 80 - 20;
+          tRx = Math.max(-60, Math.min(60, -ny * 45 - 8));
+        }
+        return;
+      }
       const dx = e.clientX - lastX;
       const dy = e.clientY - lastY;
       lastX = e.clientX;
@@ -77,6 +101,9 @@ export function Book3D({ cover, alt, title, hint, className }: Book3DProps) {
       vy = dx * 0.6;
       vx = -dy * 0.5;
       idleSince = performance.now();
+    };
+    const leave = () => {
+      hover = false;
     };
     const up = (e: PointerEvent) => {
       dragging = false;
@@ -95,6 +122,7 @@ export function Book3D({ cover, alt, title, hint, className }: Book3DProps) {
     io.observe(el);
     el.addEventListener("pointerdown", down);
     el.addEventListener("pointermove", move);
+    el.addEventListener("pointerleave", leave);
     el.addEventListener("pointerup", up);
     el.addEventListener("pointercancel", up);
     el.addEventListener("dblclick", reset);
@@ -105,6 +133,7 @@ export function Book3D({ cover, alt, title, hint, className }: Book3DProps) {
       io.disconnect();
       el.removeEventListener("pointerdown", down);
       el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerleave", leave);
       el.removeEventListener("pointerup", up);
       el.removeEventListener("pointercancel", up);
       el.removeEventListener("dblclick", reset);
@@ -114,7 +143,8 @@ export function Book3D({ cover, alt, title, hint, className }: Book3DProps) {
   return (
     <div className={cn("relative mx-auto w-fit", className)}>
       <div aria-hidden="true" className="absolute -inset-10 rounded-full bg-[radial-gradient(circle,rgb(42_144_195/0.35),transparent_65%)]" />
-      <div ref={stage} role="img" aria-label={`${alt}. ${hint}`} className="book-stage relative cursor-grab touch-none select-none" style={{ perspective: "1400px" }}>
+      <div ref={hit} role="img" aria-label={`${alt}. ${hint}`} className="relative cursor-grab touch-none select-none p-10 sm:p-12">
+      <div ref={stage} className="book-stage relative" style={{ perspective: "1400px" }}>
         <div ref={book} className="book">
           <div className="book-face book-front">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -133,6 +163,7 @@ export function Book3D({ cover, alt, title, hint, className }: Book3DProps) {
           <div className="book-face book-bottom" />
         </div>
         <span aria-hidden="true" className="book-shadow" />
+      </div>
       </div>
       <p className="mt-6 flex items-center justify-center gap-2 text-small text-fg-3">
         <span aria-hidden="true" className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-gold-300" />

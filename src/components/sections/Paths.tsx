@@ -5,6 +5,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { TechBackdrop } from "@/components/ui/TechBackdrop";
 import { CountUp } from "@/components/motion/CountUp";
+import { ScrollMeters } from "@/components/motion/ScrollSlide";
 import { RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { formatNumber } from "@/lib/format";
 
@@ -61,30 +62,9 @@ function ImpactColumn({ path, tone }: { path: Path; tone: "gold" | "azure" }) {
 
       {/* Agency: il grafico cresce · Academy: le competenze si riempiono */}
       {impact.meters ? (
-        <ul className="mt-6 space-y-3" aria-label="Dal punto di partenza all'autonomia">
-          {impact.meters.map((m, i, all) => {
-            const last = i === all.length - 1;
-            return (
-              <li key={m} style={{ "--i": i } as CSSVars}>
-                <div className="flex items-center justify-between text-[0.8125rem] font-medium text-fg-2">
-                  <span className={cn(last && "font-display text-[0.9375rem] font-bold text-gold-200")}>{m}</span>
-                  {last && (
-                    <span className="impact-badge inline-flex items-center gap-1 text-[0.6875rem] font-semibold uppercase tracking-wider text-gold-300">
-                      <Icon name="check" className="h-3 w-3" strokeWidth={2.6} />
-                      Traguardo
-                    </span>
-                  )}
-                </div>
-                <div className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-line">
-                  <span
-                    style={{ width: `${((i + 1) / all.length) * 100}%` }}
-                    className={cn("impact-meter block h-full origin-left rounded-full", last ? "bg-gradient-to-r from-gold-500 via-gold-300 to-gold-100 shadow-[0_0_14px_rgb(247_200_92/0.7)]" : "bg-gradient-to-r from-azure-400 to-azure-300")}
-                  />
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="mt-6">
+          <ScrollMeters labels={impact.meters} goal={impact.goal ?? ""} />
+        </div>
       ) : (
         <div className="mt-6 flex min-h-24 flex-1 items-end gap-1.5" aria-hidden="true">
           {BARS.map((h, i) => (

@@ -399,8 +399,8 @@ html.menu-open { overflow: hidden; }
   .sym3d-label { position: absolute; right: 0; top: var(--ly); translate: 0 -50%; transform: translate3d(calc((1 - min(1, var(--e) * 1.4)) * 24px), 0, 0); }
 }
 /* elenco Mente / Corpo / Anima: ogni voce entra quando la scena si è scomposta abbastanza */
-.sym-item { opacity: calc(0.12 + var(--li, 0) * 0.88); transform: translate3d(calc((1 - var(--li, 0)) * 60px), 0, 0); transition: border-color 0.4s var(--ease-soft), background-color 0.4s var(--ease-soft); }
-.sym-track { height: 300vh; }
+.sym-item { transition: border-color 0.4s var(--ease-soft), background-color 0.4s var(--ease-soft); }
+.sym-track { height: 260vh; }
 .sym-sticky { position: sticky; top: calc(var(--header-h) + 0.5rem); min-height: calc(100svh - var(--header-h) - 1rem); display: flex; align-items: center; }
 @media (prefers-reduced-motion: reduce) {
   .sym3d-sway, .sym3d-layer[data-i="0"]:not(.sym3d-spiral) { animation: none; }
@@ -408,7 +408,7 @@ html.menu-open { overflow: hidden; }
   .sym-sticky { position: static; min-height: 0; }
   .sym-item { opacity: 1; transform: none; }
 }
-@media (max-width: 1023px) { .sym-track { height: 260vh; } }
+@media (max-width: 1023px) { .sym-track { height: 230vh; } }
 
 /* Mobile: anelli HUD fermi (meno lavoro di paint/composite al caricamento) */
 @media (max-width: 767px) {
@@ -509,8 +509,8 @@ html.menu-open { overflow: hidden; }
 .chat-pop { opacity: 0; animation: chat-pop 14s ease-out infinite backwards; animation-delay: calc(var(--i) * 3.5s); }
 @keyframes num-slot { 0%, 24% { opacity: 1; } 25%, 100% { opacity: 0; } }
 .num-slot { animation: num-slot 14s steps(1, end) infinite; animation-delay: calc(var(--i) * 3.5s - 14s); }
-@keyframes course-progress { 0% { transform: scaleX(0.04); } 85%, 100% { transform: scaleX(1); } }
-.course-progress { animation: course-progress 12s ease-in-out infinite; }
+@keyframes course-progress { 0% { transform: scaleX(0.02); } 100% { transform: scaleX(1); } }
+.course-progress { animation: course-progress 22.4s linear infinite; }
 @keyframes check-pop {
   0%, 8% { opacity: 0; transform: scale(0.4); }
   14%, 88% { opacity: 1; transform: scale(1); }
@@ -704,7 +704,7 @@ html.menu-open { overflow: hidden; }
 /* ==========================================================================
    Libro 3D trascinabile (Vibe Coding)
    ========================================================================== */
-.book-stage { --bw: 16.5rem; --bh: 24.75rem; --bd: 2.6rem; width: var(--bw); height: var(--bh); margin: 1rem 2.5rem 2rem; }
+.book-stage { --bw: 16.5rem; --bh: 24.75rem; --bd: 2.6rem; width: var(--bw); height: var(--bh); margin: 0; }
 .book { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
 .book-face { position: absolute; left: 50%; top: 50%; backface-visibility: hidden; }
 .book-front, .book-back { width: var(--bw); height: var(--bh); margin: calc(var(--bh) / -2) 0 0 calc(var(--bw) / -2); }
@@ -727,3 +727,40 @@ html.menu-open { overflow: hidden; }
 /* Elementi legati allo scroll (--p da 0 a 1 impostato da <ScrollSlide />; senza JS restano al loro posto) */
 .slide-x { --p: 1; transform: translate3d(calc((1 - var(--p)) * var(--dir, 1) * 85vw), 0, 0) rotate(calc((1 - var(--p)) * var(--dir, 1) * 4deg)); opacity: calc(0.15 + var(--p) * 0.85); will-change: transform; }
 .slide-pop { --p: 1; transform: scale(calc(0.4 + var(--p) * 0.6)); opacity: var(--p); will-change: transform; }
+
+/* Barre che si completano con lo scroll: azzurre, poi dorate a barra piena; traguardo che si accende alla fine */
+.meter-fill { position: relative; background: linear-gradient(90deg, var(--color-azure-400), var(--color-azure-300)); }
+.meter-fill::after { content: ""; position: absolute; inset: 0; border-radius: inherit; opacity: 0; background: linear-gradient(90deg, var(--color-gold-500), var(--color-gold-300), var(--color-gold-100)); box-shadow: 0 0 14px rgb(247 200 92 / 0.75); transition: opacity 0.45s var(--ease-soft); }
+[data-meter][data-done] .meter-fill::after { opacity: 1; }
+[data-meter][data-done] .meter-label { color: var(--color-gold-200); font-weight: 700; }
+.meter-check { opacity: 0; transform: scale(0.4); transition: opacity 0.3s var(--ease-soft), transform 0.4s var(--ease-out-expo); }
+[data-meter][data-done] .meter-check { opacity: 1; transform: none; }
+.meter-goal { border-color: var(--color-line); color: var(--color-fg-3); background: rgb(1 15 28 / 0.4); transition: color 0.5s var(--ease-soft), border-color 0.5s var(--ease-soft), background-color 0.5s var(--ease-soft), box-shadow 0.5s var(--ease-soft); }
+.meter-goal[data-on] { color: var(--color-night); border-color: var(--color-gold-200); background: var(--gradient-gold-btn); box-shadow: 0 0 34px -4px rgb(255 190 40 / 0.75); }
+
+/* "Prove prenotate": il riquadro lampeggia in oro */
+@keyframes kpi-blink { 0%, 100% { box-shadow: 0 0 0 0 rgb(247 200 92 / 0); } 50% { box-shadow: 0 0 22px 2px rgb(247 200 92 / 0.8); } }
+.kpi-blink { animation: kpi-blink 1s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .kpi-blink { animation: none; } }
+
+/* Servizi: evidenziatore che passa di scheda in scheda (8 schede × 2,2 s), icona che respira */
+@keyframes svc-lit { 0%, 12% { border-color: rgb(247 200 92 / 0.75); box-shadow: 0 0 36px -10px rgb(247 200 92 / 0.6); } 13%, 100% { border-color: var(--color-line); box-shadow: none; } }
+@keyframes svc-bar { 0%, 12% { transform: scaleX(1); } 13%, 100% { transform: scaleX(0); } }
+@keyframes svc-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+.svc-card { animation: svc-lit 17.6s linear infinite; animation-delay: calc(var(--i, 0) * 2.2s - 17.6s); }
+li:hover > .slide-x .svc-card { animation-play-state: paused; }
+.svc-bar { transform: scaleX(0); animation: svc-bar 17.6s linear infinite; animation-delay: calc(var(--i, 0) * 2.2s - 17.6s); transition: transform 0.5s var(--ease-out-expo); }
+.svc-card:hover .svc-bar { animation: none; transform: scaleX(1); }
+.svc-icon { animation: svc-breathe 4.5s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -0.6s); }
+@media (prefers-reduced-motion: reduce) { .svc-card, .svc-bar, .svc-icon { animation: none; } }
+
+/* "Prenota una call": aurora lenta oro/azzurro dietro le tre card */
+@keyframes call-spin { to { transform: rotate(360deg); } }
+.call-aurora { background: conic-gradient(from 0deg, rgb(247 200 92 / 0.28), transparent 25%, rgb(11 129 177 / 0.32) 50%, transparent 75%, rgb(247 200 92 / 0.28)); animation: call-spin 60s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .call-aurora { animation: none; } }
+
+/* Anteprima corsi Academy: le copertine si alternano (7 × 3,2 s) con una lenta zoomata */
+@keyframes cover-slide { 0% { opacity: 0; transform: scale(1.06); } 3%, 13% { opacity: 1; } 14.3% { opacity: 0; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+.cover-slide { opacity: 0; animation: cover-slide calc(var(--n) * 3.2s) ease-in-out infinite; animation-delay: calc(var(--i) * 3.2s - var(--n) * 3.2s); }
+.cover-slide:first-child { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .cover-slide { animation: none; } .cover-slide:not(:first-child) { display: none; } }

@@ -14,6 +14,11 @@ const HIGHLIGHTS: Array<{ icon: IconName; label: string }> = [
 ];
 
 const nf = new Intl.NumberFormat("it-IT");
+/** Incrementi dei follower a ogni battito: tanti piccoli (+1, +2, +3) e ogni tanto un salto grande (+100, +150). */
+const SEQ = [1, 2, 1, 3, 2, 1, 100, 2, 1, 3, 1, 2, 150, 1, 2, 3];
+const SUM = SEQ.reduce((a, b) => a + b, 0);
+const PREFIX = SEQ.map((_, i) => SEQ.slice(0, i).reduce((a, b) => a + b, 0));
+const gained = (t: number) => Math.floor(t / SEQ.length) * SUM + (PREFIX[t % SEQ.length] ?? 0);
 
 /**
  * Mock di un profilo Instagram fatto bene (palestra) + schermata campagne Meta Ads, in un telefono.
@@ -48,9 +53,10 @@ export function SocialMock() {
   // tick ogni 0,42 s → il cambio automatico di schermata avviene ogni ~12 s (e si ferma se scegli tu)
   const auto = Math.floor(tick / 28) % 2;
   const screen = manual ?? auto;
-  const followers = d.followersStart + tick + Math.floor(tick / 3);
-  const gain = d.todayGain + tick + Math.floor(tick / 3);
-  const contacts = d.ads.todayValue + Math.floor(tick / 5);
+  const followers = d.followersStart + gained(tick);
+  const gain = d.todayGain + gained(tick);
+  const contacts = d.ads.todayValue + Math.floor(tick / 2);
+  const booked = 6 + Math.floor(tick / 6);
   const n = Math.floor(tick / 4);
   const chat = [0, 1, 2].map((k) => ({ ...d.chat[(n + d.chat.length * 4 - k) % d.chat.length]!, key: n - k }));
   const requests = 9 + n;
@@ -62,7 +68,7 @@ export function SocialMock() {
   ];
 
   return (
-    <figure ref={rootRef} className="relative mx-auto w-[19.5rem] sm:w-[21rem] xl:mx-0" aria-label={`${d.note}: profilo Instagram di una palestra e campagna pubblicitaria con i contatti in arrivo`}>
+    <figure ref={rootRef} className="relative mx-auto w-[19.5rem] sm:w-[21rem] min-[1400px]:mx-0" aria-label={`${d.note}: profilo Instagram di una palestra e campagna pubblicitaria con i contatti in arrivo`}>
       <div aria-hidden="true" className="absolute -inset-12 rounded-full bg-[radial-gradient(circle,rgb(42_144_195/0.4),transparent_65%)]" />
 
       {/* selettore ben visibile: Instagram | Campagne (si può anche scorrere il telefono) */}
@@ -222,8 +228,8 @@ export function SocialMock() {
 
           <dl className="mt-4 grid grid-cols-3 gap-2">
             {d.ads.kpis.map((k) => (
-              <div key={k.label} className="rounded-xl border border-line bg-night-raised/60 px-2 py-2.5 text-center">
-                <dd className="font-display text-[1rem] font-bold leading-none text-fg">{k.value}</dd>
+              <div key={k.label} className={cn("rounded-xl border px-2 py-2.5 text-center", "live" in k && k.live ? "kpi-blink border-gold-300 bg-gold-300/10" : "border-line bg-night-raised/60")}>
+                <dd key={"live" in k && k.live ? booked : k.value} className={cn("font-display text-[1rem] font-bold leading-none", "live" in k && k.live ? "grow-pill text-gold-200" : "text-fg")}>{"live" in k && k.live ? booked : k.value}</dd>
                 <dt className="mt-1.5 text-[0.5625rem] leading-tight text-fg-3">{k.label}</dt>
               </div>
             ))}
@@ -235,8 +241,8 @@ export function SocialMock() {
       <div
         aria-hidden="true"
         className={cn(
-          "mt-4 transition-[opacity,transform] duration-500 ease-out-expo xl:absolute xl:left-full xl:top-6 xl:-ml-8 xl:mt-0 xl:w-[13rem]",
-          screen === 0 ? "opacity-100" : "pointer-events-none max-xl:hidden xl:translate-x-4 xl:opacity-0",
+          "mt-4 transition-[opacity,transform] duration-500 ease-out-expo min-[1400px]:absolute min-[1400px]:left-full min-[1400px]:top-6 min-[1400px]:ml-3 min-[1400px]:mt-0 min-[1400px]:w-[12.5rem]",
+          screen === 0 ? "opacity-100" : "pointer-events-none max-[1399px]:hidden min-[1400px]:translate-x-4 min-[1400px]:opacity-0",
         )}
       >
         <p className="mb-2 flex items-center gap-2 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-fg-3">

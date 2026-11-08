@@ -2,6 +2,7 @@ import { site } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { TechBackdrop } from "@/components/ui/TechBackdrop";
 import { Reveal } from "@/components/motion/Reveal";
 
 /** "Prenota una call gratuita": cosa succede nella call, in 3 passi che arrivano da lati diversi, e il pulsante grande. */
@@ -11,6 +12,11 @@ export function CallBlock() {
   const from = ["left", "up", "right"] as const;
   return (
     <Section id="call" labelledBy="call-title">
+      {/* sfondo: aurora oro/azzurro che ruota piano, griglia e punti luce (discreto) */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="call-aurora absolute left-1/2 top-1/2 h-[46rem] w-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 [mask-image:radial-gradient(circle,#000_25%,transparent_68%)]" />
+      </div>
+      <TechBackdrop tone="gold" rich />
       <SectionHeading id="call-title" overline={call.overline} title={call.title} line={call.line} align="center" />
       <div className="relative mt-12 grid gap-5 md:grid-cols-3 md:gap-8">
         <span aria-hidden="true" className="absolute left-[16%] right-[16%] top-[3.25rem] hidden h-[3px] bg-gradient-to-r from-gold-300/0 via-gold-300/70 to-gold-300/0 md:block" />
