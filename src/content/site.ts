@@ -135,7 +135,7 @@ export const site = {
   },
 
   metrics: {
-    title: "Numeri che contano",
+    title: "Numeri che [contano]",
     items: [
       { value: 40, suffix: "+", label: "Progetti completati", todo: true }, // TODO: dato reale
       { value: 25, suffix: "+", label: "Clienti seguiti", todo: true }, // TODO: dato reale
@@ -147,7 +147,7 @@ export const site = {
   fork: {
     id: "agency",
     overline: "Da dove partire",
-    title: "Scegli come lavorare insieme",
+    title: "Scegli come [lavorare insieme]",
     line: "Due percorsi, un solo obiettivo: la tua crescita.",
     agency: {
       badge: "Il nostro cuore",
@@ -168,7 +168,7 @@ export const site = {
   services: {
     id: "servizi",
     overline: "Servizi Agency",
-    title: "Cosa facciamo per te",
+    title: "Cosa facciamo [per te]",
     line: "Sei servizi, un unico ecosistema.",
     items: [
       {
@@ -225,7 +225,7 @@ export const site = {
   process: {
     id: "metodo",
     overline: "Il nostro metodo",
-    title: "Come lavoriamo",
+    title: "Come [lavoriamo]",
     line: "Quattro passi, dalla prima call ai risultati.",
     steps: [
       { title: "Analisi", text: "Capiamo obiettivi, risorse e opportunità.", icon: "search" },
@@ -238,7 +238,7 @@ export const site = {
   results: {
     id: "risultati",
     overline: "Risultati concreti",
-    title: "Storie di crescita reale",
+    title: "Storie di [crescita reale]",
     line: "Alcuni progetti, con i loro numeri.",
     prev: "Risultato precedente",
     next: "Risultato successivo",
@@ -270,7 +270,7 @@ export const site = {
   academy: {
     id: "academy",
     overline: "Academy",
-    title: "Impara con Triskell Academy",
+    title: "Impara con [Triskell Academy]",
     line: "Tutorial e percorsi pratici su AI e marketing.",
     cta: { label: "Esplora i percorsi", href: "#contatti" }, // TODO: pagina /academy
     soon: "In arrivo",
@@ -290,7 +290,7 @@ export const site = {
   symbol: {
     id: "simbolo",
     overline: "Il simbolo",
-    title: "Tre spirali, una sola energia",
+    title: "Tre spirali, [una sola energia]",
     line: "Mente, corpo e anima, riletti per il mondo digitale.",
     pillars: [
       { from: "Mente", to: "Digitale", text: "Strumenti, dati e AI al servizio del business.", icon: "cpu" },
@@ -302,7 +302,7 @@ export const site = {
   about: {
     id: "chi-siamo",
     overline: "Chi siamo",
-    title: "Un team piccolo, visione grande",
+    title: "Un team piccolo, [visione grande]",
     line: "Le persone dietro Triskell Ecosystem.",
     team: [
       {
@@ -328,7 +328,7 @@ export const site = {
   faq: {
     id: "faq",
     overline: "FAQ",
-    title: "Domande frequenti",
+    title: "Domande [frequenti]",
     line: "Le risposte che ci chiedono più spesso.",
     items: [
       {
@@ -356,7 +356,7 @@ export const site = {
 
   contact: {
     id: "contatti",
-    title: "Vuoi far crescere la tua attività?",
+    title: "Vuoi far crescere [la tua attività]?",
     line: "Raccontaci il tuo progetto, ti ricontattiamo noi.",
     perks: [
       { icon: "calendar", label: "Consulenza gratuita" },
@@ -422,7 +422,7 @@ export const site = {
 
   aiLab: {
     overline: "AI Lab",
-    title: "Il laboratorio AI sta arrivando",
+    title: "Il laboratorio AI [sta arrivando]",
     line: "Esperimenti, strumenti e integrazioni su misura.",
     cta: { label: "Torna alla home", href: "/" },
   },
