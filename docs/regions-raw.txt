@@ -1,0 +1,36 @@
+BTN gold area px 10402
+BTN ramp (lum quantili): [(5, '#D49723'), (25, '#DC9F2B'), (50, '#EEC058'), (75, '#FBD068'), (95, '#FDD873')]
+BTN vertical: [(0, '#F9D779'), (7, '#FCD26A'), (14, '#F7C85C'), (21, '#EBBA5C'), (28, '#E2A733'), (35, '#DA9C25')]
+BTN horizontal: [(0, '#EAB846'), (35, '#F2CC64'), (70, '#F6C962'), (105, '#F6C65B'), (140, '#E0A856'), (175, '#DFAA5D'), (210, '#F2BE4B'), (245, '#F2C258'), (280, '#ECB848')]
+BTN top edge: #FBDC82  bottom edge: #D69821
+TITLE gold ramp: [(5, '#C99A41'), (25, '#E3AD44'), (50, '#ECB851'), (75, '#F2C462'), (95, '#F9D06F')]
+LOGO gold px 22035 ramp: [(3, '#5E3605'), (15, '#86550B'), (35, '#C3850E'), (55, '#DEA112'), (75, '#F4BA20'), (90, '#FACD42'), (98, '#FDDA5A')]
+LOGO blue medallion ramp: [(5, '#031125'), (25, '#032046'), (50, '#083059'), (75, '#0F426E'), (95, '#216A9E')]
+LOGO centre fill: #F8CE44 (zone near ring interior)
+CARD Agency top edge sweep (x%->hex): [(0, '#CBC299'), (12, '#E7E3CA'), (25, '#C0C1C3'), (37, '#708090'), (50, '#8899AB'), (62, '#C1D0D3'), (75, '#EDF4EC'), (87, '#FAF2DB'), (100, '#FFFAB4')]
+CARD Agency left edge sweep (y%->hex): [(0, '#C7C49B'), (12, '#D8D3A9'), (25, '#C1BC9C'), (37, '#9B9682'), (50, '#64635F'), (62, '#3F4851'), (75, '#7E7966'), (87, '#CDC08B'), (100, '#DECF96')]
+CARD Agency bottom edge sweep: [(0, '#ECD794'), (12, '#F2D989'), (25, '#F6E299'), (37, '#FFF7BE'), (50, '#F6E9B4'), (62, '#EFE8BC'), (75, '#FFF6C6'), (87, '#F9E9B5'), (100, '#B4AD7F')]
+CARD result top sweep: [(0, '#888F97'), (25, '#8A939A'), (50, '#8E9396'), (75, '#86908F'), (100, '#7E8B94')]
+CTA panel top sweep: [(0, '#AFA581'), (12, '#DFD4B6'), (25, '#F0DDA5'), (37, '#938257'), (50, '#58584E'), (62, '#4B4A45'), (75, '#7A664E'), (87, '#A09277'), (100, '#BBA97E')]
+CTA panel bottom sweep: [(0, '#9E8C68'), (12, '#675B4B'), (25, '#ADA58E'), (37, '#CCBC89'), (50, '#FFF4AB'), (62, '#8C8A73'), (75, '#41576C'), (87, '#67717B'), (100, '#BDBDA5')]
+FILL agency (left-top empty): #061725  center: #02101C
+FILL academy: #021626  AI lab: #011422
+FILL results card: #010B15  second: #010B14
+FILL cta panel left: #011B2F  centre: #0D273D
+FILL header band: #010F1C  | below header line: #010E1B
+FILL section 'Cos'e' band: #010F1C
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-Sito-Triskell-Ecosystem-/31cdc4a7-dc34-5919-a52d-427e67fd09b9/scratchpad/extract_regions.py", line 124, in <module>
+    print("GLOW radial right:", [(d, hx(im[cy, cx + d])) for d in (160, 180, 200, 230, 260, 290)])
+                                        ~~^^^^^^^^^^^^
+IndexError: index 1040 is out of bounds for axis 1 with size 1024
+GLOW radial right: [(140, '#152A3F'), (160, '#0B81B1'), (180, '#042143'), (200, '#011425'), (230, '#011120'), (260, '#000E1B')]
+GLOW radial down (platform): [(150, '#FFB91B'), (170, '#E2B06B'), (180, '#FCFDD5'), (190, '#CB8A3A'), (200, '#C58335')]
+GLOW left: [(140, '#233750'), (180, '#00243F'), (220, '#00192F'), (260, '#011D32'), (300, '#EBF2FC')]
+Tile glass fill (AI chip tile): #123958  bar chart tile: #04568F
+AZURE icon ramp (bar chart tile): [(10, '#0D6DA6'), (50, '#138DC8'), (90, '#3AA4D4')]
+TEXT primary ramp (headline): [(50, '#E4E6EA'), (90, '#F2F6FB')]
+TEXT body ramp (sub): [(50, '#CFD5E0'), (90, '#F5FCFF'), (98, '#F9FFFF')]
+TEXT card desc ramp: [(50, '#D7DDE6'), (90, '#F5FBFE'), (98, '#FAFFFF')]
+TEXT trust-bar ramp: [(50, '#CED2DA'), (90, '#F2F7FD'), (98, '#F9FDFF')]
+OVERLINE gold ramp: [(50, '#C3A860'), (90, '#F2D883')]
