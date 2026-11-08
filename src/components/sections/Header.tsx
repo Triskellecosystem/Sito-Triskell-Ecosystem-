@@ -10,7 +10,6 @@ import { getLenis } from "@/lib/lenis";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Magnetic } from "@/components/motion/Magnetic";
 
 const SPY_IDS = ["agency", "academy", "chi-siamo"] as const;
 
@@ -241,11 +240,11 @@ export function Header() {
           </div>
 
           <div className="flex items-center gap-5 xl:gap-7">
-            <Magnetic className="hidden lg:block">
+            <div className="hidden lg:block">
               <Button href={href(site.nav.cta.href)} size="sm" icon="calendar" iconPosition="start">
                 {site.nav.cta.label}
               </Button>
-            </Magnetic>
+            </div>
             <Logo
               compactOnXs
               className={cn("origin-right transition-transform duration-[var(--dur-slow)] ease-out-expo", compact && "scale-[0.9]")}

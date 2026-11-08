@@ -1,5 +1,5 @@
 import { site } from "@/content/site";
-import { TriskellMark } from "@/components/brand/TriskellMark";
+import { LogoMark } from "@/components/brand/LogoMark";
 import { BeamCard } from "@/components/ui/BeamCard";
 import { Icon } from "@/components/ui/Icon";
 import { Section } from "@/components/ui/Section";
@@ -19,7 +19,7 @@ export function Contact() {
       <Reveal y={40} blur={6}>
         <BeamCard className="relative">
           <div className="relative grid gap-10 overflow-hidden rounded-[inherit] bg-[linear-gradient(135deg,var(--color-surface-2),var(--color-night-raised)_55%,var(--color-surface))] p-6 sm:p-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:p-14">
-            <TriskellMark flat strokeWidth={1} className="pointer-events-none absolute -bottom-24 -left-20 h-[26rem] w-[26rem] rotate-[20deg] opacity-[0.16]" />
+            <LogoMark sizes="416px" className="pointer-events-none absolute -bottom-28 -left-24 h-[26rem] w-[26rem] opacity-[0.1]" />
 
             <div className="relative flex flex-col">
               <SplitReveal id="contact-title" text={contact.title} as="h2" className="text-h2 text-fg" />

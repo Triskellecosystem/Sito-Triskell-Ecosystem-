@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
-import { TriskellMark } from "./TriskellMark";
+import { LogoMark } from "./LogoMark";
 
 interface LogoProps {
   className?: string;
@@ -14,7 +14,7 @@ interface LogoProps {
 export function Logo({ className, compactOnXs = false, asLink = true }: LogoProps) {
   const inner = (
     <>
-      <TriskellMark className="h-9 w-9 shrink-0 transition-transform duration-[var(--dur-base)] ease-out-expo group-hover/logo:rotate-[24deg] sm:h-10 sm:w-10" />
+      <LogoMark size={40} loading="eager" className="h-9 w-9 shrink-0 sm:h-10 sm:w-10" />
       <span className={cn("flex flex-col leading-none", compactOnXs && "max-xs:hidden")}>
         <span className="font-display text-[1.125rem] font-bold tracking-[0.1em] text-fg sm:text-[1.25rem]">TRISKELL</span>
         {/* "ECOSYSTEM" come contenuto generato: il testo visibile resta "TRISKELL", incluso nel nome accessibile */}

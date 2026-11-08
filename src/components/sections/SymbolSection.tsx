@@ -2,17 +2,25 @@
 
 import { useState } from "react";
 import { site } from "@/content/site";
-import { ARM_PATH } from "@/components/brand/triskell-path";
+import { LogoMark } from "@/components/brand/LogoMark";
 import { Icon } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/motion/Reveal";
 
 type CSSVars = React.CSSProperties & { [key: `--${string}`]: string | number };
-const ROTATIONS = [0, 120, 240];
+/**
+ * Le tre spirali del logo reale, come settori conici (gradi in senso orario da "ore 12"):
+ * spirale in alto, in basso a destra, a sinistra. Misurati sul medaglione ritagliato.
+ */
+const SECTORS = [
+  { from: 320, span: 106 },
+  { from: 66, span: 135 },
+  { from: 201, span: 119 },
+] as const;
 
 /**
- * Il simbolo: a sinistra il triskell grande, a destra i 3 pilastri come righe con filetto.
- * Ogni braccio della spirale è collegato a un pilastro: un ciclo CSS (9 s) li accende in sequenza,
+ * Il simbolo: a sinistra il logo reale grande, a destra i 3 pilastri come righe con filetto.
+ * Ogni spirale del logo è collegata a un pilastro: un ciclo CSS (9 s) li accende in sequenza,
  * l'hover su un pilastro prende il controllo. Con reduced motion: tutto acceso, statico.
  */
 export function SymbolSection() {
@@ -27,41 +35,22 @@ export function SymbolSection() {
       <div className="sym relative grid items-center gap-14 lg:grid-cols-12 lg:gap-12" data-active={active ?? undefined}>
         <Reveal className="mx-auto w-full max-w-[26rem] lg:col-span-5 lg:max-w-none" y={30}>
           <div className="relative mx-auto aspect-square w-full max-w-[28rem]">
-            <svg viewBox="-4 -4 108 108" fill="none" role="img" aria-label={site.hero.symbolAlt} className="h-full w-full overflow-visible">
-              <defs>
-                <linearGradient id="sym-gold" x1="18" y1="6" x2="82" y2="94" gradientUnits="userSpaceOnUse">
-                  <stop offset="0" stopColor="var(--color-gold-200)" />
-                  <stop offset="0.5" stopColor="var(--color-gold-300)" />
-                  <stop offset="1" stopColor="var(--color-gold-500)" />
-                </linearGradient>
-              </defs>
-              <circle cx="50" cy="50" r="49" stroke="var(--color-line-strong)" strokeWidth="0.35" strokeDasharray="0.6 2.4" />
-              <circle cx="50" cy="50" r="42" stroke="var(--color-line)" strokeWidth="0.3" />
-              {ROTATIONS.map((deg, i) => (
-                <g key={deg} transform={deg ? `rotate(${deg} 50 50)` : undefined} strokeLinecap="round" strokeLinejoin="round">
-                  {/* tracciato base (si disegna all'ingresso) */}
-                  <path
-                    d={ARM_PATH}
-                    stroke="var(--color-cobalt-400)"
-                    strokeWidth="3"
-                    pathLength={1}
-                    className="draw-on-reveal"
-                    style={{ "--draw-delay": `${0.2 + i * 0.25}s` } as CSSVars}
-                  />
-                  {/* glow + evidenziazione oro (ciclo coordinato) */}
-                  <path
-                    d={ARM_PATH}
-                    className="sym-arm-glow"
-                    data-i={i}
-                    style={{ "--i": i, filter: "blur(2.4px)" } as CSSVars}
-                    stroke="var(--color-gold-400)"
-                    strokeWidth="5.5"
-                  />
-                  <path d={ARM_PATH} className="sym-arm-hi" data-i={i} style={{ "--i": i } as CSSVars} stroke="url(#sym-gold)" strokeWidth="4.4" />
-                </g>
-              ))}
-              <circle cx="50" cy="50" r="3" fill="var(--color-gold-200)" />
-            </svg>
+            <div aria-hidden="true" className="absolute -inset-[6%] rounded-full border border-dashed border-line-strong" />
+            <div aria-hidden="true" className="absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgb(247_200_92/0.16),transparent_68%)]" />
+            {/* logo spento + una spirale alla volta accesa */}
+            <LogoMark alt={site.hero.symbolAlt} sizes="(min-width: 1024px) 28rem, 90vw" className="absolute inset-0 h-full w-full brightness-[0.5] saturate-[0.65]" />
+            {SECTORS.map((sec, i) => {
+              const mask = `conic-gradient(from ${sec.from}deg at 50% 50%, #000 0deg ${sec.span}deg, transparent ${sec.span}deg)`;
+              return (
+                <LogoMark
+                  key={sec.from}
+                  sizes="(min-width: 1024px) 28rem, 90vw"
+                  data-i={i}
+                  className="sym-sector absolute inset-0 h-full w-full brightness-[1.35] saturate-150"
+                  style={{ "--i": i, maskImage: mask, WebkitMaskImage: mask } as CSSVars}
+                />
+              );
+            })}
           </div>
         </Reveal>
 

@@ -8,7 +8,6 @@ import { onLenis } from "@/lib/lenis";
 import { Icon } from "@/components/ui/Icon";
 import { SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/motion/Reveal";
-import { StepVisual } from "./StepVisual";
 
 const { process: content } = site;
 const N = content.steps.length;
@@ -175,7 +174,7 @@ export function Process() {
                 }}
                 data-state={reduced ? (i === N - 1 ? "active" : "past") : i === 0 ? "active" : "next"}
                 className={cn(
-                  "grid items-center gap-8 rounded-card border border-line bg-[linear-gradient(135deg,var(--color-surface-2),var(--color-surface))] p-7 lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:p-10",
+                  "grid items-center gap-8 rounded-card border border-line bg-[linear-gradient(135deg,var(--color-surface-2),var(--color-surface))] p-7 md:grid-cols-[1.1fr_1fr] lg:gap-14 lg:p-10",
                   reduced
                     ? "relative mb-4"
                     : [
@@ -197,9 +196,16 @@ export function Process() {
                   </div>
                   <p className="mt-4 max-w-md text-lead text-fg-2">{step.text}</p>
                 </div>
-                <div className="hidden h-full max-h-56 lg:block">
-                  <StepVisual step={i} />
-                </div>
+                <ul className="hidden gap-3.5 self-center md:grid">
+                  {step.points.map((point) => (
+                    <li key={point} className="flex items-center gap-3.5 text-[1.0625rem] text-fg">
+                      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-gold-400/50 bg-gold-300/10 text-gold-300">
+                        <Icon name="check" className="h-4 w-4" strokeWidth={2.5} />
+                      </span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
@@ -225,14 +231,19 @@ export function Process() {
                 </span>
                 <Reveal y={18}>
                   <div className="rounded-card border border-line bg-surface p-5">
-                    <div className="mb-4 h-28 opacity-90">
-                      <StepVisual step={i} />
-                    </div>
                     <h3 className="flex items-center gap-2.5 text-h3 text-fg">
                       <Icon name={step.icon} className="h-5 w-5 text-gold-300" />
                       {step.title}
                     </h3>
                     <p className="mt-2 text-body text-fg-2">{step.text}</p>
+                    <ul className="mt-4 space-y-2.5 border-t border-line pt-4">
+                      {step.points.map((point) => (
+                        <li key={point} className="flex items-center gap-3 text-[0.9375rem] text-fg">
+                          <Icon name="check" className="h-4 w-4 shrink-0 text-gold-300" strokeWidth={2.5} />
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </Reveal>
               </li>

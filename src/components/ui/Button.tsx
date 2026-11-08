@@ -18,17 +18,22 @@ interface CommonProps {
 type ButtonProps = CommonProps & { href?: undefined } & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, keyof CommonProps>;
 type LinkProps = CommonProps & { href: string } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof CommonProps | "href">;
 
+// I pulsanti NON si spostano: restano sul loro asse. Feedback solo con luce (glow) e colore.
 const base =
   "group/btn relative inline-flex select-none items-center justify-center gap-2.5 overflow-hidden whitespace-nowrap rounded-[14px] font-display font-semibold tracking-[-0.01em] " +
-  "transition-[transform,box-shadow,background-color,border-color,color,opacity] duration-[var(--dur-base)] ease-out-expo " +
-  "active:scale-[0.97] disabled:pointer-events-none disabled:opacity-60";
+  "transition-[box-shadow,background-color,border-color,color,filter,opacity] duration-[var(--dur-base)] ease-out-expo " +
+  "active:duration-100 disabled:pointer-events-none disabled:opacity-60";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-[image:var(--gradient-gold-btn)] text-night shadow-glow-gold hover:-translate-y-0.5 hover:shadow-[0_0_0_1px_rgb(255_247_190/0.6),0_16px_48px_-8px_rgb(255_185_27/0.65)]",
+    "bg-[image:var(--gradient-gold-btn)] text-night shadow-glow-gold " +
+    "hover:brightness-105 hover:shadow-[0_0_0_1px_rgb(255_247_190/0.7),0_0_44px_2px_rgb(255_185_27/0.6)] " +
+    "active:brightness-[1.18] active:shadow-[0_0_0_2px_rgb(255_247_190/0.95),0_0_70px_10px_rgb(255_200_70/0.85)]",
   secondary:
-    "border border-line-strong bg-night/40 text-fg backdrop-blur-sm hover:-translate-y-0.5 hover:border-gold-300/70 hover:text-gold-200 hover:shadow-[0_0_32px_-8px_rgb(247_200_92/0.4)]",
-  ghost: "text-fg-2 hover:text-fg",
+    "border border-line-strong bg-night/40 text-fg backdrop-blur-sm " +
+    "hover:border-gold-300/80 hover:text-gold-200 hover:shadow-[0_0_30px_-4px_rgb(247_200_92/0.5)] " +
+    "active:border-gold-200 active:bg-gold-300/15 active:text-gold-100 active:shadow-[0_0_0_1px_rgb(253_218_90/0.8),0_0_50px_2px_rgb(247_200_92/0.65)]",
+  ghost: "text-fg-2 hover:text-fg active:text-gold-200",
 };
 
 const sizes: Record<Size, string> = {
@@ -56,7 +61,7 @@ export function Button(props: ButtonProps | LinkProps) {
         <Icon
           name={icon}
           className={cn(
-            "relative h-[1.1em] w-[1.1em] shrink-0 transition-transform duration-[var(--dur-base)] ease-out-expo group-hover/btn:translate-x-1",
+            "relative h-[1.1em] w-[1.1em] shrink-0 transition-transform duration-[var(--dur-base)] ease-out-expo group-hover/btn:translate-x-0.5",
             icon === "loader" && "animate-spin group-hover/btn:translate-x-0",
           )}
         />

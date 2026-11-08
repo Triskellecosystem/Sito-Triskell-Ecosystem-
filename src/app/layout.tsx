@@ -44,7 +44,7 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: site.brand.name,
   url: site.brand.url,
-  logo: `${site.brand.url}/brand/triskell-mark.svg`,
+  logo: `${site.brand.url}/brand/triskell-medallion.png`,
   description: site.brand.description,
   email: site.brand.email,
   sameAs: site.footer.social.map((s) => s.href),

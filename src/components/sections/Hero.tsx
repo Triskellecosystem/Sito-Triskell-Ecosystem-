@@ -1,41 +1,16 @@
 import { site } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { CountUp } from "@/components/motion/CountUp";
-import { Magnetic } from "@/components/motion/Magnetic";
 import { MatrixBackground } from "@/components/motion/MatrixBackground";
 import { HeroVisual } from "./HeroVisual";
 
-/** Parola con reveal CSS (nessuna dipendenza da JS: LCP immediato). */
-function Word({ children, index, accent }: { children: string; index: number; accent?: boolean }) {
-  return (
-    <span
-      className={`inline-block animate-[line-up_0.9s_var(--ease-out-expo)_backwards] ${accent ? "text-gold" : ""}`}
-      style={{ animationDelay: `${0.05 + index * 0.07}s` }}
-    >
-      {children}
-    </span>
-  );
-}
-
 /**
- * Layout: testo asimmetrico a sinistra (7/12), medaglione con tile in parallax a destra (5/12),
+ * Layout: testo asimmetrico a sinistra (7/12), logo reale su sfondo HUD a destra (5/12),
  * numeri chiave in riga con filetti. Non è la hero centrata + 3 card: la gerarchia è tutta in verticale
  * a sinistra e il simbolo "sfora" verso il bordo destro.
  */
 export function Hero() {
   const { hero } = site;
-  const lines = [
-    ...hero.titleLines.map((text) => ({ text, accent: false })),
-    { text: hero.titleAccent, accent: true },
-  ];
-  let offset = 0;
-  const titleLines = lines.map((line) => {
-    const words = line.text.split(" ");
-    const start = offset;
-    offset += words.length;
-    return { ...line, words, start };
-  });
-
   return (
     <section
       id="top"
@@ -53,33 +28,26 @@ export function Hero() {
             {hero.overline}
           </p>
 
-          <h1 id="hero-title" className="text-hero text-fg">
-            {titleLines.map((line) => (
-              <span key={line.text} className="block">
-                {line.words.map((word, i) => (
-                  <span key={`${line.text}-${word}`}>
-                    <Word index={line.start + i} accent={line.accent}>
-                      {word}
-                    </Word>{" "}
-                  </span>
-                ))}
+          {/* Un unico blocco di testo (niente parole in inline-block): è il candidato LCP e resta più grande del logo */}
+          <h1 id="hero-title" className="text-hero animate-[line-up_1s_var(--ease-out-expo)_backwards] text-fg">
+            {hero.titleLines.map((line) => (
+              <span key={line}>
+                {line}
+                <br />
               </span>
             ))}
+            <span className="text-gold">{hero.titleAccent}</span>
           </h1>
 
           <p className="mt-7 max-w-xl animate-[fade-in_0.8s_0.45s_var(--ease-soft)_both] text-lead text-fg-2">{hero.subtitle}</p>
 
           <div className="mt-9 flex animate-[fade-in_0.8s_0.55s_var(--ease-soft)_both] flex-wrap items-center gap-4">
-            <Magnetic>
-              <Button href={hero.primaryCta.href} size="lg" icon="arrow-right">
-                {hero.primaryCta.label}
-              </Button>
-            </Magnetic>
-            <Magnetic>
-              <Button href={hero.secondaryCta.href} variant="secondary" size="lg" icon="graduation" iconPosition="start">
-                {hero.secondaryCta.label}
-              </Button>
-            </Magnetic>
+            <Button href={hero.primaryCta.href} size="lg" icon="arrow-right">
+              {hero.primaryCta.label}
+            </Button>
+            <Button href={hero.secondaryCta.href} variant="secondary" size="lg" icon="graduation" iconPosition="start">
+              {hero.secondaryCta.label}
+            </Button>
           </div>
 
           <dl className="mt-12 grid max-w-xl animate-[fade-in_0.8s_0.65s_var(--ease-soft)_both] grid-cols-3 border-t border-line pt-6">

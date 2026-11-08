@@ -195,12 +195,6 @@
 
 html.menu-open { overflow: hidden; }
 
-/* Path drawing del triskell: si disegna, poi resta */
-.draw-path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: draw var(--draw-dur, 1.8s) var(--ease-out-expo) var(--draw-delay, 0s) forwards;
-}
 /* Marquee */
 .marquee { mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
 .marquee-track { animation: marquee 48s linear infinite; will-change: transform; }
@@ -220,65 +214,13 @@ html.menu-open { overflow: hidden; }
 }
 
 /* ==========================================================================
-   Micro-visual dei servizi (solo transform/opacity). Attivati da [data-inview].
-   ========================================================================== */
-.sv-bar {
-  transform-origin: bottom;
-  transform: scaleY(0.04);
-  transition: transform 0.9s var(--ease-out-expo);
-  transition-delay: calc(var(--i, 0) * 70ms);
-}
-[data-inview] .sv-bar { transform: scaleY(1); }
-
-.sv-pop {
-  opacity: 0;
-  transform: scale(0.8) translate3d(0, 8px, 0);
-  transition: opacity 0.6s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
-  transition-delay: calc(var(--i, 0) * 90ms);
-}
-[data-inview] .sv-pop { opacity: 1; transform: none; }
-
-.sv-grow {
-  transform-origin: left center;
-  transform: scaleX(0);
-  transition: transform 1s var(--ease-out-expo);
-  transition-delay: calc(var(--i, 0) * 120ms);
-}
-[data-inview] .sv-grow { transform: scaleX(1); }
-
-@keyframes sv-scan { from { transform: translate3d(0, -110%, 0); } to { transform: translate3d(0, 110%, 0); } }
-.sv-scan { animation: sv-scan 3.6s linear infinite; }
-
-@keyframes sv-progress { from { transform: scaleX(0.05); } to { transform: scaleX(1); } }
-.sv-progress { transform-origin: left center; animation: sv-progress 5s linear infinite; }
-
-@keyframes sv-wave { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
-.sv-wave { transform-origin: center; animation: sv-wave 1.4s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -0.17s); }
-
-@keyframes sv-travel { from { transform: translate3d(-100%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
-.sv-travel { animation: sv-travel 2.4s var(--ease-in-out-quart) infinite; animation-delay: calc(var(--i, 0) * 1.2s); }
-.sv-travel::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 50%;
-  width: 7px;
-  height: 7px;
-  margin-top: -3.5px;
-  border-radius: 999px;
-  background: var(--color-gold-200);
-  box-shadow: 0 0 10px 2px rgb(253 218 90 / 0.7);
-}
-
-/* ==========================================================================
    Il simbolo: ciclo coordinato bracci ↔ pilastri (CSS puro)
    ========================================================================== */
 @keyframes sym-arm { 0%, 4% { opacity: 0; } 12%, 30% { opacity: 1; } 38%, 100% { opacity: 0; } }
 @keyframes sym-pillar { 0%, 4% { opacity: 0.78; transform: translate3d(0, 0, 0); } 12%, 30% { opacity: 1; transform: translate3d(10px, 0, 0); } 38%, 100% { opacity: 0.78; transform: translate3d(0, 0, 0); } }
 @keyframes sym-bar { 0%, 4% { transform: scaleX(0); } 14%, 30% { transform: scaleX(1); } 38%, 100% { transform: scaleX(0); } }
-.sym-arm-hi, .sym-arm-glow { opacity: 0; }
-.sym:not([data-active]) .sym-arm-hi,
-.sym:not([data-active]) .sym-arm-glow { animation: sym-arm 9s var(--ease-soft) infinite; animation-delay: calc(var(--i) * 3s); }
+.sym-sector { opacity: 0; }
+.sym:not([data-active]) .sym-sector { animation: sym-arm 9s var(--ease-soft) infinite; animation-delay: calc(var(--i) * 3s); }
 .sym-pillar { opacity: 0.78; transition: opacity var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-out-expo); }
 .sym:not([data-active]) .sym-pillar { animation: sym-pillar 9s var(--ease-soft) infinite; animation-delay: calc(var(--i) * 3s); }
 .sym-pillar-bar { transform-origin: left center; transform: scaleX(0); }
@@ -287,8 +229,7 @@ html.menu-open { overflow: hidden; }
 .sym[data-active="0"] .sym-pillar[data-i="0"], .sym[data-active="1"] .sym-pillar[data-i="1"], .sym[data-active="2"] .sym-pillar[data-i="2"] { transform: translate3d(10px, 0, 0); }
 .sym[data-active="0"] .sym-pillar-bar[data-i="0"], .sym[data-active="1"] .sym-pillar-bar[data-i="1"], .sym[data-active="2"] .sym-pillar-bar[data-i="2"] { transform: scaleX(1); transition: transform var(--dur-slow) var(--ease-out-expo); }
 @media (prefers-reduced-motion: reduce) {
-  .sym-arm-hi, .sym-pillar { opacity: 1 !important; }
-  .sym-arm-glow { opacity: 0.3 !important; }
+  .sym-sector, .sym-pillar { opacity: 1 !important; }
   .sym-pillar-bar { transform: scaleX(1) !important; }
 }
 
@@ -363,10 +304,9 @@ html.menu-open { overflow: hidden; }
   html { scroll-behavior: smooth; }
 }
 
-/* Path drawing attivato da un antenato [data-revealed] (vedi RevealRoot) */
-.draw-on-reveal {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 1.8s var(--ease-out-expo) var(--draw-delay, 0s);
-}
-[data-revealed] .draw-on-reveal { stroke-dashoffset: 0; }
+
+/* Linee dello schema: si "disegnano" con transform quando l'antenato è rivelato */
+.grow-x { transform: scaleX(0); transform-origin: center; transition: transform 0.9s var(--ease-out-expo); }
+.grow-y { transform: scaleY(0); transform-origin: top; transition: transform 0.7s var(--ease-out-expo); }
+[data-revealed] .grow-x,
+[data-revealed] .grow-y { transform: none; }

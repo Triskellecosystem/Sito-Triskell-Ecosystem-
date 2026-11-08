@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { site, type Tutorial } from "@/content/site";
 import { cn } from "@/lib/cn";
-import { TriskellMark } from "@/components/brand/TriskellMark";
+import { LogoMark } from "@/components/brand/LogoMark";
 import { Icon } from "@/components/ui/Icon";
 
 interface FacadeProps {
@@ -47,7 +47,7 @@ export function YouTubeFacade({ tutorial, className, size = "lg" }: FacadeProps)
             <>
               <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,var(--color-cobalt-700),var(--color-night-glow)_55%,var(--color-surface))]" />
               <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-70" />
-              <TriskellMark flat strokeWidth={1.4} className="absolute -right-6 -bottom-8 h-3/4 w-auto opacity-25" />
+              <LogoMark sizes="240px" className="absolute -bottom-10 -right-8 h-[85%] w-auto opacity-30" />
             </>
           )}
           <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-night/90 via-night/20 to-transparent" />

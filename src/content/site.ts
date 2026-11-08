@@ -30,15 +30,14 @@ export interface NavLink {
   href: string;
 }
 
-export type ServiceVisual = "bars" | "posts" | "browser" | "video" | "flow" | "funnel";
-
 export interface Service {
   id: string;
   icon: IconName;
   title: string;
-  visual: ServiceVisual;
+  /** Una riga, max 12 parole: cosa fa il servizio. */
+  text: string;
   metric: Metric;
-  /** Tile più grande nella bento grid */
+  /** Tile doppia nella bento grid */
   featured?: boolean;
 }
 
@@ -46,6 +45,8 @@ export interface ProcessStep {
   title: string;
   text: string;
   icon: IconName;
+  /** 3 punti brevi: cosa succede in questo step. */
+  points: string[];
 }
 
 export interface ResultCard {
@@ -120,10 +121,10 @@ export const site = {
   },
 
   hero: {
-    overline: "Marketing · Intelligenza artificiale · Automazioni",
-    titleLines: ["Più clienti.", "Più fatturato."],
-    titleAccent: "Crescita reale.",
-    subtitle: "Strategia, AI e automazioni per far crescere la tua azienda.",
+    overline: "Agency · Academy",
+    titleLines: ["Marketing, AI", "e automazioni."],
+    titleAccent: "Un solo ecosistema.",
+    subtitle: "Lo facciamo noi per te, oppure ti insegniamo a farlo.",
     primaryCta: { label: "Scopri Agency", href: "#agency" },
     secondaryCta: { label: "Scopri Academy", href: "#academy" },
     keyNumbers: [
@@ -144,29 +145,35 @@ export const site = {
     ] satisfies Metric[],
   },
 
-  fork: {
-    id: "agency",
-    overline: "Da dove partire",
-    title: "Scegli come [lavorare insieme]",
-    line: "Due percorsi, un solo obiettivo: la tua crescita.",
+  ecosystem: {
+    id: "ecosistema",
+    overline: "L'ecosistema",
+    title: "Cos'è [Triskell Ecosystem]?",
+    line: "Marketing, AI, automazioni e formazione, uniti in un unico ecosistema.",
+    sectorsLabel: "I nostri settori",
+    sectors: ["Marketing", "Intelligenza artificiale", "Automazioni", "Formazione"],
+    nodeLabel: "Triskell Ecosystem",
+    nodeHint: "Due rami principali",
+    or: "oppure",
     agency: {
       badge: "Il nostro cuore",
+      question: "Vuoi delegare tutto a noi?",
       name: "Agency",
-      headline: "Deleghi tutto a noi",
       line: "Strategia, ads, contenuti e automazioni: ci pensiamo noi.",
       points: ["Meta Ads e funnel", "Siti e video AI", "Automazioni su misura"],
-      cta: { label: "Scopri Agency", href: "#servizi" },
+      cta: { label: "Scopri Agency", href: "#agency" },
     },
     academy: {
+      question: "Vuoi imparare in prima persona o far imparare i tuoi dipendenti?",
       name: "Academy",
-      headline: "Ti insegniamo le competenze",
-      line: "Percorsi pratici su AI e marketing, per te e il tuo team.",
+      line: "Percorsi pratici su AI e marketing, per te e per il tuo team.",
+      points: ["Per te, in prima persona", "Per i tuoi dipendenti", "Esempi da applicare subito"],
       cta: { label: "Scopri Academy", href: "#academy" },
     },
   },
 
   services: {
-    id: "servizi",
+    id: "agency",
     overline: "Servizi Agency",
     title: "Cosa facciamo [per te]",
     line: "Sei servizi, un unico ecosistema.",
@@ -175,7 +182,7 @@ export const site = {
         id: "meta-ads",
         icon: "target",
         title: "Meta Ads",
-        visual: "bars",
+        text: "Campagne su Facebook e Instagram che portano clienti veri.",
         featured: true,
         metric: { value: 35, prefix: "−", suffix: "%", label: "Costo per lead", todo: true }, // TODO: dato reale
       },
@@ -183,36 +190,36 @@ export const site = {
         id: "social",
         icon: "share",
         title: "Contenuti social",
-        visual: "posts",
+        text: "Post, reel e storie curati, pubblicati con costanza.",
         metric: { value: 120, prefix: "+", suffix: "%", label: "Reach organica", todo: true }, // TODO: dato reale
       },
       {
         id: "siti",
         icon: "globe",
         title: "Siti web",
-        visual: "browser",
+        text: "Siti veloci e chiari, pensati per farti contattare.",
         metric: { value: 95, suffix: "+", label: "Punteggio performance", todo: true }, // TODO: dato reale (target Lighthouse)
       },
       {
         id: "video-ai",
         icon: "clapperboard",
         title: "Video AI",
-        visual: "video",
-        featured: true,
+        text: "Video professionali creati con l'intelligenza artificiale.",
         metric: { value: 10, suffix: "×", label: "Produzione più rapida", todo: true }, // TODO: dato reale
       },
       {
         id: "automazioni",
         icon: "workflow",
         title: "Automazioni",
-        visual: "flow",
-        metric: { value: 20, prefix: "−", suffix: "h", label: "Lavoro manuale a settimana", todo: true }, // TODO: dato reale
+        text: "Risposte, contatti e report che si gestiscono da soli.",
+        metric: { value: 20, prefix: "−", suffix: "h/sett", label: "Lavoro manuale", todo: true }, // TODO: dato reale
       },
       {
         id: "strategia",
         icon: "compass",
         title: "Strategia",
-        visual: "funnel",
+        featured: true,
+        text: "Un piano chiaro: obiettivi, canali e priorità.",
         metric: { value: 90, suffix: "gg", label: "Dal piano ai primi dati", todo: true }, // TODO: dato reale
       },
     ] satisfies Service[],
@@ -228,10 +235,10 @@ export const site = {
     title: "Come [lavoriamo]",
     line: "Quattro passi, dalla prima call ai risultati.",
     steps: [
-      { title: "Analisi", text: "Capiamo obiettivi, risorse e opportunità.", icon: "search" },
-      { title: "Strategia", text: "Progettiamo il piano più adatto al tuo business.", icon: "compass" },
-      { title: "Produzione", text: "Creiamo contenuti, siti e automazioni.", icon: "clapperboard" },
-      { title: "Risultati", text: "Misuriamo, ottimizziamo e scaliamo.", icon: "trending" },
+      { title: "Analisi", text: "Capiamo obiettivi, risorse e opportunità.", icon: "search", points: ["Obiettivi e budget", "Situazione di partenza", "Concorrenti e mercato"] }, // TODO: conferma copy
+      { title: "Strategia", text: "Progettiamo il piano più adatto al tuo business.", icon: "compass", points: ["Canali e messaggi", "Piano e priorità", "Tempi e obiettivi"] },
+      { title: "Produzione", text: "Creiamo contenuti, siti e automazioni.", icon: "clapperboard", points: ["Contenuti e video AI", "Siti e campagne", "Automazioni attive"] },
+      { title: "Risultati", text: "Misuriamo, ottimizziamo e scaliamo.", icon: "trending", points: ["Report chiari", "Test e ottimizzazione", "Crescita costante"] },
     ] satisfies ProcessStep[],
   },
 

@@ -91,7 +91,7 @@ export function ResultsCarousel() {
     el.scrollBy({ left: dir * (first.offsetWidth + gap), behavior: "smooth" });
   };
 
-  const arrow = "grid h-12 w-12 place-items-center rounded-full border border-line-strong text-fg transition-[transform,border-color,color,opacity,box-shadow] duration-[var(--dur-base)] ease-out-expo enabled:hover:-translate-y-0.5 enabled:hover:border-gold-300 enabled:hover:text-gold-300 enabled:hover:shadow-glow-gold disabled:opacity-30";
+  const arrow = "grid h-12 w-12 place-items-center rounded-full border border-line-strong text-fg transition-[border-color,color,opacity,box-shadow] duration-[var(--dur-base)] ease-out-expo enabled:hover:border-gold-300 enabled:hover:text-gold-300 enabled:hover:shadow-glow-gold disabled:opacity-30";
 
   return (
     <div role="region" aria-roledescription="carousel" aria-label={results.title.replace(/[[\]]/g, "")}>

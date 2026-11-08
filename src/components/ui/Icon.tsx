@@ -1,4 +1,5 @@
 import {
+  ArrowDown,
   ArrowRight,
   ArrowUpRight,
   Bot,
@@ -32,6 +33,7 @@ import {
 } from "lucide-react";
 
 const icons = {
+  "arrow-down": ArrowDown,
   "arrow-right": ArrowRight,
   "arrow-up-right": ArrowUpRight,
   bot: Bot,

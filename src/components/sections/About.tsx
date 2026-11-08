@@ -1,5 +1,5 @@
 import { site } from "@/content/site";
-import { TriskellMark } from "@/components/brand/TriskellMark";
+import { LogoMark } from "@/components/brand/LogoMark";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
@@ -21,12 +21,12 @@ export function About() {
         {about.team.map((m, i) => (
           <RevealItem key={m.name} y={40} className={cn(i === 1 && "lg:mt-16")}>
             <Parallax distance={i === 1 ? 14 : 6}>
-              <Spotlight className="group/card h-full rounded-card border border-line bg-surface transition-[border-color,transform] duration-[var(--dur-base)] ease-out-expo hover:-translate-y-1 hover:border-gold-400/50">
+              <Spotlight className="group/card h-full rounded-card border border-line bg-surface transition-[border-color] duration-[var(--dur-base)] ease-out-expo hover:border-gold-400/50">
                 <article className="relative z-[2]">
                   {/* Foto segnaposto */}
                   <div className="relative aspect-[4/4.4] overflow-hidden bg-[linear-gradient(160deg,var(--color-cobalt-700),var(--color-night-glow)_60%,var(--color-surface))]">
                     <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-70" />
-                    <TriskellMark flat strokeWidth={0.9} className="absolute -right-10 -top-6 h-[85%] w-auto opacity-[0.18]" />
+                    <LogoMark sizes="320px" className="absolute -right-12 -top-8 h-[85%] w-auto opacity-[0.16]" />
                     <span
                       aria-hidden="true"
                       className="text-gold absolute inset-0 grid place-items-center font-display text-[clamp(7rem,5rem+9vw,11rem)] font-bold leading-none opacity-30 transition-transform duration-[var(--dur-slow)] ease-out-expo group-hover/card:scale-105"

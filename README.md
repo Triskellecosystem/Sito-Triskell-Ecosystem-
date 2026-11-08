@@ -24,7 +24,8 @@ npm run todos      # elenco dei segnaposto da sostituire (--strict per fallire s
 ## Come sono fatte le animazioni
 
 - **Reveal, titoli a maschera, count-up, micro-visual**: componenti *server* + CSS (solo `opacity`/`transform`/`filter`) attivati da **un solo** `IntersectionObserver` (`RevealRoot`). Zero idratazione per istanza.
-- **Hero**: CSS puro, senza opacità iniziale (serve per l'LCP, vedi sotto).
+- **Hero**: logo reale su sfondo HUD (anelli che ruotano via CSS transform), titolo in CSS puro senza opacità iniziale (serve per l'LCP, vedi sotto).
+- **Pulsanti**: restano sul loro asse (nessun effetto magnetico); feedback solo con luce in hover e al click.
 - **Come lavoriamo**: GSAP ScrollTrigger (pin + scrub), importato dinamicamente e solo da 768 px in su.
 - **Menu e dropdown**: Motion (`LazyMotion` + `m`, solo le feature necessarie).
 - **Smooth scroll** Lenis: non su touch né con `prefers-reduced-motion`.
@@ -34,15 +35,16 @@ npm run todos      # elenco dei segnaposto da sostituire (--strict per fallire s
 ### Regole che vale la pena non rompere (costate caro in debug)
 
 1. **Niente `opacity` animata da 0 su antenati/hero**: Chrome esclude l'elemento (e tutto ciò che contiene) dall'LCP finché dura l'animazione. Per questo `template.tsx` anima solo `transform`.
+3. **L'H1 della hero è un unico blocco di testo** (niente parole in `inline-block`): con il logo come immagine più grande sopra la piega, Lighthouse mobile simula un LCP molto più alto se il candidato è l'immagine. Un H1 unico resta il candidato LCP.
 2. **Niente `animation-fill-mode: both/forwards` con `transform` su antenati di elementi `position: fixed`**: un transform residuo li rende relativi al contenitore e rompe il pin GSAP. Usare `backwards`.
 
 ## Prestazioni (build di produzione, Lighthouse 12, emulazione mobile e desktop)
 
 | | Perf | A11y | Best Practices | SEO | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|---|
-| Mobile | 99 | 100 | 100 | 100 | 0,9 s | 0 | ~110 ms |
-| Desktop | 100 | 100 | 100 | 100 | 0,3 s | 0 | ~0 ms |
+| Mobile | 97–99 | 100 | 100 | 100 | 0,9 s | 0 | ~150–190 ms |
+| Desktop | 100 | 100 | 100 | 100 | 0,7 s | 0 | 0 ms |
 
 ## Da collegare / da fornire
 
-Vedi `npm run todos`. In sintesi: dati reali (metriche, clienti, KPI, bio), foto del team, ID YouTube dei tutorial, profili social, dominio, P.IVA e pagine legali, logo SVG ufficiale (oggi un redisegno vettoriale provvisorio in `public/brand/triskell-mark.svg` e `src/components/brand/triskell-path.ts`), e il collegamento di Supabase/Resend in `src/app/api/contact/route.ts` (variabili in `.env.example`).
+Vedi `npm run todos`. In sintesi: dati reali (metriche, clienti, KPI, bio), foto del team, ID YouTube dei tutorial, profili social, dominio, P.IVA e pagine legali, logo in alta risoluzione o SVG (oggi si usa il PNG 1024 ritagliato, vedi `brand-assets/` e `public/brand/`), e il collegamento di Supabase/Resend in `src/app/api/contact/route.ts` (variabili in `.env.example`).

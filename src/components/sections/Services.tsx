@@ -5,15 +5,13 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { ServiceTile } from "./ServiceTile";
 
 const spans: Record<string, string> = {
-  "meta-ads": "sm:col-span-2 lg:row-span-2",
-  "video-ai": "sm:col-span-2",
-  automazioni: "sm:col-span-1 lg:col-span-2",
-  strategia: "sm:col-span-1 lg:col-span-2",
+  "meta-ads": "sm:col-span-2",
+  strategia: "sm:col-span-2",
 };
 
 /**
- * Bento grid a 4 colonne con tile di dimensioni diverse: Meta Ads (2×2) e Video AI (2×1) sono in evidenza,
- * Social e Siti sono tile singole. Niente "3 card in fila": il ritmo viene dalle proporzioni.
+ * Bento grid a 4 colonne, senza spazi vuoti: riga 1 = Meta Ads (doppia) + Social + Siti,
+ * riga 2 = Video AI + Automazioni + Strategia (doppia). Il ritmo viene dalle proporzioni, non da disegni.
  */
 export function Services() {
   const { services } = site;
@@ -21,7 +19,7 @@ export function Services() {
     <Section id={services.id} labelledBy="services-title">
       <SectionHeading id="services-title" overline={services.overline} title={services.title} line={services.line} />
 
-      <RevealGroup className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[minmax(15.5rem,auto)]" stagger={0.08}>
+      <RevealGroup className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4" stagger={0.08}>
         {services.items.map((service) => (
           <RevealItem key={service.id} className={spans[service.id] ?? ""} y={32}>
             <ServiceTile service={service} />

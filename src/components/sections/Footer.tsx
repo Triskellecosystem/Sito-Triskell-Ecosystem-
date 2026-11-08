@@ -25,7 +25,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="grid h-11 w-11 place-items-center rounded-xl border border-line-strong text-fg-2 transition-[transform,color,border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:-translate-y-0.5 hover:border-gold-300/70 hover:text-gold-300 hover:shadow-glow-gold"
+                  className="grid h-11 w-11 place-items-center rounded-xl border border-line-strong text-fg-2 transition-[color,border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-gold-300/70 hover:text-gold-300 hover:shadow-glow-gold"
                 >
                   <SocialIcon id={s.id} className="h-5 w-5" />
                 </a>

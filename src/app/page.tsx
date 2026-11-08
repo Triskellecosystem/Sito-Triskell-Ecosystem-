@@ -1,6 +1,6 @@
 import { Hero } from "@/components/sections/Hero";
 import { Metrics } from "@/components/sections/Metrics";
-import { Fork } from "@/components/sections/Fork";
+import { Ecosystem } from "@/components/sections/Ecosystem";
 import { Services } from "@/components/sections/Services";
 import { Process } from "@/components/sections/Process";
 import { Results } from "@/components/sections/Results";
@@ -14,8 +14,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <Ecosystem />
       <Metrics />
-      <Fork />
       <Services />
       <Process />
       <Results />

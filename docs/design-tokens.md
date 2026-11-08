@@ -1,6 +1,8 @@
 # Design tokens — Triskell Ecosystem
 
-Fonte unica: la grafica di riferimento (1024×1536 px, allegata in chat). Il logo SVG ufficiale **non era disponibile**: il simbolo usato oggi è un redisegno vettoriale provvisorio (vedi `public/brand/triskell-mark.svg`), da sostituire con l'SVG ufficiale.
+Fonte unica: la grafica di riferimento (`brand-assets/riferimento-home.png`, 1024×1536 px).
+
+**Logo:** si usa il logo reale (`brand-assets/triskell-logo-completo.png`, 1024×1024, raster). Il medaglione è ritagliato su fondo trasparente in `public/brand/triskell-medallion.png` (640×640; favicon e apple-icon derivati). I colori del logo (anello e spirali ramato-oro, fondo blu a trama) sono più scuri dell'oro della grafica: il gradiente oro del sito resta quello misurato sulla grafica. **Con un SVG o un PNG ad alta risoluzione il logo sarebbe più nitido sugli schermi retina.**
 Tutti i valori sono **misurati** con gli script in `scripts/design/` (dati grezzi in `docs/palette-raw.json` e `docs/regions-raw.txt`).
 
 ## 1. Lettura della grafica (10 righe)
@@ -151,6 +153,6 @@ Regola nel codice: l'oro per testo piccolo è sempre ≥ gold-400; i cobalt non 
 | Alone/anello azure attorno al simbolo | radial-gradient + SVG blur, opacity pulse |
 | Bordo oro "beam" | conic-gradient dentro un anello ritagliato con mask; a ruotare è il layer (transform), non l'angolo del gradiente |
 | Glow su hover | box-shadow multiplo + opacity |
-| Tile glass | backdrop-filter leggero + bordo 1px azure a 25% |
+| Sfondo tecnico dietro il logo | anelli concentrici con tacche, archi e nodi che ruotano lentamente (livelli SVG separati, rotazione via CSS transform), raggi e tracce di circuito agli angoli |
 | Griglia sottile | background-image linear-gradient 1px a 4% (fixed, no repaint) |
 | "Matrix" discreta | canvas leggero, DPR ≤ 1.5, in pausa fuori viewport |
