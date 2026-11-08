@@ -376,18 +376,24 @@ html.menu-open { overflow: hidden; }
 @keyframes sym3d-sway { 0%, 100% { transform: rotateZ(-3deg); } 50% { transform: rotateZ(3deg); } }
 .sym3d-layer {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  transform: translateZ(calc(var(--z, 0) * var(--e) * 1px));
+  transform: translateZ(calc(var(--z, 0) * var(--e) * 1px + var(--zb, 0) * 1px));
   filter: var(--base-f, none);
   transition: filter 0.5s var(--ease-soft);
   will-change: transform;
 }
-/* il livello del pilastro attivo si accende e si solleva leggermente */
-.sym[data-active="0"] .sym3d-layer[data-i="0"],
-.sym[data-active="1"] .sym3d-layer[data-i="1"],
-.sym[data-active="2"] .sym3d-layer[data-i="2"] { filter: brightness(1.5) saturate(1.3) drop-shadow(0 0 22px rgb(247 200 92 / 0.9)); }
-.sym[data-active="0"] .sym3d-label[data-i="0"] .sym3d-label-title,
-.sym[data-active="1"] .sym3d-label[data-i="1"] .sym3d-label-title,
-.sym[data-active="2"] .sym3d-label[data-i="2"] .sym3d-label-title { color: var(--color-gold-200); }
+/* le spirali sono sempre illuminate (respiro d'oro); disco e cerchio si accendono quando arriva il loro turno */
+@keyframes sym-glow { 0%, 100% { filter: brightness(1.12) drop-shadow(0 0 8px rgb(247 200 92 / 0.35)); } 50% { filter: brightness(1.5) drop-shadow(0 0 22px rgb(255 205 80 / 0.85)); } }
+.sym3d-layer[data-i="0"]:not(.sym3d-spiral) { animation: sym-glow 3.2s ease-in-out infinite; }
+.sym[data-stage="1"] .sym3d-layer[data-i="1"],
+.sym[data-stage="2"] .sym3d-layer[data-i="2"] { filter: brightness(1.5) saturate(1.3) drop-shadow(0 0 22px rgb(247 200 92 / 0.9)); }
+/* ogni spirale (Mente, Corpo, Anima) si illumina da sola, a turno */
+.sym3d-spiral { opacity: 0; transition: opacity 0.5s var(--ease-soft); filter: brightness(2.1) saturate(1.4) drop-shadow(0 0 20px rgb(255 215 100 / 1)); pointer-events: none; }
+.sym[data-active="0"] .sym3d-spiral[data-i="0"],
+.sym[data-active="1"] .sym3d-spiral[data-i="1"],
+.sym[data-active="2"] .sym3d-spiral[data-i="2"] { opacity: 1; }
+.sym[data-stage="0"] .sym3d-label[data-i="0"] .sym3d-label-title,
+.sym[data-stage="1"] .sym3d-label[data-i="1"] .sym3d-label-title,
+.sym[data-stage="2"] .sym3d-label[data-i="2"] .sym3d-label-title { color: var(--color-gold-200); }
 .sym3d-label { opacity: min(1, max(0, calc((var(--e) - 0.3) * 2.4))); transition: opacity 0.3s linear; }
 @media (min-width: 640px) {
   .sym3d-label { position: absolute; right: 0; top: var(--ly); translate: 0 -50%; transform: translate3d(calc((1 - min(1, var(--e) * 1.4)) * 24px), 0, 0); }
@@ -397,7 +403,7 @@ html.menu-open { overflow: hidden; }
 .sym-track { height: 300vh; }
 .sym-sticky { position: sticky; top: calc(var(--header-h) + 0.5rem); min-height: calc(100svh - var(--header-h) - 1rem); display: flex; align-items: center; }
 @media (prefers-reduced-motion: reduce) {
-  .sym3d-sway { animation: none; }
+  .sym3d-sway, .sym3d-layer[data-i="0"]:not(.sym3d-spiral) { animation: none; }
   .sym-track { height: auto; }
   .sym-sticky { position: static; min-height: 0; }
   .sym-item { opacity: 1; transform: none; }
@@ -420,6 +426,10 @@ html.menu-open { overflow: hidden; }
 @keyframes btn-ping { 0% { transform: scale(1); opacity: 0.85; } 70%, 100% { transform: scale(1.22, 1.5); opacity: 0; } }
 @keyframes btn-halo { 0%, 100% { opacity: 0.35; transform: scale(0.96); } 50% { opacity: 0.95; transform: scale(1.08); } }
 .btn-ping { animation: btn-ping 1.9s var(--ease-out-expo) infinite; }
+@keyframes btn-blink { 0%, 100% { filter: brightness(1); box-shadow: var(--shadow-glow-gold); } 50% { filter: brightness(1.16); box-shadow: 0 0 0 1px rgb(255 247 190 / 0.6), 0 0 38px 4px rgb(255 195 60 / 0.65); } }
+.btn-blink { animation: btn-blink 1.5s ease-in-out infinite; }
+.btn-blink:hover { animation: none; filter: brightness(1.1); box-shadow: 0 0 0 1px rgb(255 247 190 / 0.7), 0 0 44px 2px rgb(255 185 27 / 0.6); }
+@media (prefers-reduced-motion: reduce) { .btn-blink { animation: none; } }
 .btn-halo { animation: btn-halo 1.9s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .btn-ping { animation: none; opacity: 0; } .btn-halo { animation: none; opacity: 0.6; } }
 
@@ -562,9 +572,9 @@ html.menu-open { overflow: hidden; }
 .impact-bar { transform: scaleY(0); }
 [data-revealed] .impact-bar { transform: scaleY(1); transition: transform 0.9s var(--ease-out-expo) calc(1.2s + var(--i, 0) * 0.1s); }
 .impact-meter { transform: scaleX(0); }
-[data-revealed] .impact-meter { transform: scaleX(1); transition: transform 1.3s var(--ease-out-expo) calc(0.9s + var(--i, 0) * 0.28s); }
+[data-revealed] .impact-meter { transform: scaleX(1); transition: transform 0.9s var(--ease-out-expo) calc(0.9s + var(--i, 0) * 0.5s); }
 .impact-badge { opacity: 0; }
-[data-revealed] .impact-badge { opacity: 1; transition: opacity 0.4s var(--ease-soft) calc(1.9s + var(--i, 0) * 0.28s); }
+[data-revealed] .impact-badge { opacity: 1; transition: opacity 0.4s var(--ease-soft) 3.2s; }
 @keyframes impact-dot { 0%, 100% { box-shadow: 0 0 0 0 rgb(247 200 92 / 0); } 50% { box-shadow: 0 0 22px 2px rgb(247 200 92 / 0.45); } }
 [data-revealed] .impact-dot { animation: impact-dot 3.6s ease-in-out infinite; animation-delay: calc(1s + var(--i, 0) * 0.35s); }
 @media (prefers-reduced-motion: reduce) {
@@ -575,10 +585,12 @@ html.menu-open { overflow: hidden; }
 
 /* Mock social: i messaggi entrano in fretta, i contatori "scattano" a ogni incremento */
 @keyframes chat-in { from { opacity: 0; transform: translate3d(0, 24px, 0) scale(0.92); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
+@keyframes chat-out { from { opacity: 0; transform: translate3d(-5.5rem, -0.5rem, 0) scale(0.6); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
+.chat-out { animation: chat-out 0.6s var(--ease-out-expo) backwards; }
 .chat-in { animation: chat-in 0.45s var(--ease-out-expo) backwards; }
 @keyframes grow-pill { 0% { transform: scale(1.18); } 100% { transform: scale(1); } }
 .grow-pill { animation: grow-pill 0.4s var(--ease-out-expo); display: inline-flex; }
-@media (prefers-reduced-motion: reduce) { .chat-in, .grow-pill { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .chat-in, .chat-out, .grow-pill { animation: none; } }
 
 /* ==========================================================================
    Portatile 3D con sito che scorre (Siti web). Dimensioni in unità del contenitore (cqw)
@@ -677,19 +689,12 @@ html.menu-open { overflow: hidden; }
   .lp-click, .lp-cursor, .lp-open { display: none; }
 }
 
-/* Onde che si espandono dal pulsante "Prenota ora" */
-@keyframes sonar { 0% { transform: translate(-50%, -50%) scale(1, 0.9); opacity: 0.55; } 100% { transform: translate(-50%, -50%) scale(7, 3.4); opacity: 0; } }
-.sonar { border-radius: 9999px; border: 2px solid rgb(247 200 92 / 0.7); animation: sonar 2.7s var(--ease-out-expo) infinite; pointer-events: none; }
-@media (prefers-reduced-motion: reduce) { .sonar { animation: none; opacity: 0; } }
 
 /* Sfondo tech "ricco": celle che si accendono e punti luce che brillano (solo opacity) */
-@keyframes tech-lit { 0%, 100% { opacity: 0; } 40%, 60% { opacity: 1; } }
-.tech-lit { border: 1px solid rgb(58 164 212 / 0.55); background: rgb(11 129 177 / 0.12); box-shadow: 0 0 22px rgb(42 144 195 / 0.35); opacity: 0; animation: tech-lit 7s ease-in-out infinite; }
-.tech-lit--gold { border-color: rgb(247 200 92 / 0.6); background: rgb(247 200 92 / 0.1); box-shadow: 0 0 22px rgb(247 200 92 / 0.3); }
 @keyframes tech-dot { 0%, 100% { opacity: 0.15; } 50% { opacity: 1; } }
 .tech-dot { box-shadow: 0 0 10px 2px currentColor; opacity: 0.15; animation: tech-dot 4.5s ease-in-out infinite; }
-@media (prefers-reduced-motion: reduce) { .tech-lit { animation: none; opacity: 0.5; } .tech-dot { animation: none; opacity: 0.6; } }
-@media (max-width: 767px) { .tech-lit:nth-child(n + 7) { display: none; } .tech-dot:nth-child(n + 16) { display: none; } }
+@media (prefers-reduced-motion: reduce) { .tech-dot { animation: none; opacity: 0.6; } }
+@media (max-width: 767px) { .tech-dot:nth-child(n + 12) { display: none; } }
 
 /* Contatore follower: ogni incremento "scatta" e passa da azzurro a oro */
 @keyframes follower-flash { 0% { color: var(--color-azure-300); transform: scale(1.06); text-shadow: 0 0 18px rgb(58 164 212 / 0.9); } 55% { color: var(--color-gold-200); } 100% { color: var(--color-gold-300); transform: scale(1); text-shadow: 0 0 14px rgb(247 200 92 / 0.45); } }
@@ -718,3 +723,7 @@ html.menu-open { overflow: hidden; }
 .book-bottom { transform: rotateX(-90deg) translateZ(calc(var(--bh) / 2 - 0.1rem)); }
 .book-shadow { position: absolute; left: 50%; bottom: -2.2rem; width: 70%; height: 1.6rem; translate: -50% 0; border-radius: 50%; background: radial-gradient(ellipse, rgb(0 0 0 / 0.55), transparent 70%); filter: blur(4px); pointer-events: none; }
 @media (max-width: 480px) { .book-stage { --bw: 12.5rem; --bh: 18.75rem; --bd: 2rem; } }
+
+/* Elementi legati allo scroll (--p da 0 a 1 impostato da <ScrollSlide />; senza JS restano al loro posto) */
+.slide-x { --p: 1; transform: translate3d(calc((1 - var(--p)) * var(--dir, 1) * 85vw), 0, 0) rotate(calc((1 - var(--p)) * var(--dir, 1) * 4deg)); opacity: calc(0.15 + var(--p) * 0.85); will-change: transform; }
+.slide-pop { --p: 1; transform: scale(calc(0.4 + var(--p) * 0.6)); opacity: var(--p); will-change: transform; }

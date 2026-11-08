@@ -104,14 +104,6 @@ export interface SiteItem {
   demo?: true;
 }
 
-export interface Tutorial {
-  title: string;
-  tag: string;
-  duration: string;
-  /** ID video YouTube. null = segnaposto "In arrivo" */
-  youtubeId: string | null;
-}
-
 export interface Pillar {
   from: string;
   to: string;
@@ -189,8 +181,8 @@ export const site = {
   hero: {
     overline: "Migliora il tuo business con Triskell Ecosystem",
     titleLines: ["Più clienti.", "Più guadagni."],
-    titleAccent: "Più automatizzi, più scali.",
-    subtitle: "Marketing, AI e automazioni per far crescere il tuo business: lo facciamo noi, o ti insegniamo come.",
+    titleAccent: "Più automatizzi, più fai crescere il tuo business.",
+    subtitle: "Marketing, AI e automazioni su misura: lo facciamo noi, o ti insegniamo come.",
     primaryCta: { label: "Scopri Agency", href: "/agency" },
     secondaryCta: { label: "Scopri Academy", href: "/academy" },
     keyNumbers: [
@@ -242,7 +234,7 @@ export const site = {
       question: "Vuoi imparare in prima persona o far imparare i tuoi dipendenti?",
       name: "Academy",
       line: "Diventi autonomo su vendite, marketing e AI.",
-      points: ["Percorsi pratici su marketing e AI", "Per te, in prima persona", "Per i tuoi dipendenti"],
+      points: ["93 lezioni pratiche, 7 corsi gratuiti", "Per te, in prima persona", "Per i tuoi dipendenti"],
       cta: { label: "Scopri Academy", href: "/academy" },
     },
   },
@@ -284,7 +276,7 @@ export const site = {
         { icon: "sparkles", title: "Diventi indipendente", text: "Gestisci il tuo business in autonomia." },
       ], // TODO: conferma copy
       impact: {
-        meters: ["Vendite", "Marketing", "Intelligenza artificiale", "Automazioni"],
+        meters: ["Vendite", "Marketing", "Intelligenza artificiale", "Automazioni", "Autonomo"],
         points: [
           { icon: "badge", title: "Autonomia", text: "Gestisci marketing, vendite e AI senza dipendere da nessuno." },
           { icon: "users", title: "Il tuo team al passo", text: "Formi i dipendenti con percorsi pratici, subito applicabili." },
@@ -303,10 +295,9 @@ export const site = {
     perks: [
       { icon: "calendar", label: "Consulenza gratuita" },
       { icon: "clock", label: "30 minuti" },
-      { icon: "zap", label: "Piano su misura" },
       { icon: "check", label: "Nessun impegno" },
     ] satisfies Array<{ icon: IconName; label: string }>,
-    home: { title: "Sei curioso? Parliamone insieme.", lines: ["Sei curioso?", "Parliamone insieme."], text: "Scegli un giorno: ti diciamo come far crescere il tuo business." } satisfies CtaContent,
+    home: { title: "Sei curioso? Parliamone insieme.", lines: ["Sei curioso?", "Parliamone insieme."], text: "Prenota la tua call gratuita: ti diciamo come far crescere il tuo business." } satisfies CtaContent,
     results: { title: "Vuoi risultati come questi?", lines: ["Vuoi risultati", "come questi?"], text: "Prenota ora la tua call gratuita." } satisfies CtaContent,
     agency: { title: "Vuoi delegarci il marketing?", lines: ["Vuoi delegarci", "il marketing?"], text: "Una call gratuita: capiamo la tua situazione e ti diciamo cosa possiamo fare." } satisfies CtaContent,
     sites: { title: "Vuoi delegarci il tuo sito?", lines: ["Vuoi delegarci", "il tuo sito?"], text: "Una call gratuita: ti diciamo come lo faremmo, e quanto tempo serve." } satisfies CtaContent,
@@ -400,8 +391,32 @@ export const site = {
     line: "Impari a vendere, fare marketing e usare l'AI da solo.",
     pathTitle: "Il tuo percorso, [step dopo step]",
     pathLine: "Per te in prima persona, o per i tuoi dipendenti.",
-    videosTitle: "Guarda i [tutorial]",
-    videosLine: "Video pratici su marketing, AI e automazioni.",
+    /** I corsi veri della piattaforma Triskell Academy (https://triskellacademy.com): testi e copertine dal sito. */
+    courses: {
+      overline: "Triskell Academy",
+      title: "Corsi [gratuiti] e lezioni pronte",
+      line: "Video-corsi pratici, subito applicabili. Registrati e inizi oggi, senza carta.",
+      stats: [
+        { value: 9, label: "Corsi pubblicati" },
+        { value: 93, label: "Lezioni disponibili" },
+        { value: 7, label: "Corsi gratuiti" },
+      ] satisfies Metric[],
+      free: "Gratuito",
+      open: "Inizia il corso",
+      items: [
+        { id: "advertising-ai", title: "Advertising Online nell'era dell'AI", text: "Come l'AI sta cambiando l'advertising: nuove opportunità, strumenti concreti e un metodo per restare un passo avanti." },
+        { id: "ai-toolkit", title: "AI Toolkit per la Produttività", text: "Gli strumenti di intelligenza artificiale che fanno la differenza nel lavoro di ogni giorno, con tutorial pronti da applicare." },
+        { id: "vibe-coding", title: "Vibe Coding e AI per Siti & App", text: "Dalle idee a siti e app reali con l'AI come copilota, anche senza saper programmare." },
+        { id: "claude-da-zero-a-pro", title: "Claude da Zero a Pro", text: "Il percorso completo su Claude: impostarlo da zero, il metodo per smettere di cercare il prompt perfetto, Cowork per il lavoro quotidiano." },
+        { id: "immagini-video-ai", title: "Immagini & Video con l'AI", text: "Crea immagini, grafiche e video con l'AI senza essere un tecnico: prompt pronti e un metodo replicabile." },
+        { id: "chatgpt-e-codex", title: "ChatGPT e Codex al lavoro", text: "Cosa è diventato ChatGPT oltre la chat: le app integrate e Codex, l'agente che lavora sul tuo computer." },
+        { id: "ai-news", title: "AI News della Settimana", text: "Le novità dell'intelligenza artificiale: cosa è uscito, perché conta e cosa cambia nella pratica." },
+      ].map((c) => ({ ...c, cover: `/academy/${c.id}.webp`, href: "https://triskellacademy.com/" })),
+      perks: ["Quiz e certificato di completamento", "Community e sessioni live aperte", "Assistente AI che ti orienta", "Nessuna carta, nessun rinnovo automatico"],
+      cta: { label: "Entra nell'Academy", href: "https://triskellacademy.com/" },
+      quote: "L'AI ti permette di donare al mondo ogni idea che prima avresti messo nel cassetto.",
+      quoteBy: "Tomaso Forno, Founder",
+    },
     /** Anteprima di una lezione: dati INVENTATI a scopo dimostrativo. */
     demo: {
       note: "Esempio dimostrativo",
@@ -485,27 +500,23 @@ export const site = {
     ] satisfies CaseStudy[],
   },
 
-  academy: {
-    soon: "In arrivo",
-    play: "Guarda il video",
-    tutorials: [
-      { title: "AI per il tuo business", tag: "Tutorial", duration: "—", youtubeId: null }, // TODO: dato reale (titolo e ID YouTube)
-      { title: "Video con l'intelligenza artificiale", tag: "Tutorial", duration: "—", youtubeId: null }, // TODO: dato reale
-      { title: "Automazioni senza codice", tag: "Percorso", duration: "—", youtubeId: null }, // TODO: dato reale
-    ] satisfies Tutorial[],
-  },
-
   symbol: {
     id: "simbolo",
     overline: "Il simbolo",
     title: "Tre spirali, [una sola energia]",
     line: "Mente, corpo e anima, riletti per il mondo digitale.",
     /** I tre livelli del medaglione, dall'alto in basso (come nel video di riferimento). */
+    /** Le tre spirali sono Mente, Corpo e Anima (si illuminano una alla volta); poi il circuito e il cerchio. */
+    spirals: [
+      { name: "Mente", text: "Strumenti, dati e AI al servizio del business." },
+      { name: "Corpo", text: "Persone, relazioni e creatività al centro." },
+      { name: "Anima", text: "Visione e innovazione per crescere nel tempo." },
+    ],
     layers: [
-      { name: "Mente", title: "Le tre spirali", text: "Strumenti, dati e AI al servizio del business." },
-      { name: "Corpo", title: "Il circuito", text: "Persone, relazioni e creatività al centro." },
-      { name: "Anima", title: "Il cerchio", text: "Visione e innovazione per crescere nel tempo." },
-    ], // TODO: conferma copy dei tre livelli
+      { name: "Le tre spirali", text: "Mente, corpo e anima." },
+      { name: "Il circuito", text: "La rete che unisce persone, dati e idee." },
+      { name: "Il cerchio", text: "Tutto torna: ogni giro migliora il precedente." },
+    ], // TODO: conferma copy (circuito e cerchio sono inventati)
     pillars: [
       { from: "Mente", to: "Digitale", text: "Strumenti, dati e AI al servizio del business.", icon: "cpu" },
       { from: "Corpo", to: "Umano", text: "Persone, relazioni e creatività al centro.", icon: "users" },

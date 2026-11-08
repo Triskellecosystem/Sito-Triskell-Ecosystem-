@@ -17,19 +17,21 @@ interface PageHeroProps {
   aside?: React.ReactNode;
   /** Classi del contenitore del visual (es. "max-lg:hidden" per nasconderlo su mobile). */
   asideClassName?: string;
+  /** Con un visual alto (es. il telefono) il titolo resta in alto invece di scendere al centro. */
+  alignTop?: boolean;
 }
 
 /**
  * Intestazione delle pagine interne: breadcrumb, overline, titolo (parti in [oro]) e una riga.
  * Il titolo usa solo un'animazione a fuoco (blur + traslazione, mai opacità) per restare candidato LCP.
  */
-export function PageHero({ overline, title, line, crumbs = [], children, aside, asideClassName }: PageHeroProps) {
+export function PageHero({ overline, title, line, crumbs = [], children, aside, asideClassName, alignTop }: PageHeroProps) {
   return (
     <section className="relative isolate overflow-hidden pb-[clamp(2.5rem,5vw,4.5rem)] pt-[calc(var(--header-h)+clamp(2rem,5vh,4rem))]">
       <div aria-hidden="true" className="bg-grid absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,#000,transparent_90%)]" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 bg-[image:var(--gradient-bg-hero)]" />
-      <div className={aside ? "container-x grid items-center gap-x-10 gap-y-14 lg:grid-cols-12" : "container-x"}>
-        <div className={aside ? "lg:col-span-7" : undefined}>
+      <div className={aside ? `container-x grid gap-x-10 gap-y-14 lg:grid-cols-12 ${alignTop ? "lg:items-start" : "items-center"}` : "container-x"}>
+        <div className={aside ? (alignTop ? "lg:col-span-7 lg:pt-6" : "lg:col-span-7") : undefined}>
         {crumbs.length > 0 && (
           <nav aria-label="Percorso" className="mb-6 animate-[fade-in_0.8s_var(--ease-soft)_both]">
             <ol className="flex flex-wrap items-center gap-2 text-small text-fg-3">

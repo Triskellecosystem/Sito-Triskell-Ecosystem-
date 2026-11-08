@@ -41,12 +41,15 @@ export function Hero() {
                 <br />
               </span>
             ))}
-            {hero.titleAccent.split(" ").map((word, i, all) => (
-              <span key={`accent-${i}`} className="hero-word hero-word--gold text-gold">
-                {word}
-                {i < all.length - 1 ? " " : ""}
-              </span>
-            ))}
+            {/* terza riga: più piccola e bilanciata, così nessuna parola resta sola sotto */}
+            <span className="mt-3 block max-w-[34ch] text-[0.56em] leading-[1.12] tracking-[-0.025em] [text-wrap:balance]">
+              {hero.titleAccent.split(" ").map((word, i, all) => (
+                <span key={`accent-${i}`} className="hero-word hero-word--gold text-gold">
+                  {word}
+                  {i < all.length - 1 ? " " : ""}
+                </span>
+              ))}
+            </span>
           </h1>
 
           <p className="mt-7 max-w-xl animate-[fade-in_0.8s_0.45s_var(--ease-soft)_both] text-lead text-fg-2">{hero.subtitle}</p>

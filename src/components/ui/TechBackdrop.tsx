@@ -6,7 +6,7 @@ interface TechBackdropProps {
   tone?: "azure" | "gold" | "mixed";
   /** Aggiunge l'effetto digitale al passaggio del mouse. */
   cursor?: boolean;
-  /** Sfondo più ricco: griglia di quadrati con alcune celle che si accendono e punti luce che brillano. */
+  /** Sfondo più ricco: griglia di quadrati uniformi e punti luce che brillano piano. */
   rich?: boolean;
   className?: string;
 }
@@ -25,10 +25,6 @@ const DOTS = Array.from({ length: 34 }, (_, i) => {
   return { x: q(r(1) * 100), y: q(r(2) * 100), d: q(r(3) * 6), s: 2 + Math.floor(r(4) * 3), gold: r(5) > 0.62 };
 });
 const CELL = 64;
-const LIT = [
-  [3, 2], [7, 4], [11, 1], [15, 5], [19, 3], [5, 7], [13, 8], [9, 6], [17, 9], [1, 5], [21, 6], [8, 1],
-].map(([c, r], i) => ({ c: c as number, r: r as number, d: i * 0.9, gold: i % 3 === 0 }));
-
 export function TechBackdrop({ tone = "mixed", cursor = false, rich = false, className }: TechBackdropProps) {
   return (
     <div aria-hidden="true" className={cn("pointer-events-none absolute inset-0 -z-10 overflow-hidden", className)}>
@@ -70,15 +66,6 @@ export function TechBackdrop({ tone = "mixed", cursor = false, rich = false, cla
               backgroundSize: `${CELL}px ${CELL}px`,
             }}
           />
-          <div className="absolute inset-0 overflow-hidden [mask-image:radial-gradient(90%_85%_at_50%_50%,#000_35%,transparent)]">
-            {LIT.map((l) => (
-              <span
-                key={`${l.c}-${l.r}`}
-                className={cn("tech-lit absolute", l.gold ? "tech-lit--gold" : "")}
-                style={{ left: l.c * CELL, top: l.r * CELL, width: CELL, height: CELL, animationDelay: `${l.d}s` }}
-              />
-            ))}
-          </div>
           {DOTS.map((d, i) => (
             <span
               key={i}

@@ -62,8 +62,27 @@ export function SocialMock() {
   ];
 
   return (
-    <figure ref={rootRef} className="relative mx-auto w-[19.5rem] sm:w-[21rem]" aria-label={`${d.note}: profilo Instagram di una palestra e campagna pubblicitaria con i contatti in arrivo`}>
+    <figure ref={rootRef} className="relative mx-auto w-[19.5rem] sm:w-[21rem] xl:mx-0" aria-label={`${d.note}: profilo Instagram di una palestra e campagna pubblicitaria con i contatti in arrivo`}>
       <div aria-hidden="true" className="absolute -inset-12 rounded-full bg-[radial-gradient(circle,rgb(42_144_195/0.4),transparent_65%)]" />
+
+      {/* selettore ben visibile: Instagram | Campagne (si può anche scorrere il telefono) */}
+      <div role="group" aria-label="Schermata" className="relative z-10 mx-auto mb-4 flex w-full items-center gap-1 rounded-full border border-line-strong bg-night/70 p-1 backdrop-blur">
+        {tabs.map((t, i) => (
+          <button
+            key={t.label}
+            type="button"
+            onClick={() => go(i)}
+            aria-pressed={screen === i}
+            className={cn(
+              "flex flex-1 items-center justify-center gap-2 rounded-full px-3 py-2.5 text-[0.875rem] font-semibold transition-[background-color,color,box-shadow] duration-[var(--dur-base)]",
+              screen === i ? "bg-[image:var(--gradient-gold-btn)] text-night shadow-glow-gold" : "text-fg-2 hover:text-fg",
+            )}
+          >
+            <Icon name={t.icon} className="h-4 w-4" />
+            {t.label}
+          </button>
+        ))}
+      </div>
 
       <div
         aria-hidden="true"
@@ -85,9 +104,12 @@ export function SocialMock() {
               {d.handle}
               <Icon name="badge" className="h-3.5 w-3.5 text-azure-300" />
             </p>
-            <span className="flex items-center gap-2.5">
+            <span className="flex items-center gap-3">
               <Icon name="plus" className="h-4 w-4" />
-              <Icon name="menu" className="h-4 w-4" />
+              <span className="relative">
+                <Icon name="messages" className="h-[1.1rem] w-[1.1rem]" />
+                <span key={requests} className="grow-pill absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-gold-300 px-1 text-[0.5625rem] font-bold tabular-nums text-night">{requests}</span>
+              </span>
             </span>
           </div>
 
@@ -97,10 +119,17 @@ export function SocialMock() {
                 <GymLogo />
               </span>
             </span>
-            <dl className="grid flex-1 grid-cols-2 gap-x-2 text-center">
+            {/* post · follower · seguiti: come su Instagram; i follower sono in evidenza, crescono e cambiano colore */}
+            <dl className="grid flex-1 grid-cols-[1fr_1.55fr_1fr] items-start text-center">
               <div>
                 <dd className="font-display text-[1rem] font-bold leading-none text-fg">{d.posts}</dd>
                 <dt className="mt-1 text-[0.625rem] text-fg-3">post</dt>
+              </div>
+              <div className="rounded-xl border border-gold-400/45 bg-gold-300/10 px-1 py-1 shadow-glow-gold">
+                <dd key={followers} className="follower-num font-display text-[1.375rem] font-extrabold leading-none tracking-[-0.03em] tabular-nums">
+                  {nf.format(followers)}
+                </dd>
+                <dt className="mt-1 text-[0.625rem] font-semibold text-gold-200">{d.followersLabel}</dt>
               </div>
               <div>
                 <dd className="font-display text-[1rem] font-bold leading-none text-fg">{d.following}</dd>
@@ -108,21 +137,10 @@ export function SocialMock() {
               </div>
             </dl>
           </div>
-
-          {/* contatore follower: grande, cambia colore a ogni incremento */}
-          <div className="relative mt-2.5 overflow-hidden rounded-2xl border border-gold-400/50 bg-[linear-gradient(160deg,var(--color-cobalt-700),var(--color-night-raised))] px-3.5 py-2.5 shadow-glow-gold">
-            <div className="flex items-end justify-between gap-2">
-              <div>
-                <p className="text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-fg-3">{d.followersLabel}</p>
-                <p key={followers} className="follower-num font-display text-[2.5rem] font-extrabold leading-none tracking-[-0.04em] tabular-nums">
-                  {nf.format(followers)}
-                </p>
-              </div>
-              <span key={gain} className="grow-pill mb-0.5 flex shrink-0 items-center gap-1 rounded-full bg-gold-300 px-2.5 py-1 text-[0.75rem] font-bold tabular-nums text-night">
-                <Icon name="trending" className="h-3.5 w-3.5" strokeWidth={2.6} />+{gain} {d.gainLabel}
-              </span>
-            </div>
-            <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[3px] bg-gradient-to-r from-azure-400 via-gold-300 to-azure-400" />
+          <div className="mt-1.5 flex justify-end">
+            <span key={gain} className="grow-pill flex items-center gap-1 rounded-full bg-gold-300 px-2.5 py-0.5 text-[0.6875rem] font-bold tabular-nums text-night">
+              <Icon name="trending" className="h-3 w-3" strokeWidth={2.6} />+{gain} {d.gainLabel}
+            </span>
           </div>
 
           <p className="mt-2 text-[0.625rem] leading-snug text-fg-2">
@@ -213,49 +231,28 @@ export function SocialMock() {
         </div>
       </div>
 
-      {/* selettore: frecce + due schede ben visibili */}
-      <div className="mt-4 flex items-center justify-center gap-2">
-        <button type="button" onClick={() => go(screen - 1)} aria-label="Schermata precedente" className="grid h-9 w-9 place-items-center rounded-full border border-line-strong text-fg transition-colors hover:border-gold-300 hover:text-gold-300">
-          <Icon name="chevron-left" className="h-4 w-4" />
-        </button>
-        {tabs.map((t, i) => (
-          <button
-            key={t.label}
-            type="button"
-            onClick={() => go(i)}
-            aria-pressed={screen === i}
-            className={cn(
-              "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[0.8125rem] font-semibold transition-[background-color,border-color,color,box-shadow] duration-[var(--dur-base)]",
-              screen === i ? "border-gold-300 bg-gold-300 text-night shadow-glow-gold" : "border-line-strong text-fg-2 hover:border-gold-300/60 hover:text-fg",
-            )}
-          >
-            <Icon name={t.icon} className="h-4 w-4" />
-            {t.label}
-          </button>
-        ))}
-        <button type="button" onClick={() => go(screen + 1)} aria-label="Schermata successiva" className="grid h-9 w-9 place-items-center rounded-full border border-line-strong text-fg transition-colors hover:border-gold-300 hover:text-gold-300">
-          <Icon name="chevron-right" className="h-4 w-4" />
-        </button>
-      </div>
-
-      {/* richieste in arrivo: pannello separato, mai sovrapposto al telefono */}
-      <div aria-hidden="true" className="mt-4 rounded-2xl border border-azure-400/40 bg-surface/80 p-3 backdrop-blur-sm">
-        <p className="mb-2 flex items-center justify-between text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-fg-3">
+      {/* richieste: escono dalla chat (icona messaggi in alto a destra) e compaiono a lato del telefono, solo sul profilo */}
+      <div
+        aria-hidden="true"
+        className={cn(
+          "mt-4 transition-[opacity,transform] duration-500 ease-out-expo xl:absolute xl:left-full xl:top-6 xl:-ml-8 xl:mt-0 xl:w-[13rem]",
+          screen === 0 ? "opacity-100" : "pointer-events-none max-xl:hidden xl:translate-x-4 xl:opacity-0",
+        )}
+      >
+        <p className="mb-2 flex items-center gap-2 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-fg-3">
+          <Icon name="messages" className="h-3.5 w-3.5 text-gold-300" />
           {d.requestsLabel}
-          <span key={requests} className="grow-pill rounded-full bg-azure-400 px-2 py-0.5 text-[0.75rem] font-bold tabular-nums text-night">
-            {requests}
-          </span>
         </p>
-        <ul className="flex flex-col gap-1.5">
+        <ul className="flex flex-col gap-2">
           {chat.map((m, i) => (
             <li
               key={m.key}
               className={cn(
-                "chat-in flex items-center gap-2.5 rounded-xl border px-3 py-2",
-                i === 0 ? "border-gold-300/60 bg-gold-300/10" : "border-line bg-night/50 opacity-80",
+                "chat-out flex items-center gap-2.5 rounded-2xl border px-3 py-2.5 shadow-[0_10px_30px_-8px_rgb(0_0_0/0.7)] backdrop-blur",
+                i === 0 ? "border-gold-300/70 bg-surface-2/95" : "border-line bg-surface/90 opacity-80",
               )}
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-azure-400/30 font-display text-[0.8125rem] font-bold text-azure-300">{m.who[0]}</span>
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-azure-400/30 font-display text-[0.9375rem] font-bold text-azure-300">{m.who[0]}</span>
               <span className="min-w-0 text-[0.8125rem] leading-tight text-fg">
                 <strong className="block text-[0.6875rem] font-semibold text-azure-300">{m.who}</strong>
                 {m.text}

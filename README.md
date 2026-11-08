@@ -47,6 +47,8 @@ Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti; il pulsante è g
 - **Effetto digitale al mouse** riusabile (`DigitalCursor`, `TechBackdrop cursor`): hero, funnel, risultati, prenota.
 - **Entrate dai lati**: `Reveal from="left|right|scale|far-left|far-right"` e `RevealGroup alternate="far"` (da fuori schermo fino al centro: `RevealRoot` osserva il contenitore perché un elemento fuori schermo non interseca mai il viewport). Settori, funnel e percorso Academy (`ZigZagSteps`) li usano.
 - **Portatile 3D** (`LaptopShowcase`): coperchio che si apre, galleria con tutti i siti, cursore che apre Sfizi Partenopei e lo fa scorrere; tutto CSS in unità `cqw`.
+- **Corsi Academy** (`AcademyCourses`): i 7 corsi gratuiti veri di https://triskellacademy.com con copertine in `public/academy`.
+- **Scroll legato al movimento** (`ScrollSlide`): i blocchi del funnel arrivano da fuori schermo mentre scorri.
 - **Libro 3D** (`Book3D`): cuboide CSS trascinabile in ogni direzione, con inerzia.
 - **Sfondi tech** (`TechBackdrop rich`): griglia di quadrati con celle che si accendono e punti luce.
 - **Pulsanti**: restano sul loro asse (nessun effetto magnetico); feedback solo con luce in hover e al click.

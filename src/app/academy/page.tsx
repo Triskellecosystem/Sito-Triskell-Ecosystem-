@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AcademyVideos } from "@/components/sections/AcademyVideos";
+import { AcademyCourses } from "@/components/sections/AcademyCourses";
 import { CoursePlayerMock } from "@/components/sections/CoursePlayerMock";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { PageHero } from "@/components/sections/PageHero";
@@ -23,8 +23,8 @@ export default function AcademyPage() {
         <Button href={cta.href} size="lg" icon="calendar" iconPosition="start" pulse>
           {cta.button}
         </Button>
-        <Button href="#tutorial" variant="secondary" size="lg" icon="arrow-right">
-          Guarda i tutorial
+        <Button href="#corsi" variant="secondary" size="lg" icon="arrow-right">
+          Guarda i corsi
         </Button>
       </PageHero>
 
@@ -36,7 +36,7 @@ export default function AcademyPage() {
         </div>
       </Section>
 
-      <AcademyVideos />
+      <AcademyCourses />
       <CtaBand content={cta.academy} />
     </>
   );

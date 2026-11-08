@@ -11,7 +11,7 @@ interface CommonProps {
   icon?: IconName;
   /** Posizione dell'icona (default: dopo il testo). */
   iconPosition?: "start" | "end";
-  /** Lampeggia: anello che si espande e alone che pulsa. Per le azioni "Prenota ora". */
+  /** Lampeggia: solo il pulsante, con un alone di luce che pulsa (niente anelli attorno). Per le azioni "Prenota ora". */
   pulse?: boolean;
   className?: string;
   children: React.ReactNode;
@@ -48,7 +48,7 @@ const sizes: Record<Size, string> = {
 /** Bottone / link con 3 varianti. Riflesso "shine" sulla primaria, freccia che scorre. */
 export function Button(props: ButtonProps | LinkProps) {
   const { variant = "primary", size = "md", icon, iconPosition = "end", pulse = false, className, children, ...rest } = props;
-  const classes = cn(base, variants[variant], sizes[size], className);
+  const classes = cn(base, variants[variant], sizes[size], pulse && "btn-blink", className);
 
   const content = (
     <>
@@ -72,27 +72,18 @@ export function Button(props: ButtonProps | LinkProps) {
     </>
   );
 
-  const withPulse = (button: React.ReactNode) =>
-    pulse ? (
-      <span className="relative inline-flex">
-        <span aria-hidden="true" className="btn-halo pointer-events-none absolute -inset-2 rounded-[22px] bg-gold-300/45 blur-xl" />
-        <span aria-hidden="true" className="btn-ping pointer-events-none absolute inset-0 rounded-[14px] border-2 border-gold-200" />
-        {button}
-      </span>
-    ) : (
-      button
-    );
+  const withPulse = (button: React.ReactNode) => button;
 
   if ("href" in props && props.href !== undefined) {
     const { href, ...anchorRest } = rest as Omit<LinkProps, keyof CommonProps>;
     return withPulse(
-      <Link href={href} className={cn(classes, pulse && "relative")} {...anchorRest}>
+      <Link href={href} className={classes} {...anchorRest}>
         {content}
       </Link>,
     );
   }
   return withPulse(
-    <button type="button" className={cn(classes, pulse && "relative")} {...(rest as Omit<ButtonProps, keyof CommonProps>)}>
+    <button type="button" className={classes} {...(rest as Omit<ButtonProps, keyof CommonProps>)}>
       {content}
     </button>,
   );

@@ -8,7 +8,7 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { Tilt } from "@/components/ui/Tilt";
-import { TechBackdrop } from "@/components/ui/TechBackdrop";
+import { DigitalCursor } from "@/components/motion/DigitalCursor";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 
 interface BranchProps {
@@ -118,7 +118,10 @@ export function Ecosystem() {
 
   return (
     <Section id="ecosistema" labelledBy="eco-title" className="pt-[clamp(1.5rem,3vw,3rem)]">
-      <TechBackdrop tone="mixed" cursor rich />
+      {/* qui niente quadrati: solo l'effetto al mouse, per non appesantire la sezione */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <DigitalCursor />
+      </div>
       <SectionHeading id="eco-title" overline={e.overline} title={e.title} align="center" />
       <Reveal delay={0.15} blur={4} y={14}>
         <p className="mx-auto mt-6 max-w-2xl text-center text-[clamp(1.0625rem,0.98rem+0.45vw,1.3125rem)] leading-relaxed text-fg-2">{e.description}</p>
