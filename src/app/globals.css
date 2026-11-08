@@ -1,0 +1,221 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+@layer base {
+  html {
+    color-scheme: dark;
+    background-color: var(--color-night);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scrollbar-color: var(--color-line-strong) var(--color-night);
+  }
+  body {
+    min-height: 100svh;
+    background-color: var(--color-night);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-gold-300); color: var(--color-night); }
+
+  /* Focus visibile ovunque (WCAG 2.4.7): anello oro, 12.3:1 su night */
+  :focus-visible {
+    outline: 2px solid var(--color-gold-300);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  :focus:not(:focus-visible) { outline: none; }
+
+  /* Lenis */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-stopped { overflow: hidden; }
+}
+
+/* ==========================================================================
+   Componenti CSS condivisi (solo token, nessun colore hardcoded)
+   ========================================================================== */
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: calc(var(--container-max) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Testo con gradiente oro */
+  .text-gold {
+    background-image: var(--gradient-gold-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Griglia sottile di sfondo */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgb(206 210 218 / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(206 210 218 / 0.045) 1px, transparent 1px);
+    background-size: 72px 72px;
+    background-position: center top;
+  }
+
+  /* Filetto di sezione: linea sottile con sfumatura laterale */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-line-strong) 18%, var(--color-line-strong) 82%, transparent);
+  }
+
+  /* Tile "glass" (icone fluttuanti) */
+  .glass {
+    background: linear-gradient(145deg, rgb(13 62 102 / 0.55), rgb(3 32 70 / 0.35));
+    border: 1px solid rgb(42 144 195 / 0.3);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), 0 20px 50px -20px rgb(5 76 137 / 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  /* Bordo "beam" oro rotante.
+     Il conic-gradient ruota con transform (compositor), il mask lo ritaglia a 1px. */
+  .beam {
+    position: relative;
+    isolation: isolate;
+    border-radius: var(--radius-card);
+  }
+  .beam-ring {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    padding: 1px;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .beam-ring::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(200%, 640px);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    background: var(--gradient-beam);
+    animation: beam-spin 9s linear infinite;
+    will-change: transform;
+  }
+  .beam-ring--static::before { animation: none; }
+  .beam--hover-only .beam-ring { opacity: 0.55; transition: opacity var(--dur-base) var(--ease-soft); }
+  .beam--hover-only:hover .beam-ring,
+  .beam--hover-only:focus-within .beam-ring { opacity: 1; }
+
+  /* Bordo oro statico "da riferimento": riflessi chiari agli angoli, spento al centro */
+  .border-gold-static {
+    position: relative;
+  }
+  .border-gold-static::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(150deg, rgb(247 200 92 / 0.55), rgb(247 200 92 / 0.1) 40%, rgb(255 247 190 / 0.85));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+}
+
+/* ==========================================================================
+   Keyframes (solo transform / opacity)
+   ========================================================================== */
+@keyframes beam-spin { to { transform: rotate(360deg); } }
+@keyframes float-y {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes line-up {
+  from { opacity: 0; transform: translate3d(0, 0.6em, 0); filter: blur(8px); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+}
+@keyframes marquee { to { transform: translate3d(-50%, 0, 0); } }
+@keyframes shine { from { transform: translate3d(-120%, 0, 0) skewX(-20deg); } to { transform: translate3d(220%, 0, 0) skewX(-20deg); } }
+
+/* ==========================================================================
+   Reduced motion: versione statica elegante di ogni animazione
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .beam-ring::before { animation: none !important; }
+}
+
+/* ==========================================================================
+   Utility di progetto
+   ========================================================================== */
+@keyframes page-in {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+html.menu-open { overflow: hidden; }
+
+/* Path drawing del triskell: si disegna, poi resta */
+.draw-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw var(--draw-dur, 1.8s) var(--ease-out-expo) var(--draw-delay, 0s) forwards;
+}
+.hero-glow {
+  opacity: 0;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: fade-in 1.2s 2.4s var(--ease-soft) forwards, glow-pulse 4.5s 3.4s ease-in-out infinite;
+}
+
+/* Marquee */
+.marquee { mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.marquee-track { animation: marquee 48s linear infinite; will-change: transform; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee { mask-image: none; }
+  .marquee-track { width: 100%; justify-content: center; animation: none; }
+  .marquee-set[aria-hidden="true"] { display: none; }
+  .marquee-set { flex-wrap: wrap; justify-content: center; row-gap: 0.75rem; padding-right: 0; }
+}
+
+/* Segnaposto: evidenziati solo in sviluppo (npm run todos per l'elenco) */
+[data-todo] {
+  outline: 1px dashed color-mix(in srgb, var(--color-gold-300) 45%, transparent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
