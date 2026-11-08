@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue } from "motion/react";
+import { useRef } from "react";
 import { cn } from "@/lib/cn";
 
 interface SpotlightProps {
@@ -13,11 +13,11 @@ interface SpotlightProps {
 
 /**
  * Spotlight che segue il cursore. Il bagliore è un layer pre-renderizzato spostato
- * con transform (nessun repaint del gradiente) e mostrato con opacity.
+ * con transform (nessun repaint del gradiente) e mostrato con opacity. Nessuna dipendenza esterna.
  */
 export function Spotlight({ children, className, size = 460, tone = "gold" }: SpotlightProps) {
-  const x = useMotionValue(-size);
-  const y = useMotionValue(-size);
+  const glow = useRef<HTMLDivElement>(null);
+  const raf = useRef(0);
 
   return (
     <div
@@ -25,13 +25,18 @@ export function Spotlight({ children, className, size = 460, tone = "gold" }: Sp
       onPointerMove={(e) => {
         if (e.pointerType !== "mouse") return;
         const r = e.currentTarget.getBoundingClientRect();
-        x.set(e.clientX - r.left - size / 2);
-        y.set(e.clientY - r.top - size / 2);
+        const x = e.clientX - r.left - size / 2;
+        const y = e.clientY - r.top - size / 2;
+        cancelAnimationFrame(raf.current);
+        raf.current = requestAnimationFrame(() => {
+          if (glow.current) glow.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        });
       }}
     >
-      <motion.div
+      <div
+        ref={glow}
         aria-hidden="true"
-        style={{ x, y, width: size, height: size }}
+        style={{ width: size, height: size, transform: `translate3d(${-size}px, ${-size}px, 0)` }}
         className={cn(
           "pointer-events-none absolute left-0 top-0 z-[1] rounded-full opacity-0 transition-opacity duration-[var(--dur-base)] will-change-transform group-hover/spot:opacity-100",
           tone === "gold"

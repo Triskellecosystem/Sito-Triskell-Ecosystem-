@@ -4,6 +4,7 @@ import { site } from "@/content/site";
 import { Providers } from "@/components/motion/Providers";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { ScrollProgress } from "@/components/motion/ScrollProgress";
+import { RevealRoot } from "@/components/motion/RevealRoot";
 import { Header } from "@/components/sections/Header";
 import { Footer } from "@/components/sections/Footer";
 import "./globals.css";
@@ -53,6 +54,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="it" className={`${sora.variable} ${inter.variable}`}>
       <body>
+        <noscript>
+          <style>{`[data-reveal],[data-reveal-item],.split-word{opacity:1!important;transform:none!important;filter:none!important}[data-count]{visibility:visible!important}`}</style>
+        </noscript>
         <a
           href="#main"
           className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-xl bg-gold-300 px-4 py-3 font-display font-semibold text-night transition-transform focus:translate-y-0"
@@ -61,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <Providers>
           <SmoothScroll />
+          <RevealRoot />
           <ScrollProgress />
           <Header />
           <main id="main">{children}</main>

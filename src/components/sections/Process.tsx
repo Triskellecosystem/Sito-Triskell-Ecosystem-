@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useEffect, useRef } from "react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
@@ -87,8 +87,31 @@ export function Process() {
 
   /* --- Mobile: la linea verticale si riempie con lo scroll --- */
   const listRef = useRef<HTMLOListElement>(null);
-  const { scrollYProgress } = useScroll({ target: listRef, offset: ["start 70%", "end 65%"] });
-  const scaleY = useSpring(scrollYProgress, { stiffness: 120, damping: 24, mass: 0.4 });
+  const lineRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const list = listRef.current;
+    const line = lineRef.current;
+    if (!list || !line || reduced) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = list.getBoundingClientRect();
+      const start = window.innerHeight * 0.7;
+      const p = Math.min(1, Math.max(0, (start - r.top) / (r.height - window.innerHeight * 0.05)));
+      line.style.transform = `scaleY(${p.toFixed(3)})`;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [reduced]);
 
   return (
     <section id={content.id} aria-labelledby="process-title" className="relative">
@@ -189,9 +212,10 @@ export function Process() {
           <SectionHeading id="process-title-m" overline={content.overline} title={content.title} line={content.line} />
           <ol ref={listRef} className="relative mt-12 space-y-8 pl-10">
             <span aria-hidden="true" className="absolute bottom-2 left-[1.0625rem] top-2 w-[3px] rounded-full bg-line-strong" />
-            <motion.span
+            <span
+              ref={lineRef}
               aria-hidden="true"
-              style={{ scaleY: reduced ? 1 : scaleY }}
+              style={{ transform: reduced ? "scaleY(1)" : "scaleY(0)" }}
               className="absolute bottom-2 left-[1.0625rem] top-2 w-[3px] origin-top rounded-full bg-gold-300 shadow-glow-gold"
             />
             {content.steps.map((step, i) => (

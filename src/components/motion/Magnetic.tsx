@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { useRef } from "react";
 
 interface MagneticProps {
@@ -10,34 +9,33 @@ interface MagneticProps {
   strength?: number;
 }
 
-/** Effetto magnetico, solo desktop con puntatore preciso. Solo transform. */
+/**
+ * Effetto magnetico, solo desktop con puntatore preciso (hover + pointer: fine) e senza reduced motion.
+ * Solo transform; l'effetto "molla" arriva dalla transition CSS con easing definito nei token.
+ */
 export function Magnetic({ children, className, strength = 0.28 }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 220, damping: 18, mass: 0.4 });
-  const sy = useSpring(y, { stiffness: 220, damping: 18, mass: 0.4 });
-
-  const enabled = () => !reduced && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const enabled = () =>
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   return (
-    <motion.div
+    <div
       ref={ref}
       className={className}
-      style={{ x: sx, y: sy }}
+      style={{ transition: "transform 0.45s var(--ease-out-expo)" }}
       onPointerMove={(e) => {
-        if (!enabled() || !ref.current) return;
-        const r = ref.current.getBoundingClientRect();
-        x.set((e.clientX - (r.left + r.width / 2)) * strength);
-        y.set((e.clientY - (r.top + r.height / 2)) * strength);
+        const el = ref.current;
+        if (!el || e.pointerType !== "mouse" || !enabled()) return;
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - (r.left + r.width / 2)) * strength;
+        const y = (e.clientY - (r.top + r.height / 2)) * strength;
+        el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
       }}
       onPointerLeave={() => {
-        x.set(0);
-        y.set(0);
+        if (ref.current) ref.current.style.transform = "translate3d(0, 0, 0)";
       }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

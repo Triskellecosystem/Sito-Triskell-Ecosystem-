@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
@@ -128,8 +128,8 @@ export function Header() {
         <div
           aria-hidden="true"
           className={cn(
-            "absolute inset-0 origin-top border-b border-line bg-night/70 backdrop-blur-xl transition-[transform,opacity] duration-[var(--dur-slow)] ease-out-expo",
-            compact ? "scale-y-[0.78] opacity-100" : "opacity-0",
+            "absolute inset-0 origin-top border-b border-line bg-night/70 transition-[transform,opacity] duration-[var(--dur-slow)] ease-out-expo",
+            compact ? "scale-y-[0.78] opacity-100 backdrop-blur-xl" : "opacity-0",
           )}
         />
         <div
@@ -206,7 +206,7 @@ export function Header() {
                   </button>
                   <AnimatePresence>
                     {moreOpen && (
-                      <motion.ul
+                      <m.ul
                         id="nav-more"
                         initial={{ opacity: 0, y: -6, scale: 0.98 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -232,7 +232,7 @@ export function Header() {
                             </Link>
                           </li>
                         ))}
-                      </motion.ul>
+                      </m.ul>
                     )}
                   </AnimatePresence>
                 </li>
@@ -257,7 +257,7 @@ export function Header() {
       {/* Menu mobile a pannello fullscreen */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
+          <m.div
             ref={panelRef}
             id="mobile-menu"
             role="dialog"
@@ -287,7 +287,7 @@ export function Header() {
             <nav aria-label="Menu mobile" className="container-x relative flex flex-1 flex-col justify-center">
               <ul className="space-y-1">
                 {mobileItems.map((item, i) => (
-                  <motion.li
+                  <m.li
                     key={item.href}
                     initial={{ opacity: 0, y: 28 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -303,12 +303,12 @@ export function Header() {
                       {item.label}
                       {"hint" in item && <span className="ml-auto text-small font-normal text-fg-3">{site.nav.more.label}</span>}
                     </Link>
-                  </motion.li>
+                  </m.li>
                 ))}
               </ul>
             </nav>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, transition: { duration: 0.15, delay: 0 } }}
@@ -318,8 +318,8 @@ export function Header() {
               <Button href={href(site.nav.cta.href)} size="lg" icon="arrow-right" className="w-full" onClick={() => closeMenu(false)}>
                 {site.nav.cta.label}
               </Button>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

@@ -6,7 +6,9 @@ import { setLenis } from "@/lib/lenis";
 /** Smooth scroll con Lenis (disattivato con prefers-reduced-motion). Anchor links inclusi. */
 export function SmoothScroll() {
   useEffect(() => {
+    // niente Lenis con reduced motion né su dispositivi touch (scroll nativo, zero JS extra)
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
     let cancelled = false;
     let destroy: (() => void) | undefined;
 

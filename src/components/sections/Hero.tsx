@@ -8,13 +8,11 @@ import { HeroVisual } from "./HeroVisual";
 /** Parola con reveal CSS (nessuna dipendenza da JS: LCP immediato). */
 function Word({ children, index, accent }: { children: string; index: number; accent?: boolean }) {
   return (
-    <span className="inline-block overflow-hidden pb-[0.12em] align-bottom -mb-[0.12em]">
-      <span
-        className={`inline-block animate-[line-up_0.95s_var(--ease-out-expo)_both] ${accent ? "text-gold" : ""}`}
-        style={{ animationDelay: `${0.1 + index * 0.09}s` }}
-      >
-        {children}
-      </span>
+    <span
+      className={`inline-block animate-[line-up_0.9s_var(--ease-out-expo)_backwards] ${accent ? "text-gold" : ""}`}
+      style={{ animationDelay: `${0.05 + index * 0.07}s` }}
+    >
+      {children}
     </span>
   );
 }
@@ -69,9 +67,9 @@ export function Hero() {
             ))}
           </h1>
 
-          <p className="mt-7 max-w-xl animate-[fade-in_1s_0.7s_var(--ease-soft)_both] text-lead text-fg-2">{hero.subtitle}</p>
+          <p className="mt-7 max-w-xl animate-[fade-in_0.8s_0.45s_var(--ease-soft)_both] text-lead text-fg-2">{hero.subtitle}</p>
 
-          <div className="mt-9 flex animate-[fade-in_1s_0.85s_var(--ease-soft)_both] flex-wrap items-center gap-4">
+          <div className="mt-9 flex animate-[fade-in_0.8s_0.55s_var(--ease-soft)_both] flex-wrap items-center gap-4">
             <Magnetic>
               <Button href={hero.primaryCta.href} size="lg" icon="arrow-right">
                 {hero.primaryCta.label}
@@ -84,7 +82,7 @@ export function Hero() {
             </Magnetic>
           </div>
 
-          <dl className="mt-12 grid max-w-xl animate-[fade-in_1s_1s_var(--ease-soft)_both] grid-cols-3 border-t border-line pt-6">
+          <dl className="mt-12 grid max-w-xl animate-[fade-in_0.8s_0.65s_var(--ease-soft)_both] grid-cols-3 border-t border-line pt-6">
             {hero.keyNumbers.map((n, i) => (
               <div key={n.label} className={`flex flex-col ${i > 0 ? "border-l border-line pl-4 sm:pl-6" : "pr-2"}`}>
                 <dt className="order-2 mt-1.5 text-[0.8125rem] leading-snug text-fg-2 sm:text-small">{n.label}</dt>

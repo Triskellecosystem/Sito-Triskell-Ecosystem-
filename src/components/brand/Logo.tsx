@@ -17,9 +17,11 @@ export function Logo({ className, compactOnXs = false, asLink = true }: LogoProp
       <TriskellMark className="h-9 w-9 shrink-0 transition-transform duration-[var(--dur-base)] ease-out-expo group-hover/logo:rotate-[24deg] sm:h-10 sm:w-10" />
       <span className={cn("flex flex-col leading-none", compactOnXs && "max-xs:hidden")}>
         <span className="font-display text-[1.125rem] font-bold tracking-[0.1em] text-fg sm:text-[1.25rem]">TRISKELL</span>
-        <span className="mt-1 font-display text-[0.5625rem] font-medium tracking-[0.46em] text-fg-2 sm:text-[0.625rem]">
-          ECOSYSTEM
-        </span>
+        {/* "ECOSYSTEM" come contenuto generato: il testo visibile resta "TRISKELL", incluso nel nome accessibile */}
+        <span
+          aria-hidden="true"
+          className="mt-1 block font-display text-[0.5625rem] font-medium tracking-[0.46em] text-fg-2 after:content-['ECOSYSTEM'] sm:text-[0.625rem]"
+        />
       </span>
     </>
   );

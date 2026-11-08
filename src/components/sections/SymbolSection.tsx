@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "motion/react";
 import { useState } from "react";
 import { site } from "@/content/site";
 import { ARM_PATH } from "@/components/brand/triskell-path";
@@ -41,14 +40,13 @@ export function SymbolSection() {
               {ROTATIONS.map((deg, i) => (
                 <g key={deg} transform={deg ? `rotate(${deg} 50 50)` : undefined} strokeLinecap="round" strokeLinejoin="round">
                   {/* tracciato base (si disegna all'ingresso) */}
-                  <motion.path
+                  <path
                     d={ARM_PATH}
                     stroke="var(--color-cobalt-400)"
                     strokeWidth="3"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true, margin: "0px 0px -15% 0px" }}
-                    transition={{ duration: 1.8, delay: 0.2 + i * 0.25, ease: [0.16, 1, 0.3, 1] }}
+                    pathLength={1}
+                    className="draw-on-reveal"
+                    style={{ "--draw-delay": `${0.2 + i * 0.25}s` } as CSSVars}
                   />
                   {/* glow + evidenziazione oro (ciclo coordinato) */}
                   <path

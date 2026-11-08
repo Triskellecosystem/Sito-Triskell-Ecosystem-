@@ -1,9 +1,7 @@
-"use client";
-
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { site } from "@/content/site";
 import { HeroSymbol } from "@/components/brand/HeroSymbol";
 import { Icon, type IconName } from "@/components/ui/Icon";
+import { Parallax } from "@/components/motion/Parallax";
 import { cn } from "@/lib/cn";
 
 interface TileProps {
@@ -32,12 +30,6 @@ function IconTile({ name }: { name: IconName }) {
 
 /** Composizione visiva dell'hero: medaglione, piattaforma luminosa, tile glass con parallax. */
 export function HeroVisual() {
-  const reduced = useReducedMotion();
-  const { scrollY } = useScroll();
-  const yMedallion = useTransform(scrollY, [0, 800], reduced ? [0, 0] : [0, -70]);
-  const yTilesA = useTransform(scrollY, [0, 800], reduced ? [0, 0] : [0, -130]);
-  const yTilesB = useTransform(scrollY, [0, 800], reduced ? [0, 0] : [0, -40]);
-
   return (
     <div className="relative mx-auto aspect-square w-full max-w-[34rem]">
       {/* Alone */}
@@ -45,6 +37,11 @@ export function HeroVisual() {
         aria-hidden="true"
         className="absolute -inset-[18%] animate-[glow-pulse_6s_ease-in-out_infinite] rounded-full bg-[radial-gradient(circle,var(--glow-cobalt)_0%,transparent_62%)]"
       />
+
+      {/* Glow oro del simbolo: appare dopo il disegno, poi pulsa (opacity/transform, nessun filtro) */}
+      <div aria-hidden="true" className="absolute inset-[16%] animate-[fade-in_1.4s_2.2s_var(--ease-soft)_both]">
+        <div className="h-full w-full animate-[glow-pulse_4.5s_3.4s_ease-in-out_infinite] rounded-full bg-[radial-gradient(circle,var(--glow-gold)_0%,transparent_62%)] opacity-60" />
+      </div>
 
       {/* Piattaforma luminosa */}
       <svg aria-hidden="true" viewBox="0 0 460 100" className="absolute -bottom-[3%] left-1/2 w-[96%] -translate-x-1/2 overflow-visible">
@@ -66,12 +63,12 @@ export function HeroVisual() {
       </svg>
 
       {/* Medaglione */}
-      <motion.div style={{ y: yMedallion }} className="absolute inset-[9%] bottom-[12%]">
+      <Parallax mode="page" rate={-0.09} className="absolute inset-[9%] bottom-[12%]">
         <HeroSymbol label={site.hero.symbolAlt} />
-      </motion.div>
+      </Parallax>
 
       {/* Tile glass fluttuanti */}
-      <motion.div style={{ y: yTilesA }} className="absolute inset-0">
+      <Parallax mode="page" rate={-0.16} className="absolute inset-0">
         <Tile className="left-[2%] top-[16%]" delay="0s" duration="7s" rotate="perspective(500px) rotateY(18deg) rotateX(6deg)">
           <div className="flex h-9 items-end gap-1" aria-hidden="true">
             {[40, 62, 50, 82, 100].map((h, i) => (
@@ -82,15 +79,15 @@ export function HeroVisual() {
         <Tile className="right-[1%] top-[7%]" delay="-2s" duration="8s" rotate="perspective(500px) rotateY(-18deg) rotateX(6deg)">
           <span className="font-display text-xl font-bold tracking-tight text-azure-300 sm:text-2xl">AI</span>
         </Tile>
-      </motion.div>
-      <motion.div style={{ y: yTilesB }} className="absolute inset-0">
+      </Parallax>
+      <Parallax mode="page" rate={-0.05} className="absolute inset-0">
         <Tile className="left-[-3%] top-[56%]" delay="-4s" duration="9s" rotate="perspective(500px) rotateY(16deg) rotateX(-4deg)">
           <IconTile name="users" />
         </Tile>
         <Tile className="right-[-2%] top-[52%]" delay="-1s" duration="7.5s" rotate="perspective(500px) rotateY(-16deg) rotateX(-4deg)">
           <IconTile name="target" />
         </Tile>
-      </motion.div>
+      </Parallax>
     </div>
   );
 }

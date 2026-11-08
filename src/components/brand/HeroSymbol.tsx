@@ -1,11 +1,9 @@
-"use client";
-
 import { useId } from "react";
 import { ARM_PATH } from "./triskell-path";
 
 /**
  * Medaglione 3D del simbolo (hero): anello oro metallico, fondo blu notte,
- * triskell che si disegna e poi pulsa con glow oro. Solo CSS animation (transform/opacity).
+ * triskell che si disegna. Il glow pulsante è un layer CSS (HeroVisual), non un filtro SVG.
  */
 export function HeroSymbol({ label }: { label: string }) {
   const uid = useId().replace(/:/g, "");
@@ -50,21 +48,6 @@ export function HeroSymbol({ label }: { label: string }) {
       <circle cx="200" cy="200" r="154" fill={`url(#${fill})`} />
       <circle cx="200" cy="200" r="142" fill="none" stroke="var(--color-cobalt-300)" strokeOpacity="0.28" strokeWidth="1" strokeDasharray="2 7" />
       <path d="M62 170 A142 142 0 0 1 200 58" fill="none" stroke="var(--color-fg)" strokeOpacity="0.2" strokeWidth="2" strokeLinecap="round" />
-
-      {/* glow del simbolo: stesso tracciato, sfocato, che pulsa */}
-      <g
-        transform="translate(200 200) scale(2.55) translate(-50 -50)"
-        stroke="var(--color-gold-300)"
-        strokeWidth="8"
-        strokeLinecap="round"
-        fill="none"
-        className="hero-glow"
-        style={{ filter: "blur(7px)" }}
-      >
-        {rotations.map((deg) => (
-          <path key={deg} d={ARM_PATH} transform={deg ? `rotate(${deg} 50 50)` : undefined} />
-        ))}
-      </g>
 
       {/* triskell */}
       <g

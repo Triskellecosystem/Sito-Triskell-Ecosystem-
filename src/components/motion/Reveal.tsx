@@ -1,56 +1,37 @@
-"use client";
+import type { CSSProperties, ReactNode } from "react";
 
-import { motion, useReducedMotion } from "motion/react";
-import type { ReactNode } from "react";
-
-export const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
-
-const tags = { div: motion.div, li: motion.li, p: motion.p, article: motion.article, span: motion.span } as const;
-type Tag = keyof typeof tags;
+type Tag = "div" | "li" | "p" | "article" | "span";
+type Vars = CSSProperties & { [key: `--${string}`]: string | number };
 
 interface RevealProps {
   children: ReactNode;
   className?: string;
   as?: Tag;
+  /** Ritardo in secondi. */
   delay?: number;
   y?: number;
   /** Sfocatura iniziale in px (blur → nitido). 0 per disattivare. */
   blur?: number;
 }
 
-/** Reveal allo scroll: opacity + translate + blur → nitido. */
-export function Reveal({ children, className, as = "div", delay = 0, y = 28, blur = 8 }: RevealProps) {
-  const reduced = useReducedMotion();
-  const Comp = tags[as] as typeof motion.div;
-  if (reduced) return <Comp className={className}>{children}</Comp>;
+/**
+ * Reveal allo scroll: opacity + translate + blur → nitido.
+ * Server component: l'attivazione è gestita da <RevealRoot /> (un solo IntersectionObserver).
+ */
+export function Reveal({ children, className, as: Tag = "div", delay = 0, y = 28, blur = 8 }: RevealProps) {
+  const style: Vars = { "--reveal-delay": `${delay}s`, "--reveal-y": `${y}px`, "--reveal-blur": `${blur}px` };
   return (
-    <Comp
-      className={className}
-      initial={{ opacity: 0, y, filter: blur ? `blur(${blur}px)` : "blur(0px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-      transition={{ duration: 0.8, ease: EASE_OUT_EXPO, delay }}
-    >
+    <Tag data-reveal="" className={className} style={style}>
       {children}
-    </Comp>
+    </Tag>
   );
 }
 
-const groupVariants = {
-  hidden: {},
-  show: (stagger: number) => ({ transition: { staggerChildren: stagger, delayChildren: 0.05 } }),
-};
-
-const itemVariants = {
-  hidden: (o: { y: number; blur: number }) => ({ opacity: 0, y: o.y, filter: `blur(${o.blur}px)` }),
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.75, ease: EASE_OUT_EXPO } },
-};
-
-/** Contenitore che anima i figli `RevealItem` con stagger. */
+/** Contenitore che anima i figli `RevealItem` con stagger (indice via :nth-child, vedi globals.css). */
 export function RevealGroup({
   children,
   className,
-  as = "div",
+  as: Tag = "div",
   stagger = 0.09,
 }: {
   children: ReactNode;
@@ -58,29 +39,20 @@ export function RevealGroup({
   as?: Tag;
   stagger?: number;
 }) {
-  const reduced = useReducedMotion();
-  const Comp = tags[as] as typeof motion.div;
-  if (reduced) return <Comp className={className}>{children}</Comp>;
+  const style: Vars = { "--stagger": `${Math.round(stagger * 1000)}ms` };
   return (
-    <Comp
-      className={className}
-      variants={groupVariants}
-      custom={stagger}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-    >
+    <Tag data-reveal-group="" className={className} style={style}>
       {children}
-    </Comp>
+    </Tag>
   );
 }
 
 export function RevealItem({
   children,
   className,
-  as = "div",
+  as: Tag = "div",
   y = 26,
-  blur = 6,
+  blur = 0,
 }: {
   children: ReactNode;
   className?: string;
@@ -88,12 +60,10 @@ export function RevealItem({
   y?: number;
   blur?: number;
 }) {
-  const reduced = useReducedMotion();
-  const Comp = tags[as] as typeof motion.div;
-  if (reduced) return <Comp className={className}>{children}</Comp>;
+  const style: Vars = { "--reveal-y": `${y}px`, "--reveal-blur": `${blur}px` };
   return (
-    <Comp className={className} variants={itemVariants} custom={{ y, blur }}>
+    <Tag data-reveal-item="" className={className} style={style}>
       {children}
-    </Comp>
+    </Tag>
   );
 }

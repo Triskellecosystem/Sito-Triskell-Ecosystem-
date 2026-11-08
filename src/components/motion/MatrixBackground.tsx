@@ -16,6 +16,9 @@ export function MatrixBackground({ className }: { className?: string }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Effetto solo da 768px in su: su mobile resta la griglia statica (meno main thread, meno batteria)
+    if (window.matchMedia("(max-width: 767px)").matches) return;
+
     const css = getComputedStyle(document.documentElement);
     const azure = css.getPropertyValue("--color-azure-500").trim() || "#138dc8";
     const gold = css.getPropertyValue("--color-gold-300").trim() || "#f7c85c";

@@ -100,7 +100,7 @@ Tutti i valori sono **misurati** con gli script in `scripts/design/` (dati grezz
 | `--gradient-gold-btn` | 180° | #FDD873 0% → #F7C85C 45% → #DA9C25 100% |
 | `--gradient-gold-text` | 180° | #FDDA5A → #ECB851 → #C3850E (titoli, numeri) |
 | `--gradient-gold-metal` | 135° | #FFF7BE → #FDDA5A → #DEA112 → #86550B (logo, simbolo) |
-| `--gradient-beam` | rotante (conic, 360°) | oro spento #64635F-like (oro a 18%) → #F7C85C → #FFF7BE → spento. Replica bordo card |
+| `--gradient-beam` | conic 360° (ruotato via transform) | oro spento #64635F-like (oro a 18%) → #F7C85C → #FFF7BE → spento. Replica bordo card |
 | `--gradient-bg-hero` | radiale, centro a ~72% × 12% | #054C89 (alone) → #011A30 → #010F1C |
 | `--gradient-bg-cta` | radiale in basso a sinistra | #053860 → #010F1C |
 | Sfondo pagina | verticale | quasi costante #010F1C ±2 (misurato lungo x=1%): niente gradiente globale, solo luci localizzate |
@@ -149,7 +149,7 @@ Regola nel codice: l'oro per testo piccolo è sempre ≥ gold-400; i cobalt non 
 | Effetto | Tecnica |
 |---|---|
 | Alone/anello azure attorno al simbolo | radial-gradient + SVG blur, opacity pulse |
-| Bordo oro "beam" | conic-gradient ruotato con `@property --beam-angle`, mask per ritaglio bordo |
+| Bordo oro "beam" | conic-gradient dentro un anello ritagliato con mask; a ruotare è il layer (transform), non l'angolo del gradiente |
 | Glow su hover | box-shadow multiplo + opacity |
 | Tile glass | backdrop-filter leggero + bordo 1px azure a 25% |
 | Griglia sottile | background-image linear-gradient 1px a 4% (fixed, no repaint) |

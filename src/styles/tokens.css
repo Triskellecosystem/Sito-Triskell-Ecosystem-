@@ -122,7 +122,7 @@
   --gradient-gold-text: linear-gradient(180deg, var(--color-gold-200) 0%, var(--color-gold-400) 55%, var(--color-gold-600) 100%);
   --gradient-gold-metal: linear-gradient(135deg, var(--color-gold-100) 0%, var(--color-gold-200) 28%, var(--color-gold-500) 62%, var(--color-gold-700) 100%);
   --gradient-beam: conic-gradient(
-    from var(--beam-angle, 0deg),
+    from 0deg,
     rgb(247 200 92 / 0.12) 0deg,
     var(--color-gold-300) 70deg,
     var(--color-gold-100) 100deg,
@@ -142,10 +142,4 @@
   --gutter: clamp(1.25rem, 0.6rem + 3vw, 3.5rem);
   --header-h: 4.5rem;
   --header-h-compact: 3.5rem;
-}
-
-@property --beam-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
 }

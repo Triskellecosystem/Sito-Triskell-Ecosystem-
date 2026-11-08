@@ -83,11 +83,13 @@
 
   /* Tile "glass" (icone fluttuanti) */
   .glass {
-    background: linear-gradient(145deg, rgb(13 62 102 / 0.55), rgb(3 32 70 / 0.35));
+    background: linear-gradient(145deg, rgb(13 62 102 / 0.7), rgb(3 32 70 / 0.5));
     border: 1px solid rgb(42 144 195 / 0.3);
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), 0 20px 50px -20px rgb(5 76 137 / 0.7);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+  }
+  /* backdrop-filter solo dove c'è spazio per pagarlo (desktop) */
+  @media (min-width: 1024px) and (hover: hover) {
+    .glass { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
   }
 
   /* Bordo "beam" oro rotante.
@@ -158,9 +160,11 @@
 }
 @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+/* H1 hero: SOLO blur + traslazione, mai opacità. Chrome non conta come candidato LCP un elemento che
+   parte da opacity 0 (e lo registra tardi se parte da ~0): così il testo è pieno già al primo paint. */
 @keyframes line-up {
-  from { opacity: 0; transform: translate3d(0, 0.6em, 0); filter: blur(8px); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+  from { transform: translate3d(0, 0.32em, 0); filter: blur(12px); }
+  to { transform: translate3d(0, 0, 0); filter: blur(0); }
 }
 @keyframes marquee { to { transform: translate3d(-50%, 0, 0); } }
 @keyframes shine { from { transform: translate3d(-120%, 0, 0) skewX(-20deg); } to { transform: translate3d(220%, 0, 0) skewX(-20deg); } }
@@ -182,9 +186,11 @@
 /* ==========================================================================
    Utility di progetto
    ========================================================================== */
+/* Transizione di pagina: SOLO transform. Un antenato che parte da opacity 0 fa ignorare tutto il contenuto
+   (hero inclusa) come candidato LCP fino a fine animazione. */
 @keyframes page-in {
-  from { opacity: 0; transform: translate3d(0, 10px, 0); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
+  from { transform: translate3d(0, 10px, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 
 html.menu-open { overflow: hidden; }
@@ -195,13 +201,6 @@ html.menu-open { overflow: hidden; }
   stroke-dashoffset: 1;
   animation: draw var(--draw-dur, 1.8s) var(--ease-out-expo) var(--draw-delay, 0s) forwards;
 }
-.hero-glow {
-  opacity: 0;
-  transform-origin: center;
-  transform-box: fill-box;
-  animation: fade-in 1.2s 2.4s var(--ease-soft) forwards, glow-pulse 4.5s 3.4s ease-in-out infinite;
-}
-
 /* Marquee */
 .marquee { mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
 .marquee-track { animation: marquee 48s linear infinite; will-change: transform; }
@@ -275,12 +274,12 @@ html.menu-open { overflow: hidden; }
    Il simbolo: ciclo coordinato bracci ↔ pilastri (CSS puro)
    ========================================================================== */
 @keyframes sym-arm { 0%, 4% { opacity: 0; } 12%, 30% { opacity: 1; } 38%, 100% { opacity: 0; } }
-@keyframes sym-pillar { 0%, 4% { opacity: 0.55; transform: translate3d(0, 0, 0); } 12%, 30% { opacity: 1; transform: translate3d(10px, 0, 0); } 38%, 100% { opacity: 0.55; transform: translate3d(0, 0, 0); } }
+@keyframes sym-pillar { 0%, 4% { opacity: 0.78; transform: translate3d(0, 0, 0); } 12%, 30% { opacity: 1; transform: translate3d(10px, 0, 0); } 38%, 100% { opacity: 0.78; transform: translate3d(0, 0, 0); } }
 @keyframes sym-bar { 0%, 4% { transform: scaleX(0); } 14%, 30% { transform: scaleX(1); } 38%, 100% { transform: scaleX(0); } }
 .sym-arm-hi, .sym-arm-glow { opacity: 0; }
 .sym:not([data-active]) .sym-arm-hi,
 .sym:not([data-active]) .sym-arm-glow { animation: sym-arm 9s var(--ease-soft) infinite; animation-delay: calc(var(--i) * 3s); }
-.sym-pillar { opacity: 0.55; transition: opacity var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-out-expo); }
+.sym-pillar { opacity: 0.78; transition: opacity var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-out-expo); }
 .sym:not([data-active]) .sym-pillar { animation: sym-pillar 9s var(--ease-soft) infinite; animation-delay: calc(var(--i) * 3s); }
 .sym-pillar-bar { transform-origin: left center; transform: scaleX(0); }
 .sym:not([data-active]) .sym-pillar-bar { animation: sym-bar 9s var(--ease-out-expo) infinite; animation-delay: calc(var(--i) * 3s); }
@@ -305,3 +304,69 @@ html.menu-open { overflow: hidden; }
 .acc-panel { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows var(--dur-slow) var(--ease-out-expo), opacity var(--dur-base) var(--ease-soft); }
 .acc-panel[data-open="true"] { grid-template-rows: 1fr; opacity: 1; }
 .acc-panel > div { overflow: hidden; }
+
+
+/* ==========================================================================
+   Reveal (attivato da <RevealRoot />): solo opacity / transform / filter, nessun layout
+   ========================================================================== */
+[data-reveal],
+[data-reveal-item] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y, 28px), 0);
+  filter: blur(var(--reveal-blur, 8px));
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo),
+    filter 0.8s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0s);
+}
+[data-reveal-item] { transition-delay: calc(50ms + var(--i, 0) * var(--stagger, 90ms)); }
+[data-reveal-group] > :nth-child(1) { --i: 0; }
+[data-reveal-group] > :nth-child(2) { --i: 1; }
+[data-reveal-group] > :nth-child(3) { --i: 2; }
+[data-reveal-group] > :nth-child(4) { --i: 3; }
+[data-reveal-group] > :nth-child(5) { --i: 4; }
+[data-reveal-group] > :nth-child(6) { --i: 5; }
+[data-reveal-group] > :nth-child(7) { --i: 6; }
+[data-reveal-group] > :nth-child(8) { --i: 7; }
+[data-reveal][data-revealed],
+[data-reveal-group][data-revealed] > [data-reveal-item] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Titoli a maschera, parola per parola */
+.split-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.split-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 108%, 0);
+  transition:
+    transform 0.8s var(--ease-out-expo),
+    opacity 0.8s var(--ease-out-expo);
+  transition-delay: calc(var(--split-delay, 0s) + var(--i, 0) * 55ms);
+}
+[data-reveal-split][data-revealed] .split-word { opacity: 1; transform: none; }
+
+/* Contatori: nascosti finché il controller non li prepara (evita il flash valore finale → 0) */
+[data-count]:not([data-ready]) { visibility: hidden; }
+
+/* Scroll nativo morbido quando Lenis non è attivo (touch / senza JS) */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Path drawing attivato da un antenato [data-revealed] (vedi RevealRoot) */
+.draw-on-reveal {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.8s var(--ease-out-expo) var(--draw-delay, 0s);
+}
+[data-revealed] .draw-on-reveal { stroke-dashoffset: 0; }

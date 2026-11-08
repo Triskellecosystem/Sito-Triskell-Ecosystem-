@@ -1,7 +1,3 @@
-"use client";
-
-import { useInView } from "motion/react";
-import { useRef } from "react";
 import type { Service } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { CountUp } from "@/components/motion/CountUp";
@@ -9,14 +5,12 @@ import { Icon } from "@/components/ui/Icon";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { ServiceVisual } from "./ServiceVisual";
 
-/** Tile della bento grid: icona, titolo, micro-visual animato, 1 metrica. Spotlight al passaggio del cursore. */
+/** Tile della bento grid (server component: i micro-visual si attivano via [data-inview]): icona, titolo, micro-visual animato, 1 metrica. Spotlight al passaggio del cursore. */
 export function ServiceTile({ service, className }: { service: Service; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
   const { featured } = service;
 
   return (
-    <div ref={ref} data-inview={inView || undefined} className={cn("group/tile h-full", className)}>
+    <div data-inview-watch="" className={cn("group/tile h-full", className)}>
       <Spotlight
         className={cn(
           "flex h-full flex-col rounded-card border border-line bg-surface p-6 transition-[border-color,transform,box-shadow] duration-[var(--dur-base)] ease-out-expo",

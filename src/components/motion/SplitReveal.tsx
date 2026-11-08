@@ -1,7 +1,4 @@
-"use client";
-
-import { motion, useReducedMotion } from "motion/react";
-import { EASE_OUT_EXPO } from "./Reveal";
+import type { CSSProperties } from "react";
 
 interface SplitRevealProps {
   /** Testo del titolo. Le parti tra [parentesi quadre] diventano oro. */
@@ -39,37 +36,18 @@ function parse(text: string): Word[] {
   return out;
 }
 
-const parent = {
-  hidden: {},
-  show: (delay: number) => ({ transition: { staggerChildren: 0.055, delayChildren: delay } }),
-};
-const child = {
-  hidden: { y: "108%", opacity: 0 },
-  show: { y: "0%", opacity: 1, transition: { duration: 0.8, ease: EASE_OUT_EXPO } },
-};
-
-/** Titolo con reveal a maschera per parola. Parti in [oro] evidenziate. */
-export function SplitReveal({ text, as = "h2", className, id, delay = 0 }: SplitRevealProps) {
-  const reduced = useReducedMotion();
+/** Titolo con reveal a maschera per parola (server component, CSS). Parti in [oro] evidenziate. */
+export function SplitReveal({ text, as: Tag = "h2", className, id, delay = 0 }: SplitRevealProps) {
   const words = parse(text);
-  const Tag = motion[as] as typeof motion.h2;
-
+  const style = { "--split-delay": `${delay}s` } as CSSProperties;
   return (
-    <Tag
-      id={id}
-      className={className}
-      variants={parent}
-      custom={delay}
-      initial={reduced ? false : "hidden"}
-      whileInView="show"
-      viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-    >
+    <Tag id={id} className={className} data-reveal-split="" style={style}>
       {words.map((w, i) => (
         <span key={`${w.text}-${i}`}>
-          <span className="inline-block overflow-hidden pb-[0.14em] align-bottom -mb-[0.14em]">
-            <motion.span variants={child} className={w.gold ? "text-gold inline-block" : "inline-block"}>
+          <span className="split-mask">
+            <span className={w.gold ? "split-word text-gold" : "split-word"} style={{ "--i": i } as CSSProperties}>
               {w.text}
-            </motion.span>
+            </span>
           </span>
           {i < words.length - 1 ? " " : null}
         </span>
