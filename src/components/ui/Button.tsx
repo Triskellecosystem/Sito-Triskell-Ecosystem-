@@ -55,7 +55,10 @@ export function Button(props: ButtonProps | LinkProps) {
       {icon && iconPosition === "end" && (
         <Icon
           name={icon}
-          className="relative h-[1.1em] w-[1.1em] shrink-0 transition-transform duration-[var(--dur-base)] ease-out-expo group-hover/btn:translate-x-1"
+          className={cn(
+            "relative h-[1.1em] w-[1.1em] shrink-0 transition-transform duration-[var(--dur-base)] ease-out-expo group-hover/btn:translate-x-1",
+            icon === "loader" && "animate-spin group-hover/btn:translate-x-0",
+          )}
         />
       )}
     </>

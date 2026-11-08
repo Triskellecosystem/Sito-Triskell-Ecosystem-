@@ -21,9 +21,20 @@ function parse(text: string): Word[] {
   const out: Word[] = [];
   const re = /\[([^\]]+)\]|([^[\]\s]+)/g;
   let m: RegExpExecArray | null;
+  let prevEnd = -1;
   while ((m = re.exec(text))) {
-    if (m[1]) m[1].split(/\s+/).forEach((w) => out.push({ text: w, gold: true }));
-    else if (m[2]) out.push({ text: m[2], gold: false });
+    const glued = m.index === prevEnd && out.length > 0;
+    prevEnd = m.index + m[0].length;
+    if (m[1]) {
+      m[1].split(/\s+/).forEach((w, i) => {
+        if (i === 0 && glued) out[out.length - 1]!.text += w;
+        else out.push({ text: w, gold: true });
+      });
+    } else if (m[2]) {
+      // punteggiatura attaccata a una parte in [oro]: resta nello stesso span
+      if (glued) out[out.length - 1]!.text += m[2];
+      else out.push({ text: m[2], gold: false });
+    }
   }
   return out;
 }

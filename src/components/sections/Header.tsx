@@ -291,7 +291,7 @@ export function Header() {
                     key={item.href}
                     initial={{ opacity: 0, y: 28 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 12 }}
+                    exit={{ opacity: 0, y: 12, transition: { duration: 0.18, delay: 0 } }}
                     transition={{ duration: 0.6, delay: 0.08 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <Link
@@ -311,7 +311,7 @@ export function Header() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 0, transition: { duration: 0.15, delay: 0 } }}
               transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="container-x relative pb-[max(2rem,env(safe-area-inset-bottom))]"
             >
