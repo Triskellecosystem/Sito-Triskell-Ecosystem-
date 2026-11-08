@@ -12,8 +12,8 @@ export function Footer() {
   return (
     <footer className="relative border-t border-line bg-night-deep">
       <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-400/40 to-transparent" />
-      <div className="container-x grid gap-12 py-16 md:grid-cols-12 md:py-20">
-        <div className="md:col-span-5">
+      <div className="container-x grid gap-12 py-14 md:grid-cols-3 md:py-16 lg:grid-cols-12">
+        <div className="md:col-span-3 lg:col-span-3">
           <Logo />
           <p className="mt-5 max-w-xs text-small text-fg-2">{footer.tagline}</p>
           <p className="mt-8 text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-3">{footer.socialTitle}</p>
@@ -34,8 +34,8 @@ export function Footer() {
           </ul>
         </div>
 
-        {footer.columns.map((col, i) => (
-          <nav key={col.title} aria-label={col.title} className={i === 0 ? "md:col-span-3 md:col-start-7" : "md:col-span-3"}>
+        {footer.columns.map((col) => (
+          <nav key={col.title} aria-label={col.title} className="lg:col-span-3">
             <h2 className="font-sans text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-gold-400">{col.title}</h2>
             <ul className="mt-5 space-y-3">
               {col.links.map((l) => (

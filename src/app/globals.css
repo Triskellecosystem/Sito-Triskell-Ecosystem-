@@ -219,17 +219,14 @@ html.menu-open { overflow: hidden; }
 @keyframes sym-arm { 0%, 4% { opacity: 0; } 12%, 30% { opacity: 1; } 38%, 100% { opacity: 0; } }
 @keyframes sym-pillar { 0%, 4% { opacity: 0.78; transform: translate3d(0, 0, 0); } 12%, 30% { opacity: 1; transform: translate3d(10px, 0, 0); } 38%, 100% { opacity: 0.78; transform: translate3d(0, 0, 0); } }
 @keyframes sym-bar { 0%, 4% { transform: scaleX(0); } 14%, 30% { transform: scaleX(1); } 38%, 100% { transform: scaleX(0); } }
-.sym-sector { opacity: 0; }
-.sym:not([data-active]) .sym-sector { animation: sym-arm 9s var(--ease-soft) infinite; animation-delay: calc(var(--i) * 3s); }
 .sym-pillar { opacity: 0.78; transition: opacity var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-out-expo); }
 .sym:not([data-active]) .sym-pillar { animation: sym-pillar 9s var(--ease-soft) infinite; animation-delay: calc(var(--i) * 3s); }
 .sym-pillar-bar { transform-origin: left center; transform: scaleX(0); }
 .sym:not([data-active]) .sym-pillar-bar { animation: sym-bar 9s var(--ease-out-expo) infinite; animation-delay: calc(var(--i) * 3s); }
-.sym[data-active="0"] [data-i="0"], .sym[data-active="1"] [data-i="1"], .sym[data-active="2"] [data-i="2"] { opacity: 1; }
 .sym[data-active="0"] .sym-pillar[data-i="0"], .sym[data-active="1"] .sym-pillar[data-i="1"], .sym[data-active="2"] .sym-pillar[data-i="2"] { transform: translate3d(10px, 0, 0); }
 .sym[data-active="0"] .sym-pillar-bar[data-i="0"], .sym[data-active="1"] .sym-pillar-bar[data-i="1"], .sym[data-active="2"] .sym-pillar-bar[data-i="2"] { transform: scaleX(1); transition: transform var(--dur-slow) var(--ease-out-expo); }
 @media (prefers-reduced-motion: reduce) {
-  .sym-sector, .sym-pillar { opacity: 1 !important; }
+  .sym-pillar { opacity: 1 !important; }
   .sym-pillar-bar { transform: scaleX(1) !important; }
 }
 
@@ -310,3 +307,84 @@ html.menu-open { overflow: hidden; }
 .grow-y { transform: scaleY(0); transform-origin: top; transition: transform 0.7s var(--ease-out-expo); }
 [data-revealed] .grow-x,
 [data-revealed] .grow-y { transform: none; }
+
+/* ==========================================================================
+   Titolo hero: le parole si accendono d'oro al passaggio del mouse
+   ========================================================================== */
+@media (hover: hover) {
+  .hero-word {
+    cursor: default;
+    transition: color var(--dur-base) var(--ease-out-expo), text-shadow var(--dur-base) var(--ease-out-expo), filter var(--dur-base) var(--ease-out-expo);
+  }
+  .hero-word:not(.hero-word--gold):hover {
+    color: var(--color-gold-200);
+    text-shadow: 0 0 0.55em rgb(247 200 92 / 0.55), 0 0 1.3em rgb(255 185 27 / 0.3);
+  }
+  .hero-word--gold:hover {
+    filter: brightness(1.18) drop-shadow(0 0 0.35em rgb(255 200 70 / 0.5));
+  }
+}
+
+/* ==========================================================================
+   Impulsi che scorrono lungo una linea (compositor: solo transform)
+   ========================================================================== */
+@keyframes dot-flow { from { transform: translate3d(-100%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
+.dot-flow { animation: dot-flow 2.8s var(--ease-in-out-quart) infinite; }
+.dot-flow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin-top: -3.5px;
+  border-radius: 999px;
+  background: var(--color-gold-200);
+  box-shadow: 0 0 10px 2px rgb(253 218 90 / 0.7);
+}
+.dot-flow--rev { animation-direction: reverse; }
+
+/* ==========================================================================
+   Il simbolo in 3D: livelli del logo che si staccano in profondità
+   ========================================================================== */
+.sym3d { --e: 0; --tx: 0deg; --ty: 0deg; }
+.sym3d-persp { position: absolute; inset: 0; perspective: 1300px; perspective-origin: 50% 38%; }
+.sym3d-tilt {
+  position: absolute; inset: 0; transform-style: preserve-3d;
+  transform: rotateX(var(--ty)) rotateY(var(--tx));
+  transition: transform 0.6s var(--ease-out-expo);
+}
+.sym3d-scene {
+  position: absolute; inset: 0; transform-style: preserve-3d;
+  transform: translateY(calc(var(--e) * 7%)) scale(calc(1 - var(--e) * 0.16)) rotateX(calc(var(--e) * 50deg)) rotateZ(calc(var(--e) * -30deg));
+}
+.sym3d-sway { position: absolute; inset: 0; transform-style: preserve-3d; animation: sym3d-sway 14s ease-in-out infinite; }
+@keyframes sym3d-sway { 0%, 100% { transform: rotateZ(-3deg); } 50% { transform: rotateZ(3deg); } }
+.sym3d-layer {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  transform: translateZ(calc(var(--z, 0) * var(--e) * 1px));
+  translate: 0 0 calc(var(--lift, 0) * 52px * var(--e));
+  transition: translate 0.7s var(--ease-out-expo), filter 0.5s var(--ease-soft);
+  will-change: transform;
+}
+/* spirali: si illuminano a rotazione (9 s), oppure resta accesa quella del pilastro in hover */
+@keyframes sym3d-lit {
+  0%, 4% { filter: none; }
+  12%, 30% { filter: brightness(1.3) saturate(1.25) drop-shadow(0 0 16px rgb(247 200 92 / 0.85)); }
+  38%, 100% { filter: none; }
+}
+.sym:not([data-active]) .sym3d-coil { animation: sym3d-lit 9s var(--ease-soft) infinite; animation-delay: calc(var(--i) * 3s); }
+.sym[data-active="0"] .sym3d-coil[data-i="0"],
+.sym[data-active="1"] .sym3d-coil[data-i="1"],
+.sym[data-active="2"] .sym3d-coil[data-i="2"] {
+  --lift: 1;
+  filter: brightness(1.3) saturate(1.25) drop-shadow(0 0 16px rgb(247 200 92 / 0.85));
+}
+@media (prefers-reduced-motion: reduce) {
+  .sym3d-sway { animation: none; }
+}
+
+/* Mobile: anelli HUD fermi (meno lavoro di paint/composite al caricamento) */
+@media (max-width: 767px) {
+  .hud-spin { animation: none !important; }
+}

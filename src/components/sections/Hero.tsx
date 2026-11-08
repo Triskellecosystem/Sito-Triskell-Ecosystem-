@@ -15,7 +15,7 @@ export function Hero() {
     <section
       id="top"
       aria-labelledby="hero-title"
-      className="relative isolate overflow-hidden pb-[clamp(3.5rem,7vw,7rem)] pt-[calc(var(--header-h)+clamp(1.5rem,5vh,4.5rem))]"
+      className="relative isolate overflow-hidden pb-[clamp(2rem,4vw,3.5rem)] pt-[calc(var(--header-h)+clamp(1.5rem,5vh,4.5rem))]"
     >
       <div aria-hidden="true" className="bg-grid absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,#000,transparent_88%)]" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 bg-[image:var(--gradient-bg-hero)]" />
@@ -28,15 +28,26 @@ export function Hero() {
             {hero.overline}
           </p>
 
-          {/* Un unico blocco di testo (niente parole in inline-block): è il candidato LCP e resta più grande del logo */}
+          {/* Un unico blocco di testo (le parole sono <span> inline, non inline-block): resta il candidato LCP.
+              Al passaggio del mouse le parole bianche si accendono d'oro. */}
           <h1 id="hero-title" className="text-hero animate-[line-up_1s_var(--ease-out-expo)_backwards] text-fg">
             {hero.titleLines.map((line) => (
               <span key={line}>
-                {line}
+                {line.split(" ").map((word, i, all) => (
+                  <span key={`${line}-${i}`} className="hero-word">
+                    {word}
+                    {i < all.length - 1 ? " " : ""}
+                  </span>
+                ))}
                 <br />
               </span>
             ))}
-            <span className="text-gold">{hero.titleAccent}</span>
+            {hero.titleAccent.split(" ").map((word, i, all) => (
+              <span key={`accent-${i}`} className="hero-word hero-word--gold text-gold">
+                {word}
+                {i < all.length - 1 ? " " : ""}
+              </span>
+            ))}
           </h1>
 
           <p className="mt-7 max-w-xl animate-[fade-in_0.8s_0.45s_var(--ease-soft)_both] text-lead text-fg-2">{hero.subtitle}</p>

@@ -10,21 +10,39 @@ npm run lint && npm run typecheck
 npm run todos      # elenco dei segnaposto da sostituire (--strict per fallire se ne restano)
 ```
 
+## Struttura del sito
+
+| Pagina | Percorso | Contenuto |
+|---|---|---|
+| Home | `/` | Hero, "Cos'è Triskell Ecosystem?" (definizione + schema dei due rami), "Cosa ottieni step dopo step", metodo, storie di crescita, simbolo 3D |
+| Agency | `/agency` | Funnel gestito da noi, servizi, "Come lavoriamo", link a Siti web e Portfolio |
+| Siti web | `/agency/siti-web` | Vetrina dei siti realizzati da William (oggi segnaposto) |
+| Portfolio | `/agency/portfolio` | Progetti e risultati |
+| Academy | `/academy` | Percorso per diventare indipendente + tutorial video |
+| Chi siamo | `/chi-siamo` | Team (Tomaso, William, collaboratori occasionali) |
+| Contatti | `/contatti` | Form "Prenota ora" + FAQ |
+| Altro | `/ai-lab`, `/risorse` | AI Lab (in arrivo) e Libreria risorse (segnaposto) |
+
+Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti di ogni pagina; testo e titolo si cambiano in `site.cta`.
+
 ## Dove si modifica cosa
 
 | Cosa | Dove |
 |---|---|
-| **Tutti i testi** (copy, numeri, FAQ, menu, form, footer) | `src/content/site.ts` — non servono modifiche ai componenti. Le parti tra `[parentesi]` nei titoli diventano oro. |
+| **Tutti i testi** (copy, menu, percorsi, FAQ, form, footer, pagine) | `src/content/site.ts` — non servono modifiche ai componenti. Le parti tra `[parentesi]` nei titoli diventano oro. |
+| Menu in alto (voci, sottomenu, pulsante) | `site.nav` |
 | Colori, font, easing, raggi, gradienti | `src/styles/tokens.css` (nessun colore hardcoded nei componenti) |
 | Misure e motivazioni dei colori | `docs/design-tokens.md` + `scripts/design/` |
-| Sezioni della home | `src/components/sections/` (ordine in `src/app/page.tsx`) |
+| Sezioni | `src/components/sections/` · pagine in `src/app/` |
 | Primitive / motion | `src/components/ui/`, `src/components/motion/` |
+| Logo e livelli del simbolo 3D | `brand-assets/` (originali) → `public/brand/` (ritagli e livelli) |
 | Form contatti | `src/components/sections/ContactForm.tsx` + `src/app/api/contact/route.ts` |
 
 ## Come sono fatte le animazioni
 
 - **Reveal, titoli a maschera, count-up, micro-visual**: componenti *server* + CSS (solo `opacity`/`transform`/`filter`) attivati da **un solo** `IntersectionObserver` (`RevealRoot`). Zero idratazione per istanza.
-- **Hero**: logo reale su sfondo HUD (anelli che ruotano via CSS transform), titolo in CSS puro senza opacità iniziale (serve per l'LCP, vedi sotto).
+- **Hero**: logo reale su sfondo vivo (rete di nodi e impulsi in canvas da 768px in su, aurora e anelli HUD che ruotano via CSS transform; su mobile restano fermi). Il titolo è CSS puro senza opacità iniziale; al passaggio del mouse le parole bianche diventano oro.
+- **Simbolo 3D**: il logo reale è separato in livelli (fondo, anello, tre spirali, nucleo) con `scripts` in Python/OpenCV; la scena usa CSS 3D (`perspective`, `translateZ`) guidata dallo scroll e dal mouse.
 - **Pulsanti**: restano sul loro asse (nessun effetto magnetico); feedback solo con luce in hover e al click.
 - **Come lavoriamo**: GSAP ScrollTrigger (pin + scrub), importato dinamicamente e solo da 768 px in su.
 - **Menu e dropdown**: Motion (`LazyMotion` + `m`, solo le feature necessarie).
@@ -42,7 +60,7 @@ npm run todos      # elenco dei segnaposto da sostituire (--strict per fallire s
 
 | | Perf | A11y | Best Practices | SEO | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|---|
-| Mobile | 97–99 | 100 | 100 | 100 | 0,9 s | 0 | ~150–190 ms |
+| Mobile | 96–100 | 100 | 100 | 100 | 0,9 s | 0 | 80–210 ms |
 | Desktop | 100 | 100 | 100 | 100 | 0,7 s | 0 | 0 ms |
 
 ## Da collegare / da fornire

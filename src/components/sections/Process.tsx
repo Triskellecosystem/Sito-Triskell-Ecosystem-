@@ -56,7 +56,7 @@ export function Process() {
           scrollTrigger: {
             trigger: stageRef.current,
             start: "top top",
-            end: `+=${N * 85}%`,
+            end: `+=${N * 55}%`,
             pin: true,
             scrub: 0.6,
             anticipatePin: 1,
@@ -113,7 +113,7 @@ export function Process() {
   }, [reduced]);
 
   return (
-    <section id={content.id} aria-labelledby="process-title" className="relative">
+    <section aria-labelledby="process-title" className="relative">
       {/* ---- Desktop / tablet: stage pinned ---- */}
       <div ref={stageRef} className="relative hidden min-h-svh flex-col justify-center overflow-hidden py-[clamp(5rem,10vh,7rem)] md:flex">
         <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(70%_60%_at_50%_50%,#000,transparent)]" />

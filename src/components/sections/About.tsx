@@ -10,14 +10,14 @@ import { cn } from "@/lib/cn";
  * Chi siamo: due card ritratto con "foto" segnaposto elegante (monogramma oro in filigrana + simbolo),
  * la seconda sfalsata in verticale su desktop per rompere la simmetria. Sotto, la fascia dei collaboratori.
  */
-export function About() {
+export function About({ withHeading = true }: { withHeading?: boolean }) {
   const { about } = site;
   return (
     <Section id={about.id} labelledBy="about-title">
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px hairline" />
-      <SectionHeading id="about-title" overline={about.overline} title={about.title} line={about.line} />
+      {withHeading && <SectionHeading id="about-title" overline={about.overline} title={about.title} line={about.line} />}
 
-      <RevealGroup className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 lg:mx-auto lg:max-w-4xl lg:gap-8" stagger={0.15}>
+      <RevealGroup className={cn(withHeading && "mt-12 sm:mt-16", "grid gap-5 sm:grid-cols-2 lg:mx-auto lg:max-w-4xl lg:gap-8")} stagger={0.15}>
         {about.team.map((m, i) => (
           <RevealItem key={m.name} y={40} className={cn(i === 1 && "lg:mt-16")}>
             <Parallax distance={i === 1 ? 14 : 6}>

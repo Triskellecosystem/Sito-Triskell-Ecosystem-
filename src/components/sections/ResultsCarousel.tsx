@@ -15,7 +15,7 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-function Card({ item }: { item: ResultCard }) {
+export function ResultCardView({ item }: { item: ResultCard }) {
   return (
     <article className="border-gold-static relative flex h-full flex-col justify-between overflow-hidden rounded-card bg-[linear-gradient(165deg,var(--color-surface-2),var(--color-night-raised)_60%,var(--color-surface))] p-6 sm:p-7">
       {/* "foto" segnaposto elegante */}
@@ -108,7 +108,7 @@ export function ResultsCarousel() {
             aria-label={`${i + 1} di ${results.items.length}`}
             className="w-[min(84vw,23rem)] shrink-0 snap-start sm:w-[23rem]"
           >
-            <Card item={item} />
+            <ResultCardView item={item} />
           </li>
         ))}
       </ul>

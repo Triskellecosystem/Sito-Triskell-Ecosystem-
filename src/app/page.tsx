@@ -1,29 +1,25 @@
-import { Hero } from "@/components/sections/Hero";
-import { Metrics } from "@/components/sections/Metrics";
+import { CtaBand } from "@/components/sections/CtaBand";
 import { Ecosystem } from "@/components/sections/Ecosystem";
-import { Services } from "@/components/sections/Services";
+import { Hero } from "@/components/sections/Hero";
+import { Paths } from "@/components/sections/Paths";
 import { Process } from "@/components/sections/Process";
 import { Results } from "@/components/sections/Results";
-import { Academy } from "@/components/sections/Academy";
 import { SymbolSection } from "@/components/sections/SymbolSection";
-import { About } from "@/components/sections/About";
-import { Faq } from "@/components/sections/Faq";
-import { Contact } from "@/components/sections/Contact";
+import { site } from "@/content/site";
 
+/** Home: presenta l'ecosistema e smista verso Agency e Academy. Il dettaglio sta nelle pagine dedicate. */
 export default function HomePage() {
   return (
     <>
       <Hero />
       <Ecosystem />
-      <Metrics />
-      <Services />
+      <Paths />
+      <CtaBand content={site.cta.home} />
       <Process />
       <Results />
-      <Academy />
+      <CtaBand content={site.cta.results} />
       <SymbolSection />
-      <About />
-      <Faq />
-      <Contact />
+      <CtaBand content={site.cta.generic} />
     </>
   );
 }

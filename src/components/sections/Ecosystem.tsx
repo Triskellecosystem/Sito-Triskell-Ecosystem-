@@ -58,7 +58,7 @@ function Branch({ question, name, line, points, cta, icon, badge, tone }: Branch
           </h3>
           <p className="mt-4 max-w-md text-lead text-fg-2">{line}</p>
 
-          <ul className="mt-6 space-y-3">
+          <ul className="mt-6 space-y-2.5">
             {points.map((point) => (
               <li key={point} className="flex items-center gap-3 text-[0.9375rem] text-fg">
                 <span className={cn("grid h-6 w-6 shrink-0 place-items-center rounded-full border", gold ? "border-gold-400/50 bg-gold-300/10 text-gold-300" : "border-azure-400/50 bg-azure-400/10 text-azure-300")}>
@@ -80,45 +80,74 @@ function Branch({ question, name, line, points, cta, icon, badge, tone }: Branch
   );
 }
 
+/** Un settore: pillola con icona. */
+function Sector({ label, icon, align }: { label: string; icon: IconName; align: "left" | "right" | "center" }) {
+  return (
+    <li className={cn("flex items-center", align === "left" && "lg:flex-row-reverse")}>
+      <span className="inline-flex items-center gap-2.5 rounded-full border border-line-strong bg-surface/80 px-4 py-2.5 font-display text-[0.9375rem] font-semibold tracking-tight text-fg shadow-card backdrop-blur-sm">
+        <Icon name={icon} className="h-[1.125rem] w-[1.125rem] text-gold-300" strokeWidth={1.7} />
+        {label}
+      </span>
+      {align !== "center" && (
+        <span aria-hidden="true" className="relative mx-1 hidden h-px w-14 flex-1 overflow-hidden bg-gold-300/25 lg:block xl:w-24">
+          <span className={cn("dot-flow absolute inset-0 block", align === "left" ? "" : "dot-flow--rev")} />
+        </span>
+      )}
+    </li>
+  );
+}
+
 /**
- * Cos'è Triskell Ecosystem? Definizione in una riga, i 4 settori, poi uno SCHEMA: il logo in alto
- * (l'ecosistema) si divide in due rami, ognuno introdotto dalla domanda a cui risponde:
- * «Vuoi delegare tutto a noi? → Agency» oppure «Vuoi imparare…? → Academy».
+ * Cos'è Triskell Ecosystem? Tutto centrato: titolo, descrizione, poi la "costellazione" — il logo grande
+ * al centro con i 4 settori collegati da impulsi luminosi — e sotto lo schema dei due rami, ognuno
+ * introdotto dalla domanda a cui risponde («Vuoi delegare tutto a noi? → Agency» / «Vuoi imparare…? → Academy»).
  */
 export function Ecosystem() {
   const { ecosystem: e } = site;
+  const [m, ai, auto, form] = e.sectors;
 
   return (
-    <Section id={e.id} labelledBy="eco-title">
-      <SectionHeading id="eco-title" overline={e.overline} title={e.title} line={e.line} />
-
-      <Reveal delay={0.1} className="mt-8">
-        <p className="mb-3 text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-3">{e.sectorsLabel}</p>
-        <ul className="flex flex-wrap gap-2.5">
-          {e.sectors.map((sector) => (
-            <li key={sector} className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface/70 px-4 py-2 text-[0.9375rem] font-medium text-fg">
-              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-gold-300" />
-              {sector}
-            </li>
-          ))}
-        </ul>
+    <Section id="ecosistema" labelledBy="eco-title" className="pt-[clamp(1.5rem,3vw,3rem)]">
+      <SectionHeading id="eco-title" overline={e.overline} title={e.title} align="center" />
+      <Reveal delay={0.15} blur={4} y={14}>
+        <p className="mx-auto mt-6 max-w-2xl text-center text-[clamp(1.0625rem,0.98rem+0.45vw,1.3125rem)] leading-relaxed text-fg-2">{e.description}</p>
       </Reveal>
 
-      {/* ---- SCHEMA ---- */}
-      <div className="mt-16 sm:mt-20">
-        {/* Nodo: l'ecosistema */}
-        <Reveal y={20} blur={0} className="mx-auto flex w-fit flex-col items-center text-center">
-          <span className="relative grid place-items-center">
-            <span aria-hidden="true" className="absolute -inset-6 rounded-full bg-[radial-gradient(circle,var(--glow-azure),transparent_66%)] opacity-70" />
-            <LogoMark size={104} sizes="104px" className="relative h-[104px] w-[104px] drop-shadow-[0_10px_24px_rgb(0_0_0/0.5)]" />
-          </span>
-          <p className="mt-4 font-display text-[1.25rem] font-bold tracking-tight text-fg">{e.nodeLabel}</p>
+      {/* ---- COSTELLAZIONE: settori attorno al logo ---- */}
+      <div className="mt-12 sm:mt-16">
+        <p className="mb-6 text-center text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-3">{e.sectorsLabel}</p>
+        <Reveal y={20} blur={0}>
+          <div className="mx-auto grid max-w-4xl items-center gap-y-8 lg:grid-cols-[1fr_auto_1fr] lg:gap-x-12">
+            <ul className="order-2 flex flex-wrap justify-center gap-3 lg:order-1 lg:grid lg:grid-cols-1 lg:gap-6">
+              {m && <Sector {...m} align="left" />}
+              {ai && <Sector {...ai} align="left" />}
+            </ul>
+
+            <div className="relative order-1 mx-auto grid place-items-center lg:order-2">
+              <span aria-hidden="true" className="absolute -inset-10 rounded-full bg-[radial-gradient(circle,var(--glow-gold),transparent_62%)] opacity-40" />
+              <span aria-hidden="true" className="absolute -inset-5 animate-[spin_36s_linear_infinite] rounded-full border border-dashed border-gold-400/40" />
+              <span aria-hidden="true" className="absolute -inset-10 animate-[spin_60s_linear_infinite_reverse] rounded-full border border-azure-400/30 [border-top-color:var(--color-azure-300)]" />
+              <LogoMark size={148} sizes="148px" className="relative h-[148px] w-[148px] drop-shadow-[0_14px_30px_rgb(0_0_0/0.55)]" />
+            </div>
+
+            <ul className="order-3 flex flex-wrap justify-center gap-3 lg:grid lg:grid-cols-1 lg:gap-6">
+              {auto && <Sector {...auto} align="right" />}
+              {form && <Sector {...form} align="right" />}
+            </ul>
+          </div>
+        </Reveal>
+      </div>
+
+      {/* ---- SCHEMA: due rami ---- */}
+      <div className="mt-12 sm:mt-14">
+        <Reveal y={16} blur={0} className="text-center">
+          <p className="font-display text-[1.125rem] font-bold tracking-tight text-fg">{e.nodeLabel}</p>
           <p className="mt-1 text-small text-fg-3">{e.nodeHint}</p>
         </Reveal>
 
         {/* Connettore (desktop): gambo → barra → due discese. Si disegna con transform. */}
         <Reveal y={0} blur={0} className="hidden lg:block">
-          <div aria-hidden="true" className="relative mx-auto h-16 w-full">
+          <div aria-hidden="true" className="relative mx-auto mt-3 h-14 w-full">
             <span className="grow-y absolute left-1/2 top-0 h-1/2 w-px -translate-x-1/2 bg-gold-300/80" style={{ transitionDelay: "0.1s" }} />
             <span className="grow-x absolute left-[calc(25%-0.375rem)] right-[calc(25%-0.375rem)] top-1/2 h-px bg-gradient-to-r from-gold-300/80 via-gold-300/60 to-azure-400/80" style={{ transitionDelay: "0.45s" }} />
             <span className="grow-y absolute left-[calc(25%-0.375rem)] top-1/2 bottom-0 w-px bg-gold-300/80" style={{ transitionDelay: "0.9s" }} />
@@ -126,7 +155,7 @@ export function Ecosystem() {
           </div>
         </Reveal>
         {/* Gambo (mobile) */}
-        <div aria-hidden="true" className="mx-auto h-10 w-px bg-gradient-to-b from-gold-300/80 to-gold-300/10 lg:hidden" />
+        <div aria-hidden="true" className="mx-auto mt-3 h-8 w-px bg-gradient-to-b from-gold-300/80 to-gold-300/10 lg:hidden" />
 
         {/* I due rami */}
         <RevealGroup className="relative grid gap-4 lg:grid-cols-2 lg:gap-6" stagger={0.1}>
@@ -134,7 +163,7 @@ export function Ecosystem() {
             <Branch tone="gold" icon="target" {...e.agency} />
           </RevealItem>
 
-          {/* "oppure": in mezzo tra le card (inline su mobile, sovrapposto al centro su desktop) */}
+          {/* "oppure": inline su mobile, sovrapposto al centro su desktop */}
           <div className="grid place-items-center lg:hidden">
             <span className="rounded-full border border-line-strong bg-night px-4 py-1.5 font-display text-small font-semibold uppercase tracking-[0.14em] text-fg-2">{e.or}</span>
           </div>

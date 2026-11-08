@@ -4,30 +4,47 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, m } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { site } from "@/content/site";
+import { site, type NavLink } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { getLenis } from "@/lib/lenis";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
-const SPY_IDS = ["agency", "academy", "chi-siamo"] as const;
+const linkBase = "relative inline-flex h-11 items-center px-4 text-[0.9375rem] font-medium text-fg-2 transition-colors hover:text-fg aria-[current=page]:text-fg";
 
-/** Header sticky con blur. Si compatta allo scroll (solo transform). Logo a destra. */
+function isActive(item: NavLink, pathname: string): boolean {
+  const own = item.href !== "#" && (item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`));
+  return own || !!item.children?.some((c) => c.href !== "#" && (pathname === c.href || pathname.startsWith(`${c.href}/`)));
+}
+
+const Underline = ({ on }: { on: boolean }) => (
+  <span
+    aria-hidden="true"
+    className={cn(
+      "absolute inset-x-4 bottom-2 h-px origin-left scale-x-0 bg-gold-300 transition-transform duration-[var(--dur-base)] ease-out-expo group-hover/link:scale-x-100",
+      on && "scale-x-100",
+    )}
+  />
+);
+
+/** Header sticky con blur. Si compatta allo scroll (solo transform). Logo a destra, "Prenota ora" in fondo. */
 export function Header() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
   const [compact, setCompact] = useState(false);
-  const [active, setActive] = useState<string | null>(null);
-  const [moreOpen, setMoreOpen] = useState(false);
+  // il sottomenu aperto vale solo per la pagina in cui è stato aperto: al cambio pagina si chiude da solo
+  const [openState, setOpenState] = useState<{ key: string; path: string } | null>(null);
+  const openKey = openState && openState.path === pathname ? openState.key : null;
+  const setOpenKey = (next: string | null | ((cur: string | null) => string | null)) => {
+    const value = typeof next === "function" ? next(openKey) : next;
+    setOpenState(value ? { key: value, path: pathname } : null);
+  };
   const [menuOpen, setMenuOpen] = useState(false);
-  const moreRef = useRef<HTMLLIElement>(null);
-  const moreButtonRef = useRef<HTMLButtonElement>(null);
+  const navRef = useRef<HTMLElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-
-  const href = useCallback((hash: string) => (hash.startsWith("#") && !isHome ? `/${hash}` : hash), [isHome]);
+  const hoverTimer = useRef(0);
 
   /* Compattamento allo scroll */
   useEffect(() => {
@@ -46,33 +63,15 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Scrollspy (solo home) */
+  /* Dropdown: click fuori */
   useEffect(() => {
-    if (!isHome) return;
-    const els = SPY_IDS.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
-    if (!els.length) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-          else setActive((cur) => (cur === e.target.id ? null : cur));
-        });
-      },
-      { rootMargin: "-40% 0px -50% 0px" },
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, [isHome]);
-
-  /* Dropdown "Altro": click fuori + Esc */
-  useEffect(() => {
-    if (!moreOpen) return;
+    if (!openKey) return;
     const onDown = (e: PointerEvent) => {
-      if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenState(null);
     };
     document.addEventListener("pointerdown", onDown);
     return () => document.removeEventListener("pointerdown", onDown);
-  }, [moreOpen]);
+  }, [openKey]);
 
   /* Menu mobile: blocco scroll, focus, Esc, trap del Tab */
   const closeMenu = useCallback((restoreFocus = true) => {
@@ -110,7 +109,6 @@ export function Header() {
     return () => document.removeEventListener("keydown", onKey);
   }, [menuOpen, closeMenu]);
 
-  /* Chiude il menu al cambio rotta o se si passa a desktop */
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 64rem)");
     const onChange = () => mq.matches && menuOpen && closeMenu(false);
@@ -118,11 +116,20 @@ export function Header() {
     return () => mq.removeEventListener("change", onChange);
   }, [menuOpen, closeMenu]);
 
-  const mobileItems = [...site.nav.items, ...site.nav.more.items];
+  const hoverOpen = (key: string) => (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    window.clearTimeout(hoverTimer.current);
+    setOpenKey(key);
+  };
+  const hoverClose = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => setOpenKey(null), 160);
+  };
 
   return (
     <>
-      <header data-compact={compact || undefined} className="group/header fixed inset-x-0 top-0 z-50">
+      <header className="group/header fixed inset-x-0 top-0 z-50">
         {/* Pannello blur: appare e si accorcia con transform/opacity */}
         <div
           aria-hidden="true"
@@ -137,7 +144,7 @@ export function Header() {
             compact && "-translate-y-2",
           )}
         >
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4">
             <button
               ref={menuButtonRef}
               type="button"
@@ -150,105 +157,108 @@ export function Header() {
               <Icon name="menu" className="h-6 w-6" />
             </button>
 
-            <nav aria-label="Principale" className="hidden lg:block">
-              <ul className="flex items-center gap-1">
+            <nav ref={navRef} aria-label="Principale" className="hidden lg:block">
+              <ul className="flex items-center gap-0.5">
                 {site.nav.items.map((item) => {
-                  const id = item.href.replace("#", "");
-                  const isActive = active === id;
+                  const active = isActive(item, pathname);
+                  const key = item.label;
+                  const open = openKey === key;
+
+                  if (!item.children) {
+                    return (
+                      <li key={key}>
+                        <Link href={item.href} aria-current={active ? "page" : undefined} className={cn("group/link", linkBase)}>
+                          {item.label}
+                          <Underline on={active} />
+                        </Link>
+                      </li>
+                    );
+                  }
+
+                  const panelId = `nav-${key}`;
+                  const hasOwnPage = item.href !== "#";
                   return (
-                    <li key={item.href}>
-                      <Link
-                        href={href(item.href)}
-                        aria-current={isActive ? "true" : undefined}
-                        className="group/link relative inline-flex h-11 items-center px-4 text-[0.9375rem] font-medium text-fg-2 transition-colors hover:text-fg aria-[current=true]:text-fg"
-                      >
-                        {item.label}
-                        <span
-                          aria-hidden="true"
+                    <li
+                      key={key}
+                      className="relative"
+                      onPointerEnter={hoverOpen(key)}
+                      onPointerLeave={hoverClose}
+                      onBlur={(e) => {
+                        if (!e.currentTarget.contains(e.relatedTarget)) setOpenKey((k) => (k === key ? null : k));
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape" && open) {
+                          setOpenKey(null);
+                          (e.currentTarget.querySelector("button") as HTMLElement | null)?.focus();
+                        }
+                      }}
+                    >
+                      <div className="flex items-center">
+                        {hasOwnPage ? (
+                          <Link href={item.href} aria-current={active ? "page" : undefined} className={cn("group/link pr-1", linkBase)}>
+                            {item.label}
+                            <Underline on={active} />
+                          </Link>
+                        ) : null}
+                        <button
+                          type="button"
+                          aria-expanded={open}
+                          aria-controls={panelId}
+                          aria-label={hasOwnPage ? `Apri il sottomenu ${item.label}` : undefined}
+                          onClick={() => setOpenKey(open ? null : key)}
                           className={cn(
-                            "absolute inset-x-4 bottom-2 h-px origin-left scale-x-0 bg-gold-300 transition-transform duration-[var(--dur-base)] ease-out-expo group-hover/link:scale-x-100",
-                            isActive && "scale-x-100",
+                            "group/link inline-flex h-11 items-center gap-1.5 text-[0.9375rem] font-medium text-fg-2 transition-colors hover:text-fg",
+                            hasOwnPage ? "-ml-1 pl-1 pr-3" : "px-4",
+                            !hasOwnPage && active && "text-fg",
                           )}
-                        />
-                      </Link>
+                        >
+                          {!hasOwnPage && item.label}
+                          <Icon name="chevron-down" className={cn("h-4 w-4 transition-transform duration-[var(--dur-base)] ease-out-expo", open && "rotate-180")} />
+                        </button>
+                      </div>
+                      <AnimatePresence>
+                        {open && (
+                          <m.ul
+                            id={panelId}
+                            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -4, scale: 0.98 }}
+                            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                            className="absolute left-0 top-full z-10 mt-1 w-72 origin-top-left rounded-2xl border border-line-strong bg-surface-2/95 p-2 shadow-card backdrop-blur-xl"
+                          >
+                            {item.children.map((child) => (
+                              <li key={child.href}>
+                                <Link
+                                  href={child.href}
+                                  onClick={() => setOpenKey(null)}
+                                  aria-current={pathname === child.href ? "page" : undefined}
+                                  className="group/item flex items-center justify-between gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-surface-3 aria-[current=page]:bg-surface-3"
+                                >
+                                  <span>
+                                    <span className="block text-[0.9375rem] font-semibold text-fg">{child.label}</span>
+                                    {child.hint && <span className="block text-small text-fg-3">{child.hint}</span>}
+                                  </span>
+                                  <Icon name="arrow-up-right" className="h-4 w-4 text-gold-300 transition-transform duration-[var(--dur-base)] ease-out-expo group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5" />
+                                </Link>
+                              </li>
+                            ))}
+                          </m.ul>
+                        )}
+                      </AnimatePresence>
                     </li>
                   );
                 })}
-                <li
-                  ref={moreRef}
-                  className="relative"
-                  onPointerEnter={(e) => e.pointerType === "mouse" && setMoreOpen(true)}
-                  onPointerLeave={(e) => e.pointerType === "mouse" && setMoreOpen(false)}
-                  onBlur={(e) => {
-                    if (!e.currentTarget.contains(e.relatedTarget)) setMoreOpen(false);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Escape" && moreOpen) {
-                      setMoreOpen(false);
-                      moreButtonRef.current?.focus();
-                    }
-                  }}
-                >
-                  <button
-                    ref={moreButtonRef}
-                    type="button"
-                    aria-expanded={moreOpen}
-                    aria-controls="nav-more"
-                    onClick={() => setMoreOpen((v) => !v)}
-                    className="inline-flex h-11 items-center gap-1.5 px-4 text-[0.9375rem] font-medium text-fg-2 transition-colors hover:text-fg"
-                  >
-                    {site.nav.more.label}
-                    <Icon
-                      name="chevron-down"
-                      className={cn("h-4 w-4 transition-transform duration-[var(--dur-base)] ease-out-expo", moreOpen && "rotate-180")}
-                    />
-                  </button>
-                  <AnimatePresence>
-                    {moreOpen && (
-                      <m.ul
-                        id="nav-more"
-                        initial={{ opacity: 0, y: -6, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -4, scale: 0.98 }}
-                        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="absolute left-0 top-full z-10 mt-1 w-64 origin-top-left rounded-2xl border border-line-strong bg-surface-2/95 p-2 shadow-card backdrop-blur-xl"
-                      >
-                        {site.nav.more.items.map((item) => (
-                          <li key={item.href}>
-                            <Link
-                              href={item.href}
-                              onClick={() => setMoreOpen(false)}
-                              className="group/item flex items-center justify-between gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-surface-3"
-                            >
-                              <span>
-                                <span className="block text-[0.9375rem] font-semibold text-fg">{item.label}</span>
-                                <span className="block text-small text-fg-3">{item.hint}</span>
-                              </span>
-                              <Icon
-                                name="arrow-up-right"
-                                className="h-4 w-4 text-gold-300 transition-transform duration-[var(--dur-base)] ease-out-expo group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5"
-                              />
-                            </Link>
-                          </li>
-                        ))}
-                      </m.ul>
-                    )}
-                  </AnimatePresence>
-                </li>
               </ul>
             </nav>
           </div>
 
           <div className="flex items-center gap-5 xl:gap-7">
             <div className="hidden lg:block">
-              <Button href={href(site.nav.cta.href)} size="sm" icon="calendar" iconPosition="start">
+              <Button href={site.nav.cta.href} size="sm" icon="calendar" iconPosition="start">
                 {site.nav.cta.label}
               </Button>
             </div>
-            <Logo
-              compactOnXs
-              className={cn("origin-right transition-transform duration-[var(--dur-slow)] ease-out-expo", compact && "scale-[0.9]")}
-            />
+            <Logo compactOnXs className={cn("origin-right transition-transform duration-[var(--dur-slow)] ease-out-expo", compact && "scale-[0.9]")} />
           </div>
         </div>
       </header>
@@ -266,10 +276,10 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[65] flex flex-col bg-night lg:hidden"
+            className="fixed inset-0 z-[65] flex flex-col overflow-y-auto bg-night lg:hidden"
           >
-            <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 opacity-70" />
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[image:var(--gradient-bg-hero)] opacity-80" />
+            <div aria-hidden="true" className="bg-grid pointer-events-none fixed inset-0 opacity-70" />
+            <div aria-hidden="true" className="pointer-events-none fixed inset-0 bg-[image:var(--gradient-bg-hero)] opacity-80" />
             <div className="container-x relative flex h-[var(--header-h)] shrink-0 items-center justify-between">
               <button
                 ref={closeButtonRef}
@@ -283,25 +293,51 @@ export function Header() {
               <Logo compactOnXs />
             </div>
 
-            <nav aria-label="Menu mobile" className="container-x relative flex flex-1 flex-col justify-center">
-              <ul className="space-y-1">
-                {mobileItems.map((item, i) => (
+            <nav aria-label="Menu mobile" className="container-x relative flex flex-1 flex-col justify-center py-6">
+              <ul>
+                {site.nav.items.map((item, i) => (
                   <m.li
-                    key={item.href}
-                    initial={{ opacity: 0, y: 28 }}
+                    key={item.label}
+                    initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 12, transition: { duration: 0.18, delay: 0 } }}
-                    transition={{ duration: 0.6, delay: 0.08 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0, y: 10, transition: { duration: 0.15, delay: 0 } }}
+                    transition={{ duration: 0.55, delay: 0.06 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                    className="border-b border-line"
                   >
-                    <Link
-                      href={href(item.href)}
-                      onClick={() => closeMenu(false)}
-                      className="group/m flex items-baseline gap-4 border-b border-line py-4 font-display text-[clamp(2rem,1.4rem+3vw,3rem)] font-bold tracking-tight text-fg transition-colors hover:text-gold-300"
-                    >
-                      <span className="w-7 text-small font-medium text-gold-400">{String(i + 1).padStart(2, "0")}</span>
-                      {item.label}
-                      {"hint" in item && <span className="ml-auto text-small font-normal text-fg-3">{site.nav.more.label}</span>}
-                    </Link>
+                    {item.href !== "#" ? (
+                      <Link
+                        href={item.href}
+                        onClick={() => closeMenu(false)}
+                        aria-current={isActive(item, pathname) ? "page" : undefined}
+                        className="flex items-baseline gap-4 py-3.5 font-display text-[clamp(1.75rem,1.3rem+2.4vw,2.5rem)] font-bold tracking-tight text-fg transition-colors hover:text-gold-300 aria-[current=page]:text-gold-300"
+                      >
+                        <span className="w-7 text-small font-medium text-gold-400">{String(i + 1).padStart(2, "0")}</span>
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <p className="flex items-baseline gap-4 py-3.5 font-display text-[clamp(1.75rem,1.3rem+2.4vw,2.5rem)] font-bold tracking-tight text-fg">
+                        <span className="w-7 text-small font-medium text-gold-400">{String(i + 1).padStart(2, "0")}</span>
+                        {item.label}
+                      </p>
+                    )}
+                    {item.children && (
+                      <ul className="mb-3 ml-11 space-y-0.5">
+                        {item.children
+                          .filter((c) => c.href !== item.href)
+                          .map((c) => (
+                            <li key={c.href}>
+                              <Link
+                                href={c.href}
+                                onClick={() => closeMenu(false)}
+                                className="inline-flex items-center gap-2 py-2 text-[1.0625rem] text-fg-2 transition-colors hover:text-gold-300"
+                              >
+                                <Icon name="chevron-right" className="h-4 w-4 text-gold-400" />
+                                {c.label}
+                              </Link>
+                            </li>
+                          ))}
+                      </ul>
+                    )}
                   </m.li>
                 ))}
               </ul>
@@ -314,7 +350,7 @@ export function Header() {
               transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="container-x relative pb-[max(2rem,env(safe-area-inset-bottom))]"
             >
-              <Button href={href(site.nav.cta.href)} size="lg" icon="arrow-right" className="w-full" onClick={() => closeMenu(false)}>
+              <Button href={site.nav.cta.href} size="lg" icon="arrow-right" className="w-full" onClick={() => closeMenu(false)}>
                 {site.nav.cta.label}
               </Button>
             </m.div>
