@@ -1,69 +1,50 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { site } from "@/content/site";
 import { Icon } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { TechBackdrop } from "@/components/ui/TechBackdrop";
 import { Reveal } from "@/components/motion/Reveal";
 
 type CSSVars = React.CSSProperties & { [key: `--${string}`]: string | number };
 
-/**
- * Le tre spirali del logo reale come settori conici (gradi in senso orario da "ore 12"),
- * misurati sul medaglione. Il nucleo (triangolo centrale) è un livello a parte, così non si spezza.
- */
-const SECTORS = [
-  { from: 320, span: 106, z: 40 },
-  { from: 66, span: 135, z: 90 },
-  { from: 201, span: 119, z: 140 },
-] as const;
-/** Quanto si allontana ogni spirale dal centro (px) quando la scena è scomposta. */
-const SPREAD = 104;
-const CORE = { cx: "50.5%", cy: "48.5%", r: "14%" } as const;
-
 const sizes = "(min-width: 1024px) 30rem, 90vw";
+/** Quanto si staccano i livelli lungo Z quando la scena è scomposta (px). */
+const LAYERS = [
+  { src: "/brand/triskell-layer-coils.png", z: 150, ly: "17%", base: "none" }, // le tre spirali: un unico pezzo, in alto
+  { src: "/brand/triskell-layer-disc.png", z: 0, ly: "50%", base: "brightness(1.9) saturate(1.5)" }, // il disco blu al centro
+  { src: "/brand/triskell-layer-ring.png", z: -150, ly: "83%", base: "none" }, // il cerchio oro in basso
+] as const;
 
 /**
- * Il simbolo, in 3D: il logo reale si scompone in livelli (fondo blu, anello, tre spirali, nucleo) che si
- * staccano in profondità mentre la sezione attraversa lo schermo, e si ricompongono quando esce. Il mouse
- * inclina la scena; la spirale del pilastro attivo si solleva e si illumina. Con reduced motion: vista
- * scomposta statica.
+ * Il simbolo, in 3D: mentre la sezione attraversa lo schermo il medaglione si inclina e i suoi tre livelli
+ * (spirali in un unico pezzo, disco blu, cerchio oro) si staccano in verticale, con le etichette accanto;
+ * uscendo dallo schermo si ricompongono. Il mouse inclina la scena. Con reduced motion: vista scomposta statica.
  */
 export function SymbolSection() {
   const { symbol } = site;
-  const [active, setActive] = useState<number | null>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = sceneRef.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.style.setProperty("--e", "0.8");
+      el.style.setProperty("--e", "0.9");
       return;
     }
     let raf = 0;
-    let loop = 0;
     let near = false;
-    let e = 0;
-    let spin = 0;
-    let last = 0;
     const update = () => {
       raf = 0;
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight;
       const d = Math.abs(r.top + r.height / 2 - vh * 0.5) / (vh * 0.62);
       const k = Math.min(1, Math.max(0, 1 - d));
-      e = k * k * (3 - 2 * k);
-      el.style.setProperty("--e", e.toFixed(3));
-    };
-    // le spirali girano in cerchio (solo mentre la scena è scomposta e visibile)
-    const spinLoop = (now: number) => {
-      loop = requestAnimationFrame(spinLoop);
-      const dt = Math.min((now - last) / 1000, 0.05);
-      last = now;
-      spin = (spin + dt * 22) % 360;
-      el.style.setProperty("--spin", e > 0.01 ? (spin * e).toFixed(2) : "0");
+      // plateau: resta scomposto per un tratto di scroll, poi si ricompone
+      const e = Math.min(1, k * 1.6);
+      el.style.setProperty("--e", (e * e * (3 - 2 * e)).toFixed(3));
     };
     const onScroll = () => {
       if (near && !raf) raf = requestAnimationFrame(update);
@@ -71,16 +52,7 @@ export function SymbolSection() {
     const io = new IntersectionObserver(
       ([entry]) => {
         near = !!entry?.isIntersecting;
-        if (near) {
-          onScroll();
-          if (!loop) {
-            last = performance.now();
-            loop = requestAnimationFrame(spinLoop);
-          }
-        } else {
-          cancelAnimationFrame(loop);
-          loop = 0;
-        }
+        if (near) onScroll();
       },
       { rootMargin: "30% 0px" },
     );
@@ -91,7 +63,6 @@ export function SymbolSection() {
     return () => {
       io.disconnect();
       cancelAnimationFrame(raf);
-      cancelAnimationFrame(loop);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
@@ -114,96 +85,61 @@ export function SymbolSection() {
 
   return (
     <Section id={symbol.id} labelledBy="symbol-title" className="overflow-x-clip">
-      <div aria-hidden="true" className="pointer-events-none absolute left-[-10%] top-1/2 h-[40rem] w-[40rem] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgb(5_76_137/0.35),transparent_65%)]" />
-
-      <div className="sym relative grid items-center gap-10 lg:grid-cols-12 lg:gap-12" data-active={active ?? undefined}>
-        <Reveal className="mx-auto w-full max-w-[26rem] lg:col-span-5 lg:max-w-none" from="left" blur={0}>
-          <div
-            ref={sceneRef}
-            className="sym3d relative mx-auto aspect-square w-full max-w-[30rem]"
-            onPointerMove={onPointerMove}
-            onPointerLeave={onPointerLeave}
-            role="img"
-            aria-label={site.hero.symbolAlt}
-          >
-            <div className="sym3d-persp" aria-hidden="true">
-              <div className="sym3d-tilt">
-                <div className="sym3d-scene">
-                  <div className="sym3d-sway">
-                    {/* piano d'ombra e bagliore, in fondo alla scena */}
-                    <div className="sym3d-layer" style={{ "--z": -190 } as CSSVars}>
-                      <div className="absolute inset-[-10%] rounded-full bg-[radial-gradient(circle,rgb(0_0_0/0.6),transparent_62%)]" />
-                    </div>
-                    <div className="sym3d-layer" style={{ "--z": -170 } as CSSVars}>
-                      <div className="absolute inset-[4%] rounded-full bg-[radial-gradient(circle,rgb(247_200_92/0.22),transparent_66%)]" />
-                    </div>
-
-                    <Image src="/brand/triskell-layer-disc.png" alt="" width={640} height={640} sizes={sizes} className="sym3d-layer" style={{ "--z": -90 } as CSSVars} />
-                    <Image src="/brand/triskell-layer-ring.png" alt="" width={640} height={640} sizes={sizes} className="sym3d-layer" style={{ "--z": -25 } as CSSVars} />
-
-                    {/* le tre spirali: separate, distanziate, in orbita attorno al centro */}
-                    <div className="sym3d-orbit">
-                      {SECTORS.map((sec, i) => {
-                        const mask = [
-                          `conic-gradient(from ${sec.from}deg at 50% 50%, #000 0deg ${sec.span}deg, transparent ${sec.span}deg)`,
-                          `radial-gradient(circle at ${CORE.cx} ${CORE.cy}, transparent 0 ${CORE.r}, #000 calc(${CORE.r} + 0.6%))`,
-                        ].join(", ");
-                        const rad = ((sec.from + sec.span / 2) * Math.PI) / 180;
-                        return (
+      <TechBackdrop tone="mixed" />
+      <div className="relative grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+        <Reveal className="mx-auto w-full max-w-[34rem] lg:col-span-6 lg:max-w-none" from="left" blur={0}>
+          <div ref={sceneRef} className="sym3d" onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
+            <div className="relative mx-auto w-full max-w-[34rem]" role="img" aria-label={site.hero.symbolAlt}>
+              <div className="relative aspect-square w-full sm:w-[calc(100%-9.5rem)]">
+                <div className="sym3d-persp" aria-hidden="true">
+                  <div className="sym3d-tilt">
+                    <div className="sym3d-scene">
+                      <div className="sym3d-sway">
+                        {/* ombra e bagliore sul piano */}
+                        <div className="sym3d-layer" style={{ "--z": -230 } as CSSVars}>
+                          <div className="absolute inset-[-6%] rounded-full bg-[radial-gradient(circle,rgb(0_0_0/0.55),transparent_62%)]" />
+                        </div>
+                        {LAYERS.map((l, i) => (
                           <Image
-                            key={sec.from}
-                            src="/brand/triskell-layer-coils.png"
+                            key={l.src}
+                            src={l.src}
                             alt=""
                             width={640}
                             height={640}
                             sizes={sizes}
-                            data-i={i}
-                            className="sym3d-layer sym3d-coil"
-                            style={{
-                              "--z": sec.z,
-                              "--i": i,
-                              "--dx": (Math.sin(rad) * SPREAD).toFixed(1),
-                              "--dy": (-Math.cos(rad) * SPREAD).toFixed(1),
-                              maskImage: mask,
-                              WebkitMaskImage: mask,
-                              maskComposite: "intersect",
-                              WebkitMaskComposite: "source-in",
-                            } as CSSVars}
+                            className="sym3d-layer sym3d-lit"
+                            style={{ "--z": l.z, "--i": i, "--base-f": l.base } as CSSVars}
                           />
-                        );
-                      })}
-                    </div>
-                    {/* nucleo (triangolo centrale): in alto, ruota in senso opposto */}
-                    <div className="sym3d-core">
-                      <Image
-                        src="/brand/triskell-layer-coils.png"
-                        alt=""
-                        width={640}
-                        height={640}
-                        sizes={sizes}
-                        className="sym3d-layer"
-                        style={{
-                          "--z": 200,
-                          maskImage: `radial-gradient(circle at ${CORE.cx} ${CORE.cy}, #000 0 ${CORE.r}, transparent calc(${CORE.r} + 0.6%))`,
-                          WebkitMaskImage: `radial-gradient(circle at ${CORE.cx} ${CORE.cy}, #000 0 ${CORE.r}, transparent calc(${CORE.r} + 0.6%))`,
-                        } as CSSVars}
-                      />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* etichette dei tre livelli (su mobile: sotto la scena) */}
+              <ul className="mt-6 grid grid-cols-3 gap-3 sm:mt-0 sm:block">
+                {symbol.layers.map((l, i) => (
+                  <li key={l.title} className="sym3d-label flex items-start gap-2 sm:w-[9rem]" style={{ "--ly": LAYERS[i]!.ly, "--i": i } as CSSVars}>
+                    <span aria-hidden="true" className="mt-[0.45rem] hidden h-px w-5 shrink-0 bg-gold-300/70 sm:block" />
+                    <span>
+                      <span className="sym3d-label-title block font-display text-[0.9375rem] font-semibold leading-tight text-fg-2">{l.title}</span>
+                      <span className="mt-0.5 block text-[0.75rem] leading-snug text-fg-3">{l.text}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </Reveal>
 
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-6">
           <SectionHeading id="symbol-title" overline={symbol.overline} title={symbol.title} line={symbol.line} />
 
-          <ul className="mt-9 sm:mt-11" onPointerLeave={() => setActive(null)}>
-            {symbol.pillars.map((p, i) => (
-              <li key={p.from} onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)} className="relative border-t border-line last:border-b">
-                <span aria-hidden="true" data-i={i} style={{ "--i": i } as CSSVars} className="sym-pillar-bar absolute inset-x-0 -top-px h-px bg-gold-300" />
-                <div data-i={i} style={{ "--i": i } as CSSVars} className="sym-pillar flex items-start gap-5 py-6 sm:py-7">
+          <ul className="mt-9 sm:mt-11">
+            {symbol.pillars.map((p) => (
+              <li key={p.from} className="relative border-t border-line last:border-b">
+                <div className="flex items-start gap-5 py-5 sm:py-6">
                   <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-gold-400/35 bg-gold-300/10 text-gold-300">
                     <Icon name={p.icon} className="h-6 w-6" strokeWidth={1.6} />
                   </span>

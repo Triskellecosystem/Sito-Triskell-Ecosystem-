@@ -1,5 +1,6 @@
 import { site } from "@/content/site";
 import { LogoMark } from "@/components/brand/LogoMark";
+import { LogoTilt } from "@/components/brand/LogoTilt";
 import { NetworkBackground } from "@/components/motion/NetworkBackground";
 import { Parallax } from "@/components/motion/Parallax";
 
@@ -125,12 +126,14 @@ export function HeroVisual() {
       {/* Logo reale */}
       <Parallax mode="page" rate={-0.09} className="absolute inset-0">
         <div className="absolute left-1/2 top-1/2 w-[44%] -translate-x-1/2 -translate-y-1/2 sm:w-[48%]">
-          <LogoMark
-            alt={site.hero.symbolAlt}
-            loading="eager"
-            sizes="(min-width: 640px) 280px, 44vw"
-            className="h-auto w-full drop-shadow-[0_18px_36px_rgb(0_0_0/0.55)]"
-          />
+          <LogoTilt>
+            <LogoMark
+              alt={site.hero.symbolAlt}
+              loading="eager"
+              sizes="(min-width: 640px) 280px, 44vw"
+              className="h-auto w-full drop-shadow-[0_18px_36px_rgb(0_0_0/0.55)]"
+            />
+          </LogoTilt>
         </div>
       </Parallax>
     </div>

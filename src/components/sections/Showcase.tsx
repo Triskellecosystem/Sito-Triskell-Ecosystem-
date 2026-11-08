@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Tilt } from "@/components/ui/Tilt";
-import { ResultCardView } from "./ResultsCarousel";
+import { CaseCard } from "./CaseCard";
+import { SiteCard } from "./SiteCard";
 
 type Tab = "sites" | "portfolio";
 
@@ -47,29 +48,11 @@ export function Showcase() {
       <div className="relative mt-10">
         {/* SITI WEB */}
         <div id="panel-sites" role="tabpanel" aria-labelledby="tab-sites" hidden={tab !== "sites"} className="animate-[tab-in_0.6s_var(--ease-out-expo)_backwards]">
-          <ul className="grid gap-5 md:grid-cols-3">
-            {site.sitiWeb.items.slice(0, 3).map((item, i) => (
-              <li key={i}>
-                <Tilt max={7}>
-                  <article className="overflow-hidden rounded-card border border-line bg-surface">
-                    <div className="flex items-center gap-1.5 border-b border-line bg-night/60 px-3.5 py-2.5">
-                      {[0, 1, 2].map((d) => (
-                        <span key={d} className="h-2 w-2 rounded-full bg-line-strong" />
-                      ))}
-                      <span className="ml-2 h-2 flex-1 rounded-full bg-line" />
-                    </div>
-                    <div className="relative grid aspect-[16/10] place-items-center bg-[linear-gradient(135deg,var(--color-cobalt-700),var(--color-night-glow)_60%,var(--color-surface))]">
-                      <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-60" />
-                      <span className="relative inline-flex items-center gap-2 rounded-full border border-line-strong bg-night/70 px-4 py-1.5 text-small font-medium text-fg-2 backdrop-blur">
-                        <Icon name="monitor" className="h-4 w-4 text-gold-300" />
-                        {site.sitiWeb.soon}
-                      </span>
-                    </div>
-                    <div className="p-5">
-                      <h3 className="font-display text-[1.0625rem] font-semibold tracking-tight text-fg">{item.name}</h3>
-                      <p className="mt-1 text-small text-gold-400">{item.category}</p>
-                    </div>
-                  </article>
+          <ul className="grid gap-5 md:grid-cols-3 [&>li]:h-full">
+            {site.sitiWeb.items.slice(0, 3).map((item) => (
+              <li key={item.id}>
+                <Tilt max={5} className="h-full">
+                  <SiteCard item={item} />
                 </Tilt>
               </li>
             ))}
@@ -83,11 +66,11 @@ export function Showcase() {
 
         {/* PORTFOLIO */}
         <div id="panel-portfolio" role="tabpanel" aria-labelledby="tab-portfolio" hidden={tab !== "portfolio"} className="animate-[tab-in_0.6s_var(--ease-out-expo)_backwards]">
-          <ul className="grid gap-5 md:grid-cols-3">
-            {site.results.items.map((item) => (
-              <li key={item.client}>
-                <Tilt max={6}>
-                  <ResultCardView item={item} />
+          <ul className="grid gap-5 md:grid-cols-3 [&>li]:h-full">
+            {site.results.items.slice(0, 3).map((item) => (
+              <li key={item.id}>
+                <Tilt max={5} className="h-full">
+                  <CaseCard item={item} />
                 </Tilt>
               </li>
             ))}

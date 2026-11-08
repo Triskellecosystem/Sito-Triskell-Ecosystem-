@@ -129,6 +129,14 @@
     rgb(247 200 92 / 0.28) 200deg,
     rgb(247 200 92 / 0.28) 360deg
   );
+  --gradient-beam-azure: conic-gradient(
+    from 0deg,
+    rgb(42 144 195 / 0.25) 0deg,
+    var(--color-azure-400) 70deg,
+    #bfeaff 105deg,
+    rgb(42 144 195 / 0.25) 200deg,
+    rgb(42 144 195 / 0.25) 360deg
+  );
   --gradient-bg-hero: radial-gradient(60% 55% at 72% 12%, rgb(5 76 137 / 0.55) 0%, rgb(1 26 48 / 0.7) 45%, transparent 75%);
   --gradient-bg-cta: radial-gradient(55% 60% at 15% 100%, rgb(5 56 96 / 0.7) 0%, transparent 70%);
 

@@ -1,6 +1,7 @@
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { LogoMark } from "@/components/brand/LogoMark";
+import { LogoTilt } from "@/components/brand/LogoTilt";
 import { BeamCard } from "@/components/ui/BeamCard";
 import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/Icon";
@@ -20,58 +21,58 @@ interface BranchProps {
   tone: "gold" | "azure";
 }
 
-/** Un ramo: domanda → freccia → nome del ramo → una riga → 3 punti → pulsante. Stessa struttura per entrambi. */
+/** Un ramo (compatto e delicato): domanda → nome del ramo → una riga → 3 punti → pulsante. Stessa struttura per entrambi. */
 function Branch({ question, name, line, points, cta, icon, badge, tone }: BranchProps) {
   const gold = tone === "gold";
   return (
-    <BeamCard hoverOnly={!gold} className="h-full">
+    <BeamCard tone={tone} className="h-full">
       <Spotlight
         tone={tone}
         className={cn(
-          "flex h-full flex-col rounded-[inherit] border border-line p-8 sm:p-12 lg:min-h-[41rem]",
+          "flex h-full flex-col rounded-[inherit] border border-line p-6 sm:p-8",
           gold
             ? "bg-[linear-gradient(160deg,var(--color-surface-3)_0%,var(--color-surface)_60%,var(--color-night-glow)_100%)]"
             : "bg-[linear-gradient(170deg,var(--color-surface)_0%,var(--color-night-raised)_100%)]",
         )}
       >
         <div className="relative z-[2] flex h-full flex-col">
-          <div className="flex min-h-7 items-center">
+          <div className="flex min-h-6 items-center">
             {badge && (
-              <span className="inline-flex items-center gap-2 rounded-full border border-gold-400/40 bg-gold-300/10 px-3 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-gold-300">
-                <Icon name="sparkles" className="h-3.5 w-3.5" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-400/40 bg-gold-300/10 px-2.5 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-gold-300">
+                <Icon name="sparkles" className="h-3 w-3" />
                 {badge}
               </span>
             )}
           </div>
 
-          <p className="mt-4 font-display text-[clamp(1.5rem,1.1rem+1.8vw,2.375rem)] font-semibold leading-snug tracking-tight text-fg lg:min-h-[7.25rem]">{question}</p>
+          <p className="mt-3 font-display text-[clamp(1.125rem,1rem+0.55vw,1.4375rem)] font-semibold leading-snug tracking-tight text-fg lg:min-h-[5.5rem]">{question}</p>
 
-          <div aria-hidden="true" className={cn("my-6 flex items-center gap-3", gold ? "text-gold-300" : "text-azure-300")}>
-            <span className="h-px flex-1 bg-gradient-to-r from-current to-transparent opacity-60" />
-            <span className="grid h-11 w-11 place-items-center rounded-full border-2 border-current">
-              <Icon name="arrow-down" className="h-5 w-5" strokeWidth={2} />
-            </span>
+          <div aria-hidden="true" className={cn("my-4 flex items-center gap-3", gold ? "text-gold-300" : "text-azure-300")}>
+            <span className="h-px flex-1 bg-gradient-to-r from-current to-transparent opacity-50" />
+            <Icon name="arrow-down" className="h-4 w-4" strokeWidth={2} />
           </div>
 
-          <h3 className={cn("flex items-center gap-4 font-display text-[clamp(3rem,2rem+4.4vw,5.5rem)] font-bold leading-none tracking-[-0.045em]", gold ? "text-gold" : "text-azure-300")}>
-            <Icon name={icon} className="h-[0.8em] w-[0.8em] shrink-0 text-fg" strokeWidth={1.5} />
+          <h3 className={cn("flex items-center gap-3.5 font-display text-[clamp(2rem,1.55rem+1.8vw,2.875rem)] font-bold leading-none tracking-[-0.04em]", gold ? "text-gold" : "text-azure-300")}>
+            <span className={cn("grid h-12 w-12 shrink-0 place-items-center rounded-2xl border", gold ? "border-gold-400/40 bg-gold-300/10 text-gold-300" : "border-azure-400/40 bg-azure-400/10 text-azure-300")}>
+              <Icon name={icon} className="h-6 w-6" strokeWidth={1.6} />
+            </span>
             {name}
           </h3>
-          <p className="mt-5 max-w-md text-[clamp(1.125rem,1rem+0.6vw,1.5rem)] leading-snug text-fg-2">{line}</p>
+          <p className="mt-3 max-w-md text-[1.0625rem] leading-snug text-fg-2">{line}</p>
 
-          <ul className="mt-8 space-y-3.5">
+          <ul className="mt-5 space-y-2.5">
             {points.map((point) => (
-              <li key={point} className="flex items-center gap-3.5 text-[1.125rem] text-fg">
-                <span className={cn("grid h-7 w-7 shrink-0 place-items-center rounded-full border", gold ? "border-gold-400/50 bg-gold-300/10 text-gold-300" : "border-azure-400/50 bg-azure-400/10 text-azure-300")}>
-                  <Icon name="check" className="h-3.5 w-3.5" strokeWidth={2.5} />
+              <li key={point} className="flex items-center gap-3 text-[0.9375rem] text-fg">
+                <span className={cn("grid h-5 w-5 shrink-0 place-items-center rounded-full border", gold ? "border-gold-400/50 bg-gold-300/10 text-gold-300" : "border-azure-400/50 bg-azure-400/10 text-azure-300")}>
+                  <Icon name="check" className="h-3 w-3" strokeWidth={2.5} />
                 </span>
                 {point}
               </li>
             ))}
           </ul>
 
-          <div className="mt-auto pt-10">
-            <Button href={cta.href} size="lg" icon="arrow-right">
+          <div className="mt-auto pt-7">
+            <Button href={cta.href} size="md" icon="arrow-right">
               {cta.label}
             </Button>
           </div>
@@ -81,20 +82,26 @@ function Branch({ question, name, line, points, cta, icon, badge, tone }: Branch
   );
 }
 
-/** Un settore: pillola con icona. */
-function Sector({ label, icon, align }: { label: string; icon: IconName; align: "left" | "right" | "center" }) {
+/** Un settore: pillola numerata che arriva da fuori schermo verso il logo, nell'ordine indicato da `k`. */
+function Sector({ label, icon, align, k }: { label: string; icon: IconName; align: "left" | "right"; k: number }) {
   return (
-    <li className={cn("flex items-center", align === "left" && "lg:flex-row-reverse")}>
-      <span className="inline-flex items-center gap-2.5 rounded-full border border-line-strong bg-surface/80 px-4 py-2.5 font-display text-[0.9375rem] font-semibold tracking-tight text-fg shadow-card backdrop-blur-sm">
-        <Icon name={icon} className="h-[1.125rem] w-[1.125rem] text-gold-300" strokeWidth={1.7} />
-        {label}
-      </span>
-      {align !== "center" && (
-        <span aria-hidden="true" className="relative mx-1 hidden h-px w-14 flex-1 overflow-hidden bg-gold-300/25 lg:block xl:w-24">
-          <span className={cn("dot-flow absolute inset-0 block", align === "left" ? "" : "dot-flow--rev")} />
+    <Reveal as="li" from={align === "left" ? "far-left" : "far-right"} blur={0} delay={k * 0.3} className={cn("flex items-center", align === "right" && "lg:flex-row-reverse")}>
+      <span
+        style={{ "--k": k } as React.CSSProperties}
+        className="eco-bob inline-flex items-center gap-3 rounded-full border border-line-strong bg-surface/85 py-2 pl-2 pr-5 font-display text-[1.0625rem] font-semibold tracking-tight text-fg shadow-card backdrop-blur-sm"
+      >
+        <span className="grid h-10 w-10 place-items-center rounded-full border border-gold-400/45 bg-gold-300/10 text-gold-300">
+          <Icon name={icon} className="h-5 w-5" strokeWidth={1.7} />
         </span>
-      )}
-    </li>
+        <span className="flex flex-col leading-tight">
+          <span className="text-[0.625rem] font-semibold tracking-[0.18em] text-gold-400">{String(k + 1).padStart(2, "0")}</span>
+          {label}
+        </span>
+      </span>
+      <span aria-hidden="true" className="relative mx-1 hidden h-px w-14 flex-1 overflow-hidden bg-gold-300/25 lg:block xl:w-24">
+        <span className={cn("dot-flow absolute inset-0 block", align === "left" ? "" : "dot-flow--rev")} />
+      </span>
+    </Reveal>
   );
 }
 
@@ -114,29 +121,32 @@ export function Ecosystem() {
         <p className="mx-auto mt-6 max-w-2xl text-center text-[clamp(1.0625rem,0.98rem+0.45vw,1.3125rem)] leading-relaxed text-fg-2">{e.description}</p>
       </Reveal>
 
-      {/* ---- COSTELLAZIONE: settori attorno al logo ---- */}
+      {/* ---- COSTELLAZIONE: i settori arrivano da sinistra e da destra, in ordine, verso il logo ---- */}
       <div className="mt-12 sm:mt-16">
-        <p className="mb-6 text-center text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-3">{e.sectorsLabel}</p>
-        <Reveal y={20} blur={0}>
-          <div className="mx-auto grid max-w-4xl items-center gap-y-8 lg:grid-cols-[1fr_auto_1fr] lg:gap-x-12">
-            <ul className="order-2 flex flex-wrap justify-center gap-3 lg:order-1 lg:grid lg:grid-cols-1 lg:gap-6">
-              {m && <Sector {...m} align="left" />}
-              {ai && <Sector {...ai} align="left" />}
-            </ul>
+        <p className="mb-8 text-center text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-3">{e.sectorsLabel}</p>
+        <div className="mx-auto grid max-w-4xl items-center gap-y-8 lg:grid-cols-[1fr_auto_1fr] lg:gap-x-10">
+          <ul className="order-2 flex flex-wrap justify-center gap-3 lg:order-1 lg:grid lg:grid-cols-1 lg:justify-items-end lg:gap-9">
+            {m && <Sector {...m} align="left" k={0} />}
+            {auto && <Sector {...auto} align="left" k={2} />}
+          </ul>
 
-            <div className="relative order-1 mx-auto grid place-items-center lg:order-2">
-              <span aria-hidden="true" className="absolute -inset-10 rounded-full bg-[radial-gradient(circle,var(--glow-gold),transparent_62%)] opacity-40" />
-              <span aria-hidden="true" className="absolute -inset-5 animate-[spin_36s_linear_infinite] rounded-full border border-dashed border-gold-400/40" />
-              <span aria-hidden="true" className="absolute -inset-10 animate-[spin_60s_linear_infinite_reverse] rounded-full border border-azure-400/30 [border-top-color:var(--color-azure-300)]" />
-              <LogoMark size={148} sizes="148px" className="relative h-[148px] w-[148px] drop-shadow-[0_14px_30px_rgb(0_0_0/0.55)]" />
-            </div>
+          <Reveal from="scale" y={0} blur={0} delay={0.1} className="relative order-1 mx-auto grid place-items-center lg:order-2">
+            <span aria-hidden="true" className="absolute -inset-12 rounded-full bg-[radial-gradient(circle,var(--glow-gold),transparent_62%)] opacity-40" />
+            <span aria-hidden="true" className="eco-swing absolute -inset-5 animate-[spin_36s_linear_infinite] rounded-full border border-dashed border-gold-400/40" />
+            <span aria-hidden="true" className="absolute -inset-10 animate-[spin_60s_linear_infinite_reverse] rounded-full border border-azure-400/30 [border-top-color:var(--color-azure-300)]" />
+            {[0, 1, 2, 3].map((i) => (
+              <span key={i} aria-hidden="true" style={{ "--k": i } as React.CSSProperties} className="eco-ping absolute -inset-2 rounded-full border-2 border-gold-300/80" />
+            ))}
+            <LogoTilt max={20}>
+              <LogoMark size={172} sizes="172px" className="relative h-[172px] w-[172px] drop-shadow-[0_14px_30px_rgb(0_0_0/0.55)]" />
+            </LogoTilt>
+          </Reveal>
 
-            <ul className="order-3 flex flex-wrap justify-center gap-3 lg:grid lg:grid-cols-1 lg:gap-6">
-              {auto && <Sector {...auto} align="right" />}
-              {form && <Sector {...form} align="right" />}
-            </ul>
-          </div>
-        </Reveal>
+          <ul className="order-3 flex flex-wrap justify-center gap-3 lg:grid lg:grid-cols-1 lg:justify-items-start lg:gap-9">
+            {ai && <Sector {...ai} align="right" k={1} />}
+            {form && <Sector {...form} align="right" k={3} />}
+          </ul>
+        </div>
       </div>
 
       {/* ---- SCHEMA: due rami ---- */}
@@ -162,28 +172,46 @@ export function Ecosystem() {
         {/* Gambo (mobile) */}
         <div aria-hidden="true" className="mx-auto mt-3 h-8 w-px bg-gradient-to-b from-gold-300/80 to-gold-300/10 lg:hidden" />
 
-        {/* I due rami */}
-        <RevealGroup className="relative grid gap-4 lg:grid-cols-2 lg:gap-12" stagger={0.15} alternate>
+        {/* I due rami (compatti) */}
+        <RevealGroup className="relative mx-auto grid max-w-4xl gap-4 lg:grid-cols-2 lg:gap-10" stagger={0.15} alternate>
           <RevealItem y={30} className="h-full">
-            <Tilt className="h-full">
-              <Branch tone="gold" icon="target" {...e.agency} />
+            <Tilt className="h-full" max={4}>
+              <Branch tone="gold" icon="rocket" {...e.agency} />
             </Tilt>
           </RevealItem>
 
-          {/* "oppure": inline su mobile, sovrapposto al centro su desktop */}
+          {/* "e anche": inline su mobile, sovrapposto al centro su desktop */}
           <div className="grid place-items-center lg:hidden">
-            <span className="rounded-full border border-line-strong bg-night px-5 py-2 font-display text-small font-semibold uppercase tracking-[0.14em] text-fg-2">{e.or}</span>
+            <span className="rounded-full border border-line-strong bg-night px-4 py-1.5 font-display text-[0.8125rem] font-semibold uppercase tracking-[0.14em] text-fg-2">{e.or}</span>
           </div>
-          <span className="pointer-events-none absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-gold-400/60 bg-night px-5 py-2 font-display text-small font-semibold uppercase tracking-[0.16em] text-gold-200 shadow-glow-gold lg:block">
+          <span className="pointer-events-none absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold-400/50 bg-night px-4 py-1.5 font-display text-[0.8125rem] font-semibold uppercase tracking-[0.16em] text-gold-200 shadow-glow-gold lg:block">
             {e.or}
           </span>
 
           <RevealItem y={30} className="h-full">
-            <Tilt className="h-full">
+            <Tilt className="h-full" max={4}>
               <Branch tone="azure" icon="graduation" {...e.academy} />
             </Tilt>
           </RevealItem>
         </RevealGroup>
+
+        {/* Oppure: combinale */}
+        <Reveal y={20} blur={0} className="mx-auto mt-8 max-w-2xl">
+          <div className="relative flex items-center gap-4 rounded-full border border-line-strong bg-surface/70 py-3 pl-3 pr-6 backdrop-blur-sm sm:gap-5">
+            <span className="relative flex shrink-0 items-center">
+              <span className="grid h-11 w-11 place-items-center rounded-full border border-gold-400/50 bg-night text-gold-300">
+                <Icon name="rocket" className="h-5 w-5" strokeWidth={1.6} />
+              </span>
+              <span className="-ml-2 grid h-11 w-11 place-items-center rounded-full border border-azure-400/60 bg-night text-azure-300">
+                <Icon name="graduation" className="h-5 w-5" strokeWidth={1.6} />
+              </span>
+            </span>
+            <p className="min-w-0 text-[0.9375rem] leading-snug text-fg-2">
+              <span className="block font-display text-[1.0625rem] font-semibold text-fg">{e.combine.title}</span>
+              {e.combine.text}
+            </p>
+          </div>
+        </Reveal>
       </div>
     </Section>
   );

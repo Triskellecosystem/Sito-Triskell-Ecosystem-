@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { PageHero } from "@/components/sections/PageHero";
-import { ResultCardView } from "@/components/sections/ResultsCarousel";
+import { CaseCard, NextCaseCard } from "@/components/sections/CaseCard";
 import { Section } from "@/components/ui/Section";
 import { RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { site } from "@/content/site";
@@ -21,12 +21,15 @@ export default function PortfolioPage() {
         <h2 id="progetti-title" className="sr-only">
           {portfolio.title.replace(/[[\]]/g, "")}
         </h2>
-        <RevealGroup className="grid gap-5 md:grid-cols-2 lg:grid-cols-3" stagger={0.1}>
+        <RevealGroup className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" stagger={0.1}>
           {results.items.map((item) => (
-            <RevealItem key={item.client} y={30}>
-              <ResultCardView item={item} />
+            <RevealItem key={item.id} y={30} className="h-full">
+              <CaseCard item={item} />
             </RevealItem>
           ))}
+          <RevealItem y={30} className="h-full lg:col-span-2 xl:col-span-1">
+            <NextCaseCard />
+          </RevealItem>
         </RevealGroup>
       </Section>
       <CtaBand content={site.cta.results} />

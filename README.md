@@ -42,12 +42,14 @@ Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti; il pulsante è g
 
 - **Reveal, titoli a maschera, count-up, micro-visual**: componenti *server* + CSS (solo `opacity`/`transform`/`filter`) attivati da **un solo** `IntersectionObserver` (`RevealRoot`). Zero idratazione per istanza.
 - **Hero**: logo reale su una scena in blu trasparente: pavimento digitale in prospettiva (CSS 3D), lastre di vetro, fasci di luce, rete di nodi e impulsi e anelli HUD. Il mouse sposta la scena e lascia tracce digitali (canvas attivo solo mentre ci sono particelle). Su mobile / touch / reduced motion la scena è statica. Al passaggio del mouse le parole bianche del titolo diventano oro.
-- **Simbolo 3D**: il logo reale è separato in livelli (fondo, anello, tre spirali, nucleo) con `scripts/design/gen_logo_layers.py`; la scena usa CSS 3D guidata dallo scroll e dal mouse: le tre spirali si distanziano e girano in cerchio.
-- **Entrate dai lati**: `Reveal from="left|right|scale"` e `RevealGroup alternate`; i percorsi Agency/Academy sono a zig-zag (`ZigZagSteps`).
+- **Simbolo 3D**: il logo reale è separato in livelli con `scripts/design/gen_logo_layers.py`; mentre scorri il medaglione si inclina e si impila in verticale (spirali sopra, disco blu al centro, cerchio oro sotto) con le etichette accanto, come nel video di riferimento.
+- **Logo interattivo** (`LogoTilt`): respira in idle e si inclina in 3D verso il mouse, con un riflesso che segue il cursore.
+- **Effetto digitale al mouse** riusabile (`DigitalCursor`, `TechBackdrop cursor`): hero, funnel, risultati, prenota.
+- **Entrate dai lati**: `Reveal from="left|right|scale|far-left|far-right"` e `RevealGroup alternate="far"` (da fuori schermo fino al centro: `RevealRoot` osserva il contenitore perché un elemento fuori schermo non interseca mai il viewport). Settori, funnel e percorso Academy (`ZigZagSteps`) li usano.
+- **Portatile 3D** (`LaptopShowcase`): coperchio che si apre, sito che scorre a tappe con cursore; tutto CSS in unità `cqw`.
 - **Pulsanti**: restano sul loro asse (nessun effetto magnetico); feedback solo con luce in hover e al click.
-- **Come lavoriamo**: GSAP ScrollTrigger (pin + scrub), importato dinamicamente e solo da 768 px in su.
 - **Menu e dropdown**: Motion (`LazyMotion` + `m`, solo le feature necessarie).
-- **Smooth scroll** Lenis: non su touch né con `prefers-reduced-motion`.
+- **Smooth scroll** Lenis: non su touch né con `prefers-reduced-motion`; con una "zona morta" che ignora i micro-impulsi del touchpad (dita appoggiate) finché non c'è un gesto deliberato.
 - **Matrix**: canvas solo da 768 px, DPR ≤ 1.5, in pausa fuori viewport e con tab nascosta.
 - `prefers-reduced-motion`: ogni animazione ha una versione statica.
 

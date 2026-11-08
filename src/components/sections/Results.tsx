@@ -1,24 +1,29 @@
 import { site } from "@/content/site";
+import { Button } from "@/components/ui/Button";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { Reveal } from "@/components/motion/Reveal";
-import { ResultsCarousel } from "./ResultsCarousel";
+import { TechBackdrop } from "@/components/ui/TechBackdrop";
+import { RevealGroup, RevealItem, Reveal } from "@/components/motion/Reveal";
+import { CaseCard } from "./CaseCard";
 
-/**
- * Risultati: titolo fisso a sinistra (4/12) e carousel che "sfora" fino al bordo destro dello schermo (8/12),
- * come nella grafica di riferimento. KPI grandi in oro, settore e durata come chip.
- */
+/** Risultati sulla home: titolo centrato, quattro casi reali a tutta larghezza su sfondo tech, link a tutti i progetti. */
 export function Results() {
   const { results } = site;
   return (
-    <Section id={results.id} labelledBy="results-title" className="overflow-x-clip">
-      <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-        <div className="lg:col-span-4 lg:pt-4">
-          <SectionHeading id="results-title" overline={results.overline} title={results.title} line={results.line} />
-        </div>
-        <Reveal className="min-w-0 lg:col-span-8" from="right" blur={0}>
-          <ResultsCarousel />
-        </Reveal>
-      </div>
+    <Section id={results.id} labelledBy="results-title">
+      <TechBackdrop tone="azure" cursor />
+      <SectionHeading id="results-title" overline={results.overline} title={results.title} line={results.line} align="center" />
+      <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 sm:mt-12 xl:grid-cols-4" stagger={0.12} alternate>
+        {results.items.slice(0, 4).map((item) => (
+          <RevealItem key={item.id} y={34} className="h-full">
+            <CaseCard item={item} href={`/agency/portfolio#${item.id}`} />
+          </RevealItem>
+        ))}
+      </RevealGroup>
+      <Reveal className="mt-9 flex justify-center" y={16} blur={0}>
+        <Button href={results.all.href} size="lg" icon="arrow-right" variant="secondary">
+          {results.all.label}
+        </Button>
+      </Reveal>
     </Section>
   );
 }

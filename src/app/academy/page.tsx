@@ -5,6 +5,7 @@ import { CtaBand } from "@/components/sections/CtaBand";
 import { PageHero } from "@/components/sections/PageHero";
 import { ZigZagSteps } from "@/components/sections/ZigZagSteps";
 import { Button } from "@/components/ui/Button";
+import { TechBackdrop } from "@/components/ui/TechBackdrop";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { site } from "@/content/site";
 
@@ -28,6 +29,7 @@ export default function AcademyPage() {
       </PageHero>
 
       <Section id="percorso" labelledBy="percorso-title" className="pt-[clamp(1rem,2vw,2rem)]">
+        <TechBackdrop tone="azure" cursor />
         <SectionHeading id="percorso-title" overline="Il percorso" title={p.pathTitle} line={p.pathLine} align="center" />
         <div className="mt-12 sm:mt-16">
           <ZigZagSteps path={paths.academy} tone="azure" />

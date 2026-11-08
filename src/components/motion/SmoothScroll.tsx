@@ -14,11 +14,29 @@ export function SmoothScroll() {
 
     import("lenis").then(({ default: Lenis }) => {
       if (cancelled) return;
+      // "Zona morta": un tocco leggero o le dita appoggiate sul touchpad generano micro-movimenti che
+      // facevano scivolare la pagina. Si scorre solo con un gesto deliberato: i micro-impulsi isolati
+      // vengono ignorati finché il movimento cumulato (in ~150 ms) non supera la soglia.
+      let acc = 0;
+      let lastEvent = 0;
       const lenis = new Lenis({
-        duration: 1.15,
+        duration: 0.95,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        wheelMultiplier: 0.9,
         anchors: true,
         autoRaf: true,
+        virtualScroll: ({ deltaY, event }) => {
+          if (event.type !== "wheel" || (event as WheelEvent).ctrlKey) return true;
+          const now = performance.now();
+          if (now - lastEvent > 150) acc = 0;
+          lastEvent = now;
+          acc += Math.abs(deltaY);
+          if (acc < 14) {
+            event.preventDefault();
+            return false;
+          }
+          return true;
+        },
       });
       setLenis(lenis);
       destroy = () => {

@@ -14,7 +14,7 @@ interface SectionProps {
 /** Contenitore di sezione: padding verticale fluido, ancora con scroll-margin per l'header. */
 export function Section({ id, labelledBy, className, innerClassName, children }: SectionProps) {
   return (
-    <section id={id} aria-labelledby={labelledBy} className={cn("relative py-[clamp(3.5rem,2rem+5vw,6.5rem)]", className)}>
+    <section id={id} aria-labelledby={labelledBy} className={cn("relative isolate py-[clamp(3.5rem,2rem+5vw,6.5rem)]", className)}>
       <div className={cn("container-x", innerClassName)}>{children}</div>
     </section>
   );

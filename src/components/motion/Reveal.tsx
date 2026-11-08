@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 type Tag = "div" | "li" | "p" | "article" | "span";
 type Vars = CSSProperties & { [key: `--${string}`]: string | number };
 
-export type From = "up" | "left" | "right" | "scale";
+export type From = "up" | "left" | "right" | "scale" | "far-left" | "far-right";
 
 interface RevealProps {
   children: ReactNode;
@@ -24,6 +24,10 @@ function fromVars(from: From, y: number): Vars {
       return { "--reveal-x": "-110px", "--reveal-y": "0px", "--reveal-r": "-1.5deg" };
     case "right":
       return { "--reveal-x": "110px", "--reveal-y": "0px", "--reveal-r": "1.5deg" };
+    case "far-left":
+      return { "--reveal-x": "-72vw", "--reveal-y": "0px", "--reveal-r": "-3deg", "--reveal-dur": "1.25s" };
+    case "far-right":
+      return { "--reveal-x": "72vw", "--reveal-y": "0px", "--reveal-r": "3deg", "--reveal-dur": "1.25s" };
     case "scale":
       return { "--reveal-y": `${y}px`, "--reveal-s": 0.86 };
     default:
@@ -38,7 +42,7 @@ function fromVars(from: From, y: number): Vars {
 export function Reveal({ children, className, as: Tag = "div", delay = 0, y = 40, blur = 8, from = "up" }: RevealProps) {
   const style: Vars = { "--reveal-delay": `${delay}s`, "--reveal-blur": `${blur}px`, ...fromVars(from, y) };
   return (
-    <Tag data-reveal="" className={className} style={style}>
+    <Tag data-reveal="" data-far={from.startsWith("far") ? "" : undefined} className={className} style={style}>
       {children}
     </Tag>
   );
@@ -56,12 +60,12 @@ export function RevealGroup({
   className?: string;
   as?: Tag;
   stagger?: number;
-  /** I figli entrano alternati da sinistra e da destra. */
-  alternate?: boolean;
+  /** I figli entrano alternati da sinistra e da destra ("far": da fuori dallo schermo, fino al centro). */
+  alternate?: boolean | "far";
 }) {
   const style: Vars = { "--stagger": `${Math.round(stagger * 1000)}ms` };
   return (
-    <Tag data-reveal-group="" data-alt={alternate ? "" : undefined} className={className} style={style}>
+    <Tag data-reveal-group="" data-alt={alternate === "far" ? "far" : alternate ? "" : undefined} className={className} style={style}>
       {children}
     </Tag>
   );

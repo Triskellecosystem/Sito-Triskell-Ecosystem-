@@ -41,10 +41,21 @@ export interface PathStep {
   text: string;
 }
 
+/** Cosa ottieni, in sintesi: pochi punti decisivi, con numeri che crescono. */
+export interface Impact {
+  /** Punti decisivi; `stat` = numero grande che compare e cresce (`still` = testo fisso). */
+  points: Array<{ icon: IconName; title: string; text: string; stat?: Metric & { still?: true } }>;
+  /** Barre che si riempiono (nessun dato: solo progressione). */
+  meters?: string[];
+  /** Traguardo finale della catena. */
+  finale: { icon: IconName; label: string; text: string };
+}
+
 export interface Path {
   name: string;
   tagline: string;
   steps: PathStep[];
+  impact: Impact;
   cta: { label: string; href: string };
 }
 
@@ -57,23 +68,34 @@ export interface Service {
 
 export interface CtaContent {
   title: string;
+  /** Il titolo spezzato in due: la prima riga entra da sinistra, la seconda da destra. */
+  lines: [string, string];
   text: string;
 }
 
-export interface ProcessStep {
-  title: string;
-  text: string;
-  icon: IconName;
-  /** 3 punti brevi: cosa succede in questo step. */
-  points: string[];
-}
-
-export interface ResultCard {
+/** Caso studio reale (dati del sito originale). */
+export interface CaseStudy {
+  id: string;
   sector: string;
+  place: string;
   client: string;
-  period: string;
-  kpi: Metric;
-  secondary: Metric;
+  tag: string;
+  stats: [{ value: string; label: string }, { value: string; label: string }];
+  text: string;
+  /** Tinta della "copertina" (token cromatico del brand). */
+  tone: "gold" | "azure" | "cobalt" | "lime" | "rose";
+  icon: IconName;
+}
+
+export interface SiteItem {
+  id: string;
+  name: string;
+  category: string;
+  /** Dominio mostrato nella finestra del browser. */
+  domain: string;
+  url: string;
+  /** Screenshot in /public/sites */
+  image: string;
 }
 
 export interface Tutorial {
@@ -120,6 +142,7 @@ export const site = {
     name: "Triskell Ecosystem",
     short: "Triskell",
     tagline: "Marketing, AI e automazioni per crescere davvero.",
+    slogan: "Migliora il tuo business con Triskell Ecosystem",
     description:
       "Triskell Ecosystem aiuta le aziende a crescere con marketing, intelligenza artificiale, video AI e automazioni. Agency e Academy.",
     url: "https://triskell-ecosystem.vercel.app", // TODO: dominio definitivo
@@ -156,16 +179,16 @@ export const site = {
   },
 
   hero: {
-    overline: "Marketing · AI · Automazioni",
+    overline: "Migliora il tuo business con Triskell Ecosystem",
     titleLines: ["Più clienti.", "Più guadagni."],
-    titleAccent: "Tutto automatizzato.",
-    subtitle: "Fai crescere il tuo business: lo facciamo noi, o ti insegniamo come.",
+    titleAccent: "Meno lavoro ripetitivo.",
+    subtitle: "Marketing, AI e automazioni per far crescere il tuo business: lo facciamo noi, o ti insegniamo come.",
     primaryCta: { label: "Scopri Agency", href: "/agency" },
     secondaryCta: { label: "Scopri Academy", href: "/academy" },
     keyNumbers: [
-      { value: 320, prefix: "+", suffix: "%", label: "Nuovi iscritti", todo: true }, // TODO: dato reale
-      { value: 500, prefix: "+", label: "Contatti qualificati", todo: true }, // TODO: dato reale
-      { value: 180, prefix: "+", suffix: "%", label: "Lead da campagne", todo: true }, // TODO: dato reale
+      { value: 20, suffix: "+", label: "Progetti per clienti" },
+      { value: 100, prefix: "+", suffix: "K", label: "Lead generati" },
+      { value: 3, suffix: " anni", label: "Con i clienti più fedeli" },
     ] satisfies Metric[],
     symbolAlt: "Simbolo Triskell: tre spirali oro in un medaglione blu notte",
   },
@@ -184,7 +207,7 @@ export const site = {
     overline: "L'ecosistema",
     title: "Cos'è [Triskell Ecosystem]?",
     description:
-      "Triskell Ecosystem è un ecosistema che unisce marketing, intelligenza artificiale, automazioni e formazione. Ti aiutiamo a trovare più clienti, a far lavorare meglio la tua azienda e a crescere: puoi delegarci tutto, oppure imparare a farlo da solo.", // TODO: conferma copy
+      "Triskell Ecosystem è un ecosistema che unisce marketing, intelligenza artificiale, automazioni e formazione. Ti aiutiamo a trovare più clienti, a far lavorare meglio la tua azienda e a crescere: puoi delegarci tutto, imparare a farlo da solo, oppure unire le due strade.", // TODO: conferma copy
     sectorsLabel: "I nostri settori",
     sectors: [
       { label: "Marketing", icon: "megaphone" },
@@ -194,7 +217,11 @@ export const site = {
     ] satisfies Array<{ label: string; icon: IconName }>,
     nodeLabel: "Triskell Ecosystem",
     nodeHint: "Due rami principali",
-    or: "oppure",
+    or: "e anche",
+    combine: {
+      title: "Oppure puoi combinarle assieme",
+      text: "Parti dall'Agency per i risultati subito, impara con l'Academy per crescere in autonomia.",
+    },
     agency: {
       badge: "Il nostro cuore",
       question: "Vuoi delegare tutto a noi?",
@@ -213,9 +240,9 @@ export const site = {
   },
 
   paths: {
-    overline: "Passo dopo passo",
-    title: "Cosa ottieni, [step dopo step]",
-    line: "Agency o Academy: ecco cosa succede, in modo semplice.",
+    overline: "Cosa ottieni",
+    title: "Quello che vuoi davvero: [risultati]",
+    line: "Meno punti, più effetto: ecco cosa cambia per te.",
     agency: {
       name: "Agency",
       tagline: "Ti accompagniamo lungo tutto il funnel",
@@ -227,6 +254,14 @@ export const site = {
         { icon: "target", title: "Posizionamento", text: "Ti posizioniamo sul mercato e poi spingiamo." },
         { icon: "workflow", title: "Automazioni e CRM", text: "Automatizziamo il sistema e creiamo il tuo CRM." },
       ], // TODO: conferma copy
+      impact: {
+        points: [
+          { icon: "users", title: "Più contatti", text: "Campagne e social portano richieste ogni mese.", stat: { value: 60, prefix: "30–", label: "lead al mese per cliente" } },
+          { icon: "messages", title: "Più clienti", text: "CRM e follow-up li trasformano in vendite.", stat: { value: 3, prefix: "~1 su ", label: "prenota la prova", still: true } },
+          { icon: "trending", title: "Più fatturato", text: "Un sistema continuo, che cresce nel tempo.", stat: { value: 25, prefix: "5–", suffix: "K€", label: "al mese generati" } },
+        ],
+        finale: { icon: "rocket", label: "Crescita", text: "Il tuo business cresce, mese dopo mese." },
+      },
       cta: { label: "Tutto su Agency", href: "/agency" },
     } satisfies Path,
     academy: {
@@ -240,6 +275,15 @@ export const site = {
         { icon: "workflow", title: "Costruisci da solo", text: "Crei siti, automazioni e sistemi senza dipendere da nessuno." },
         { icon: "sparkles", title: "Diventi indipendente", text: "Gestisci il tuo business in autonomia." },
       ], // TODO: conferma copy
+      impact: {
+        meters: ["Vendite", "Marketing", "Intelligenza artificiale", "Automazioni"],
+        points: [
+          { icon: "badge", title: "Autonomia", text: "Gestisci marketing, vendite e AI senza dipendere da nessuno." },
+          { icon: "users", title: "Il tuo team al passo", text: "Formi i dipendenti con percorsi pratici, subito applicabili." },
+          { icon: "zap", title: "Strumenti tuoi", text: "Costruisci siti, automazioni e sistemi da zero." },
+        ],
+        finale: { icon: "rocket", label: "Indipendenza", text: "Il tuo business cresce, e le mani sul volante sono le tue." },
+      },
       cta: { label: "Tutto su Academy", href: "/academy" },
     } satisfies Path,
   },
@@ -253,17 +297,26 @@ export const site = {
       { icon: "clock", label: "30 minuti" },
       { icon: "zap", label: "Piano su misura" },
     ] satisfies Array<{ icon: IconName; label: string }>,
-    home: { title: "Sei curioso?", text: "Parliamone insieme: troviamo la soluzione migliore per te." } satisfies CtaContent,
-    results: { title: "Vuoi risultati come questi?", text: "Prenota ora la tua call gratuita." } satisfies CtaContent,
-    agency: { title: "Vuoi delegarci tutto il lato marketing?", text: "Prenota una call gratuita: capiamo la tua situazione e ti diciamo cosa possiamo fare." } satisfies CtaContent,
-    academy: { title: "Vuoi far crescere la tua attività in modo indipendente?", text: "Prenota ora: ti diciamo da dove iniziare." } satisfies CtaContent,
-    generic: { title: "Pronto a far crescere il tuo business?", text: "Prenota ora una call gratuita con il team." } satisfies CtaContent,
+    home: { title: "Sei curioso? Parliamone insieme.", lines: ["Sei curioso?", "Parliamone insieme."], text: "Scegli un giorno: ti diciamo come far crescere il tuo business." } satisfies CtaContent,
+    results: { title: "Vuoi risultati come questi?", lines: ["Vuoi risultati", "come questi?"], text: "Prenota ora la tua call gratuita." } satisfies CtaContent,
+    agency: { title: "Vuoi delegarci il marketing?", lines: ["Vuoi delegarci", "il marketing?"], text: "Una call gratuita: capiamo la tua situazione e ti diciamo cosa possiamo fare." } satisfies CtaContent,
+    academy: { title: "Vuoi crescere in autonomia?", lines: ["Vuoi crescere", "in autonomia?"], text: "Prenota ora: ti diciamo da dove iniziare." } satisfies CtaContent,
+    generic: { title: "Pronto a far crescere il tuo business?", lines: ["Pronto a far crescere", "il tuo business?"], text: "Prenota ora una call gratuita con il team." } satisfies CtaContent,
+    booking: {
+      title: "Scegli quando parliamo",
+      daysLabel: "Giorno",
+      timesLabel: "Orario",
+      days: ["Lun", "Mar", "Mer", "Gio", "Ven"],
+      times: ["10:00", "11:30", "15:00", "17:30"],
+      confirm: "Prenota",
+      note: "Gratuita · 30 minuti · senza impegno",
+    },
   },
 
   agencyPage: {
     overline: "Agency",
-    title: "Non pensare a niente: [deleghi tutto a noi]",
-    line: "Strategia, social, campagne, siti e automazioni: ci pensiamo noi dall'inizio ai risultati.",
+    title: "Ti aiutiamo a ottenere [più clienti] per la tua attività",
+    line: "Strategia, social, campagne, siti e automazioni: ci pensiamo noi, dall'inizio ai risultati.",
     pathTitle: "Il tuo funnel, [gestito da noi]",
     pathLine: "Ecco cosa facciamo, step dopo step.",
     servicesTitle: "Cosa possiamo fare [per te]",
@@ -302,19 +355,45 @@ export const site = {
       handle: "palestra.esempio",
       name: "Palestra Esempio",
       category: "Palestra · Fitness",
-      stats: [
-        { value: "128", label: "post" },
-        { value: "12,4 K", label: "follower" },
-        { value: "310", label: "seguiti" },
-      ],
-      gain: "+312 follower questa settimana",
-      requestsLabel: "Richieste oggi",
+      bio: ["Allenati con noi, ogni giorno.", "Corsi · Personal training · Prova gratuita"],
+      posts: 128,
+      followersStart: 12418,
+      following: 310,
+      todayGain: 46,
+      gainLabel: "oggi",
+      weekGain: "+312 follower questa settimana",
+      follow: "Segui",
+      message: "Messaggio",
+      feed: [
+        { label: "Open day", icon: "dumbbell", tone: "gold" },
+        { label: "Corso HIIT", icon: "zap", tone: "azure" },
+        { label: "Prova gratuita", icon: "calendar", tone: "gold" },
+        { label: "Trasformazioni", icon: "trending", tone: "azure" },
+        { label: "Nuovi orari", icon: "clock", tone: "azure" },
+        { label: "Il team", icon: "users", tone: "gold" },
+      ] satisfies Array<{ label: string; icon: IconName; tone: "gold" | "azure" }>,
+      requestsLabel: "Nuove richieste",
       chat: [
         { who: "Marco", text: "Ciao! Vorrei info sugli abbonamenti" },
         { who: "Giulia", text: "Posso prenotare una prova gratuita?" },
         { who: "Luca", text: "Avete corsi la sera?" },
         { who: "Sara", text: "Quanto costa il pacchetto 3 mesi?" },
+        { who: "Andrea", text: "Fate anche personal training?" },
       ],
+      ads: {
+        title: "Campagna Meta Ads",
+        name: "Prova gratuita · Aprile",
+        status: "Attiva",
+        today: "Oggi sono arrivati",
+        todayValue: 18,
+        todayUnit: "contatti",
+        kpis: [
+          { label: "Costo a contatto", value: "2,40 €" },
+          { label: "Persone raggiunte", value: "9,8 K" },
+          { label: "Prove prenotate", value: "6" },
+        ],
+        bars: [32, 44, 38, 56, 62, 58, 74, 88],
+      },
     }, // TODO: dato reale (sostituire con un profilo vero e i risultati reali)
     portfolioCta: { label: "Guarda il portfolio", href: "/agency/portfolio" },
     sitesCta: { label: "Guarda i nostri siti", href: "/agency/siti-web" },
@@ -339,23 +418,36 @@ export const site = {
   sitiWeb: {
     overline: "Agency · Siti web",
     title: "Siti web firmati [William]",
-    line: "I siti realizzati dal nostro web developer.",
-    soon: "Presto online",
-    visit: "Visita il sito",
+    line: "Siti veloci, curati e pensati per far contattare: clicca per visitarli.",
+    visit: "Apri il sito",
     items: [
-      { name: "Sito da pubblicare", category: "Fitness", url: null },
-      { name: "Sito da pubblicare", category: "Wellness", url: null },
-      { name: "Sito da pubblicare", category: "Servizi", url: null },
-      { name: "Sito da pubblicare", category: "Attività locale", url: null },
-      { name: "Sito da pubblicare", category: "E-commerce", url: null },
-      { name: "Sito da pubblicare", category: "Professionista", url: null },
-    ] satisfies Array<{ name: string; category: string; url: string | null }>, // TODO: dato reale (nome, settore, link e screenshot di ogni sito)
+      { id: "lyamflow", name: "LyamFlow", category: "Software · sito incluso", domain: "lyamflow.com", url: "https://lyamflow.com", image: "/sites/lyamflow.jpg" },
+      { id: "doubletwenty", name: "The Double Twenty", category: "Brand · Made in Italy", domain: "thedoubletwenty.it", url: "https://thedoubletwenty.it", image: "/sites/doubletwenty.jpg" },
+      { id: "nutrex", name: "Nutrex Lab", category: "Sito online", domain: "nutrexlab.it", url: "https://nutrexlab.it", image: "/sites/nutrex.jpg" },
+      { id: "triskell", name: "Triskell", category: "Sito online", domain: "triskell.vercel.app", url: "https://triskell.vercel.app", image: "/sites/triskell.jpg" },
+      { id: "uniqueos", name: "Unique OS", category: "Sito online", domain: "unique-os-three.vercel.app", url: "https://unique-os-three.vercel.app", image: "/sites/uniqueos.jpg" },
+      { id: "sfizi", name: "Sfizi Partenopei", category: "Ristorazione · Lugano", domain: "sfizipartenopeilugano.ch", url: "https://sfizipartenopeilugano.ch", image: "/sites/sfizi.jpg" },
+      { id: "alleria", name: "Alleria Trattoria Pizzeria", category: "Ristorazione · Lugano", domain: "alleriatrattoriapizzeria.ch", url: "https://alleriatrattoriapizzeria.ch", image: "/sites/alleria.jpg" },
+      { id: "chiodo", name: "Ristorante Il Chiodo", category: "Ristorazione", domain: "ristorante-il-chiodo.vercel.app", url: "https://ristorante-il-chiodo.vercel.app", image: "/sites/chiodo.jpg" },
+      { id: "mani", name: "Affittacamere Manì", category: "Ospitalità · Sicilia", domain: "affittacamere-mani.vercel.app", url: "https://affittacamere-mani.vercel.app", image: "/sites/mani.jpg" },
+    ] satisfies SiteItem[],
   },
 
   portfolio: {
     overline: "Agency · Portfolio",
     title: "Progetti e [risultati]",
-    line: "Alcuni lavori, con i loro numeri.",
+    line: "Clienti reali, numeri reali.",
+    open: "Scopri il case study",
+    next: {
+      overline: "Il prossimo case study",
+      title: "Il prossimo potrebbe essere il tuo.",
+      stats: [
+        { value: 20, suffix: "+", label: "Progetti clienti" },
+        { value: 100, prefix: "+", suffix: "K", label: "Lead generati" },
+      ] satisfies Metric[],
+      primary: { label: "Vedi tutti i progetti", href: "/agency/portfolio" },
+      secondary: { label: "I nostri sistemi AI interni", href: "/agency#servizi" }, // TODO: pagina dedicata ai sistemi AI interni
+    },
   },
 
   contatti: {
@@ -364,48 +456,35 @@ export const site = {
     line: "Una call gratuita per capire insieme da dove partire.",
   },
 
-  process: {
-    overline: "Il nostro metodo",
-    title: "Come [lavoriamo]",
-    line: "Quattro passi, dalla prima call ai risultati.",
-    steps: [
-      { title: "Analisi", text: "Capiamo obiettivi, risorse e opportunità.", icon: "search", points: ["Obiettivi e budget", "Situazione di partenza", "Concorrenti e mercato"] }, // TODO: conferma copy
-      { title: "Strategia", text: "Progettiamo il piano più adatto al tuo business.", icon: "compass", points: ["Canali e messaggi", "Piano e priorità", "Tempi e obiettivi"] },
-      { title: "Produzione", text: "Creiamo contenuti, siti e automazioni.", icon: "clapperboard", points: ["Contenuti e video AI", "Siti e campagne", "Automazioni attive"] },
-      { title: "Risultati", text: "Misuriamo, ottimizziamo e scaliamo.", icon: "trending", points: ["Report chiari", "Test e ottimizzazione", "Crescita costante"] },
-    ] satisfies ProcessStep[],
-  },
-
   results: {
     id: "risultati",
     overline: "Risultati concreti",
-    title: "Storie di [crescita reale]",
-    line: "Alcuni progetti, con i loro numeri.",
-    prev: "Risultato precedente",
-    next: "Risultato successivo",
+    title: "Clienti reali, [numeri reali]",
+    line: "Alcuni progetti seguiti da Triskell Ecosystem.",
+    all: { label: "Tutti i progetti", href: "/agency/portfolio" },
     items: [
-      {
-        sector: "Fitness",
-        client: "InForm Fitness", // TODO: dato reale (conferma nome cliente e permesso di pubblicazione)
-        period: "2,5 anni insieme", // TODO: dato reale
-        kpi: { value: 320, prefix: "+", suffix: "%", label: "Nuovi iscritti", todo: true }, // TODO: dato reale
-        secondary: { value: 500, prefix: "+", label: "Contatti qualificati / anno", todo: true }, // TODO: dato reale
-      },
-      {
-        sector: "Fitness",
-        client: "Nordic Fitness Lab", // TODO: dato reale (conferma nome cliente e permesso di pubblicazione)
-        period: "1 anno insieme", // TODO: dato reale
-        kpi: { value: 180, prefix: "+", suffix: "%", label: "Lead da campagne", todo: true }, // TODO: dato reale
-        secondary: { value: 2, suffix: " su 3", label: "Prenotano la prova", todo: true }, // TODO: dato reale
-      },
-      {
-        sector: "Wellness",
-        client: "Centro wellness", // TODO: dato reale (cliente da definire)
-        period: "Periodo da definire", // TODO: dato reale
-        kpi: { value: 0, prefix: "+", suffix: "%", label: "Da definire", todo: true }, // TODO: dato reale
-        secondary: { value: 0, label: "Da definire", todo: true }, // TODO: dato reale
-      },
-    ] satisfies ResultCard[],
+      { id: "forme-fitness", sector: "Fitness & Wellness", place: "Varese", client: "Forme Fitness", tag: "Meta Ads",
+        stats: [{ value: "30–60", label: "Lead al mese" }, { value: "5–25K€", label: "Fatturato mensile" }],
+        text: "Un sistema pubblicitario continuativo che porta contatti qualificati ogni mese, da tre anni e in crescita.", tone: "lime", icon: "dumbbell" },
+      { id: "urban-fitness", sector: "Fitness ed EMS", place: "Lecco", client: "Urban Fitness Lecco", tag: "Meta Ads · CRM",
+        stats: [{ value: "30–60", label: "Lead al mese" }, { value: "~1 su 3", label: "Prova prenotata" }],
+        text: "Da zero a un sistema continuativo di acquisizione clienti: Meta Ads, social, CRM, follow-up e formazione commerciale.", tone: "rose", icon: "zap" },
+      { id: "forme-at-home", sector: "Digital Platform", place: "Coaching online", client: "ForMe Fitness at Home", tag: "Piattaforma · Area membri",
+        stats: [{ value: "Da 0", label: "Punto di partenza" }, { value: "~2,5 anni", label: "Collaborazione" }],
+        text: "Da zero a piattaforma digitale: il metodo ForMe portato online, con percorsi in vendita e fatturato ricorrente.", tone: "lime", icon: "app" },
+      { id: "mela-med", sector: "Local Business Growth", place: "Avellino", client: "Mela Med & Fitness", tag: "ADV · Social · AI",
+        stats: [{ value: "3 anni", label: "Collaborazione" }, { value: "200–250€", label: "ADV al mese" }],
+        text: "Da studio in crisi a un sistema strutturato di acquisizione clienti, con Irelia AI che segue i contatti.", tone: "azure", icon: "bot" },
+      { id: "vip-fit", sector: "Local Fitness Growth", place: "Monza", client: "Vip Fit Monza", tag: "Meta Ads locali",
+        stats: [{ value: "500+", label: "Contatti in un anno" }, { value: "~700€", label: "Meta Ads al mese" }],
+        text: "Oltre 500 contatti qualificati in un anno con campagne locali su tecnologie per l'allenamento.", tone: "rose", icon: "target" },
+      { id: "gabriele-gatti", sector: "Healthcare Lead Generation", place: "Meda", client: "Gabriele Gatti", tag: "Sito · Landing · Meta Ads",
+        stats: [{ value: "10–30", label: "Contatti al mese" }, { value: "~250€", label: "Meta Ads al mese" }],
+        text: "Sito WordPress, landing page per la prima visita e Meta Ads locali: le ricerche online diventano richieste di appuntamento.", tone: "cobalt", icon: "heart" },
+      { id: "emme-diffusion", sector: "Education Lead Generation", place: "Genova", client: "Emme Diffusion Academy", tag: "Google Ads",
+        stats: [{ value: "20–30", label: "Contatti a campagna" }, { value: "100–200€", label: "Al mese" }],
+        text: "Google Ads per promuovere corsi professionali di bellezza, con un budget contenuto.", tone: "gold", icon: "search" },
+    ] satisfies CaseStudy[],
   },
 
   academy: {
@@ -423,6 +502,12 @@ export const site = {
     overline: "Il simbolo",
     title: "Tre spirali, [una sola energia]",
     line: "Mente, corpo e anima, riletti per il mondo digitale.",
+    /** I tre livelli del medaglione, dall'alto in basso (come nel video di riferimento). */
+    layers: [
+      { title: "Le tre spirali", text: "Mente, corpo e anima." },
+      { title: "Il circuito", text: "La rete che li collega." },
+      { title: "Il cerchio", text: "Un'unica energia." },
+    ], // TODO: conferma copy dei tre livelli
     pillars: [
       { from: "Mente", to: "Digitale", text: "Strumenti, dati e AI al servizio del business.", icon: "cpu" },
       { from: "Corpo", to: "Umano", text: "Persone, relazioni e creatività al centro.", icon: "users" },
@@ -443,14 +528,14 @@ export const site = {
         headline: "10 anni di marketing, partito dentro le agenzie",
         bio: "Ha imparato il mestiere sul campo: prima per altre agenzie, poi ha deciso di costruire qualcosa di suo.",
         facts: [
-          { value: "10", label: "anni di esperienza" },
-          { value: "50+", label: "clienti gestiti" },
-          { value: "10.000 €", label: "al giorno in campagne" },
+          { value: "10", label: "anni di marketing" },
+          { value: "50+", label: "clienti seguiti" },
+          { value: "100K+", label: "lead generati" },
         ],
         curriculum: [
           "Inizia a lavorare nel marketing digitale per altre agenzie",
-          "Gestisce campagne politiche, anche da 10.000 € al giorno",
-          "Segue più di 50 clienti in contemporanea",
+          "Gestisce campagne a grande budget, comprese campagne politiche", // TODO: dato reale (importo e risultato più importante da confermare)
+          "Segue più di 50 clienti nel tempo, dal fitness ai servizi",
           "Mette a punto un metodo basato su funnel, dati e automazioni",
           "Decide di creare qualcosa di suo: nasce Triskell Ecosystem",
         ],
@@ -462,9 +547,9 @@ export const site = {
         headline: "Siti veloci, curati e pensati per far contattare",
         bio: "Costruisce siti, CRM e strumenti su misura, con un occhio fisso a velocità e risultati.",
         facts: [
-          { value: "5+", label: "anni di sviluppo web" },
-          { value: "40+", label: "siti realizzati" },
-          { value: "100", label: "obiettivo performance" },
+          { value: "5+", label: "anni di sviluppo" },
+          { value: "9", label: "siti online" },
+          { value: "100", label: "punteggio Lighthouse" },
         ],
         curriculum: [
           "Inizia a sviluppare siti web per professionisti e attività locali",
@@ -482,6 +567,25 @@ export const site = {
     title: "Il libretto sul [Vibe Coding]",
     line: "Come si costruiscono siti e app descrivendo all'intelligenza artificiale cosa vuoi ottenere.",
     coverAlt: "Copertina del libro «Vibe Coding»",
+    /** Sezione "Da dove partire?": come sul sito originale. */
+    guide: {
+      overline: "[ 10 ] Vibe Coding · La nostra guida",
+      title: "Da dove partire? [Da qui.]",
+      text: "Oltre 10 capitoli pratici per costruire app, automazioni e prototipi con l'AI, senza essere uno sviluppatore.",
+      price: "5 €",
+      bullets: [
+        { icon: "briefcase", text: "Gli strumenti: Lovable, Cursor, Codex, Claude, Manus e gli altri" },
+        { icon: "workflow", text: "Il flusso di lavoro completo, dall'idea al prodotto vivo" },
+        { icon: "users", text: "Nell'Area Membri altre guide: prompt e reel con AI, gestione contatti e lead, video reel per ADV" },
+      ] satisfies Array<{ icon: IconName; text: string }>,
+      primary: { label: "Scopri la Guida", href: "https://www.triskellecosystem.com/vibe-coding" },
+      secondary: { label: "Leggi l'estratto gratuito", href: "https://www.triskellecosystem.com/risorse/vibe-coding-estratto" },
+      skills: {
+        overline: "[ Guida pratica · Claude Skills ]",
+        title: "Ho smesso di scaricare Skill di Claude. Ora me le costruisco in 10 minuti.",
+        link: { label: "Leggi la guida", href: "https://www.triskellecosystem.com/vibe-coding" }, // TODO: link diretto alla guida sulle Claude Skills
+      },
+    },
     badges: ["Gratis", "Senza saper programmare", "Pensato per chi ha un'attività"],
     // TODO: collegare nel nuovo sito il modulo email (estratto PDF) e il checkout; per ora i pulsanti portano al sito originale.
     freeCta: { label: "Scarica l'estratto gratis", href: "https://www.triskellecosystem.com/risorse/vibe-coding-estratto" },
@@ -600,7 +704,7 @@ export const site = {
   },
 
   footer: {
-    tagline: "Marketing, AI e automazioni per crescere davvero.",
+    tagline: "Migliora il tuo business con Triskell Ecosystem.",
     columns: [
       {
         title: "Esplora",

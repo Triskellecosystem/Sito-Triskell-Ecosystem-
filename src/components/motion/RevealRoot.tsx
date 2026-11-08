@@ -48,15 +48,27 @@ export function RevealRoot() {
     };
 
     const runners = new WeakMap<Element, () => void>();
+    // Gli elementi che partono da fuori schermo (data-far) non intersecano mai il viewport: si osserva il loro contenitore.
+    const proxied = new Map<Element, HTMLElement[]>();
+    const reveal = (el: HTMLElement) => {
+      el.setAttribute("data-revealed", "");
+      el.setAttribute("data-inview", "");
+      runners.get(el)?.();
+    };
 
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           const el = entry.target as HTMLElement;
-          el.setAttribute("data-revealed", "");
-          el.setAttribute("data-inview", "");
-          runners.get(el)?.();
+          const list = proxied.get(el);
+          if (list) {
+            list.forEach(reveal);
+            proxied.delete(el);
+            if (el.matches(SELECTOR) && !el.hasAttribute("data-revealed")) reveal(el);
+          } else {
+            reveal(el);
+          }
           io.unobserve(el);
         }
       },
@@ -74,7 +86,15 @@ export function RevealRoot() {
         if (el.hasAttribute("data-count")) el.setAttribute("data-ready", "");
         return;
       }
-      io.observe(el);
+      const host = el.hasAttribute("data-far") ? el.parentElement : null;
+      if (host) {
+        const list = proxied.get(host) ?? [];
+        list.push(el);
+        proxied.set(host, list);
+        io.observe(host);
+      } else {
+        io.observe(el);
+      }
     });
 
     return () => io.disconnect();

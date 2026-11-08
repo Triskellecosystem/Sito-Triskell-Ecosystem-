@@ -11,7 +11,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 /** Ritratto stilizzato (silhouette) al posto della foto: si sostituisce con l'immagine vera. */
 function Portrait({ initials }: { initials: string }) {
   return (
-    <div className="relative aspect-[4/4.3] overflow-hidden bg-[linear-gradient(160deg,var(--color-cobalt-600),var(--color-night-glow)_58%,var(--color-surface))]">
+    <div className="relative aspect-[16/10] overflow-hidden bg-[linear-gradient(160deg,var(--color-cobalt-600),var(--color-night-glow)_58%,var(--color-surface))]">
       <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-60" />
       <div aria-hidden="true" className="absolute left-1/2 top-[30%] h-[70%] w-[90%] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgb(42_144_195/0.5),transparent_66%)]" />
       <svg viewBox="0 0 400 430" aria-hidden="true" className="absolute inset-0 h-full w-full">
@@ -41,25 +41,25 @@ function Portrait({ initials }: { initials: string }) {
   );
 }
 
-function MemberCard({ m, offset }: { m: TeamMember; offset: boolean }) {
+function MemberCard({ m }: { m: TeamMember }) {
   const [open, setOpen] = useState(false);
   const id = useId();
   const { about } = site;
   return (
-    <Spotlight className={cn("group/card h-full rounded-card border border-line bg-surface transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-gold-400/50 hover:shadow-[0_0_44px_-14px_rgb(247_200_92/0.4)]", offset && "lg:mt-20")}>
-      <article className="relative z-[2]">
+    <Spotlight className={cn("group/card h-full rounded-card border border-line bg-surface transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-gold-400/50 hover:shadow-[0_0_44px_-14px_rgb(247_200_92/0.4)]")}>
+      <article className="relative z-[2] flex h-full flex-col">
         <Portrait initials={m.initials} />
-        <div className="p-6 sm:p-8">
-          <h3 className="text-[clamp(1.75rem,1.4rem+1.2vw,2.5rem)] font-bold leading-none tracking-[-0.03em] text-fg">{m.name}</h3>
-          <p className="mt-2 text-small font-semibold uppercase tracking-[0.12em] text-gold-400">{m.role}</p>
-          <p className="mt-4 font-display text-[1.25rem] font-semibold leading-snug tracking-tight text-fg">{m.headline}</p>
-          <p className="mt-2 text-body text-fg-2">{m.bio}</p>
+        <div className="flex flex-1 flex-col p-6 sm:p-7">
+          <h3 className="text-[clamp(1.5rem,1.3rem+0.8vw,2rem)] font-bold leading-none tracking-[-0.03em] text-fg">{m.name}</h3>
+          <p className="mt-2 text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-gold-400">{m.role}</p>
+          <p className="mt-4 font-display text-[1.0625rem] font-semibold leading-snug tracking-tight text-fg sm:min-h-[3.1rem]">{m.headline}</p>
+          <p className="mt-2 text-[0.9375rem] leading-snug text-fg-2 sm:min-h-[4.2rem]">{m.bio}</p>
 
-          <dl className="mt-6 grid grid-cols-3 gap-2 border-t border-line pt-5">
+          <dl className="mt-5 grid grid-cols-3 gap-2 border-t border-line pt-4">
             {m.facts.map((f) => (
               <div key={f.label}>
-                <dd className="font-display text-[clamp(1.25rem,1.05rem+0.8vw,1.75rem)] font-bold leading-none tracking-[-0.03em] text-gold">{f.value}</dd>
-                <dt className="mt-1.5 text-[0.75rem] leading-tight text-fg-2">{f.label}</dt>
+                <dd className="font-display text-[clamp(1.125rem,1rem+0.5vw,1.4375rem)] font-bold leading-none tracking-[-0.03em] text-gold">{f.value}</dd>
+                <dt className="mt-1.5 text-[0.6875rem] leading-tight text-fg-2">{f.label}</dt>
               </div>
             ))}
           </dl>
@@ -69,7 +69,7 @@ function MemberCard({ m, offset }: { m: TeamMember; offset: boolean }) {
             aria-expanded={open}
             aria-controls={id}
             onClick={() => setOpen((v) => !v)}
-            className="mt-6 inline-flex items-center gap-2 rounded-full border border-gold-400/50 px-5 py-2.5 text-small font-semibold text-gold-200 transition-[background-color,border-color,box-shadow] duration-[var(--dur-base)] hover:border-gold-300 hover:bg-gold-300/10 hover:shadow-[0_0_30px_-6px_rgb(247_200_92/0.5)] active:bg-gold-300/20"
+            className="mt-5 inline-flex w-fit items-center gap-2 rounded-full border border-gold-400/50 px-4 py-2 text-[0.8125rem] font-semibold text-gold-200 transition-[background-color,border-color,box-shadow] duration-[var(--dur-base)] hover:border-gold-300 hover:bg-gold-300/10 hover:shadow-[0_0_30px_-6px_rgb(247_200_92/0.5)] active:bg-gold-300/20"
           >
             {open ? about.less : about.more}
             <Icon name="chevron-down" className={cn("h-4 w-4 transition-transform duration-[var(--dur-base)] ease-out-expo", open && "rotate-180")} />
@@ -95,7 +95,7 @@ function MemberCard({ m, offset }: { m: TeamMember; offset: boolean }) {
 }
 
 /**
- * Chi siamo: due card ritratto, la seconda sfalsata più in basso. Ognuna ha titolo, numeri chiave
+ * Chi siamo: due card ritratto allineate (stessa altezza, stessi punti di riferimento). Ognuna ha titolo, numeri chiave
  * e un percorso professionale che si espande al click. Foto e curriculum sono segnaposto da sostituire.
  */
 export function About() {
@@ -106,9 +106,9 @@ export function About() {
         {about.title.replace(/[[\]]/g, "")}
       </h2>
       <RevealGroup className="grid gap-6 md:grid-cols-2 lg:mx-auto lg:max-w-5xl lg:gap-10" stagger={0.18} alternate>
-        {about.team.map((m, i) => (
-          <RevealItem key={m.name} y={40}>
-            <MemberCard m={m} offset={i === 1} />
+        {about.team.map((m) => (
+          <RevealItem key={m.name} y={40} className="h-full">
+            <MemberCard m={m} />
           </RevealItem>
         ))}
       </RevealGroup>

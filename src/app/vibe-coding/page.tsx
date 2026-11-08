@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { PageHero } from "@/components/sections/PageHero";
+import { VibeGuide } from "@/components/sections/VibeGuide";
 import { VibeStepPath } from "@/components/sections/VibeStepPath";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -87,6 +88,8 @@ export default function VibeCodingPage() {
           ))}
         </ul>
       </section>
+
+      <VibeGuide />
 
       <Section id="idee" labelledBy="idee-title">
         <SectionHeading id="idee-title" overline="01" title={v.ideasTitle} line={v.ideasLine} align="center" />
