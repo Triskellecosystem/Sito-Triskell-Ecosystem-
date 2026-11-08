@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { Icon, type IconName } from "@/components/ui/Icon";
+import { GymLogo, Poster } from "./SocialPosters";
 
 const HIGHLIGHTS: Array<{ icon: IconName; label: string }> = [
   { icon: "dumbbell", label: "Corsi" },
@@ -15,14 +16,16 @@ const HIGHLIGHTS: Array<{ icon: IconName; label: string }> = [
 const nf = new Intl.NumberFormat("it-IT");
 
 /**
- * Mock di un profilo Instagram "fatto bene" (palestra) + schermata campagne Meta Ads, in un telefono.
- * I follower crescono in tempo reale con il contatore "+N oggi" accanto, le richieste in chat compaiono
- * in fretta e ben visibili, e ogni ~8 s il telefono passa dal profilo alla campagna ("oggi sono arrivati N contatti").
+ * Mock di un profilo Instagram fatto bene (palestra) + schermata campagne Meta Ads, in un telefono.
+ * · Il contatore dei follower è grande, cambia colore a ogni incremento e corre veloce, con "+N oggi" accanto.
+ * · Si passa dal profilo alla campagna con i pulsanti, le frecce o scorrendo (si alterna anche da solo).
+ * · Le richieste in arrivo stanno in un pannello separato sotto il telefono: non coprono mai il resto.
  * Il timer gira solo se il mock è visibile e senza reduced motion. I dati sono DIMOSTRATIVI (site.agencyPage.demo).
  */
 export function SocialMock() {
   const d = site.agencyPage.demo;
   const rootRef = useRef<HTMLElement>(null);
+  const drag = useRef<number | null>(null);
   const [tick, setTick] = useState(0);
   const [manual, setManual] = useState<number | null>(null);
 
@@ -33,7 +36,7 @@ export function SocialMock() {
     let timer = 0;
     const io = new IntersectionObserver(([en]) => {
       window.clearInterval(timer);
-      if (en?.isIntersecting) timer = window.setInterval(() => setTick((t) => t + 1), 1100);
+      if (en?.isIntersecting) timer = window.setInterval(() => setTick((t) => t + 1), 420);
     });
     io.observe(el);
     return () => {
@@ -42,78 +45,101 @@ export function SocialMock() {
     };
   }, []);
 
-  const auto = Math.floor(tick / 7) % 2;
+  // tick ogni 0,42 s → il cambio automatico di schermata avviene ogni ~12 s (e si ferma se scegli tu)
+  const auto = Math.floor(tick / 28) % 2;
   const screen = manual ?? auto;
-  const followers = d.followersStart + tick;
-  const gain = d.todayGain + tick;
-  const contacts = d.ads.todayValue + Math.floor(tick / 3);
-  const n = Math.floor(tick / 2);
-  const chat = [0, 1, 2].map((k) => ({ ...d.chat[(n + 5 - k + d.chat.length * 3) % d.chat.length]!, key: n - k }));
+  const followers = d.followersStart + tick + Math.floor(tick / 3);
+  const gain = d.todayGain + tick + Math.floor(tick / 3);
+  const contacts = d.ads.todayValue + Math.floor(tick / 5);
+  const n = Math.floor(tick / 4);
+  const chat = [0, 1, 2].map((k) => ({ ...d.chat[(n + d.chat.length * 4 - k) % d.chat.length]!, key: n - k }));
+  const requests = 9 + n;
+
+  const go = (to: number) => setManual(((to % 2) + 2) % 2);
+  const tabs: Array<{ label: string; icon: IconName }> = [
+    { label: d.tabs.profile, icon: "smartphone" },
+    { label: d.tabs.campaign, icon: "trending" },
+  ];
 
   return (
     <figure ref={rootRef} className="relative mx-auto w-[19.5rem] sm:w-[21rem]" aria-label={`${d.note}: profilo Instagram di una palestra e campagna pubblicitaria con i contatti in arrivo`}>
       <div aria-hidden="true" className="absolute -inset-12 rounded-full bg-[radial-gradient(circle,rgb(42_144_195/0.4),transparent_65%)]" />
 
-      <div aria-hidden="true" className="relative aspect-[9/18.5] overflow-hidden rounded-[2.4rem] border-[6px] border-line-strong bg-night shadow-[0_40px_90px_-30px_rgb(0_0_0/0.9),0_0_0_1px_rgb(42_144_195/0.35)]">
+      <div
+        aria-hidden="true"
+        className="relative aspect-[9/16.6] touch-pan-y select-none overflow-hidden rounded-[2.4rem] border-[6px] border-line-strong bg-night shadow-[0_40px_90px_-30px_rgb(0_0_0/0.9),0_0_0_1px_rgb(42_144_195/0.35)]"
+        onPointerDown={(e) => {
+          drag.current = e.clientX;
+        }}
+        onPointerUp={(e) => {
+          if (drag.current !== null && Math.abs(e.clientX - drag.current) > 40) go(screen + (e.clientX < drag.current ? 1 : -1));
+          drag.current = null;
+        }}
+      >
         <span className="absolute left-1/2 top-2 z-30 h-5 w-24 -translate-x-1/2 rounded-full bg-night-deep" />
 
-        {/* ===== Schermata 1: profilo ===== */}
-        <div className={cn("absolute inset-0 flex flex-col px-3.5 pb-3 pt-9 transition-[opacity,transform] duration-700 ease-out-expo", screen === 0 ? "opacity-100" : "pointer-events-none -translate-x-6 opacity-0")}>
+        {/* ===== Schermata 1: profilo Instagram ===== */}
+        <div className={cn("absolute inset-0 flex flex-col px-3.5 pb-3 pt-9 transition-[opacity,transform] duration-700 ease-out-expo", screen === 0 ? "opacity-100" : "pointer-events-none -translate-x-8 opacity-0")}>
           <div className="flex items-center justify-between text-fg">
             <p className="flex items-center gap-1 text-[0.8125rem] font-bold">
               {d.handle}
               <Icon name="badge" className="h-3.5 w-3.5 text-azure-300" />
             </p>
-            <Icon name="plus" className="h-4 w-4" />
+            <span className="flex items-center gap-2.5">
+              <Icon name="plus" className="h-4 w-4" />
+              <Icon name="menu" className="h-4 w-4" />
+            </span>
           </div>
 
           <div className="mt-2.5 flex items-center gap-3">
-            {/* logo della palestra come foto profilo */}
-            <span className="grid h-[3.75rem] w-[3.75rem] shrink-0 place-items-center rounded-full bg-[conic-gradient(from_200deg,var(--color-gold-300),var(--color-azure-400),var(--color-gold-300))] p-[2.5px]">
-              <span className="relative grid h-full w-full place-items-center overflow-hidden rounded-full bg-[radial-gradient(circle_at_50%_30%,var(--color-cobalt-500),var(--color-night-deep)_75%)]">
-                <Icon name="dumbbell" className="h-6 w-6 text-gold-300" strokeWidth={1.9} />
-                <span className="absolute inset-x-0 bottom-[3px] text-center font-display text-[0.375rem] font-bold uppercase tracking-[0.12em] text-fg">Palestra</span>
+            <span className="grid h-[3.9rem] w-[3.9rem] shrink-0 place-items-center rounded-full bg-[conic-gradient(from_200deg,var(--color-gold-300),var(--color-azure-400),var(--color-gold-300))] p-[2.5px]">
+              <span className="block h-full w-full overflow-hidden rounded-full">
+                <GymLogo />
               </span>
             </span>
-            <dl className="grid flex-1 grid-cols-3 text-center">
+            <dl className="grid flex-1 grid-cols-2 gap-x-2 text-center">
               <div>
-                <dd className="font-display text-[0.9375rem] font-bold leading-none text-fg">{d.posts}</dd>
+                <dd className="font-display text-[1rem] font-bold leading-none text-fg">{d.posts}</dd>
                 <dt className="mt-1 text-[0.625rem] text-fg-3">post</dt>
               </div>
-              <div className="relative">
-                <dd className="font-display text-[0.9375rem] font-bold leading-none tabular-nums text-fg">{nf.format(followers)}</dd>
-                <dt className="mt-1 text-[0.625rem] text-fg-3">follower</dt>
-              </div>
               <div>
-                <dd className="font-display text-[0.9375rem] font-bold leading-none text-fg">{d.following}</dd>
+                <dd className="font-display text-[1rem] font-bold leading-none text-fg">{d.following}</dd>
                 <dt className="mt-1 text-[0.625rem] text-fg-3">seguiti</dt>
               </div>
             </dl>
           </div>
 
-          {/* crescita giornaliera, accanto ai follower */}
-          <div className="mt-2 flex items-center justify-between gap-2">
-            <p className="min-w-0 text-[0.625rem] leading-snug text-fg-2">
-              <span className="font-semibold text-fg">{d.name}</span>
-              <br />
-              {d.bio[0]}
-              <br />
-              <span className="text-azure-300">{d.bio[1]}</span>
-            </p>
-            <span key={gain} className="grow-pill flex shrink-0 items-center gap-1 rounded-full border border-gold-400/60 bg-gold-300/15 px-2.5 py-1 text-[0.6875rem] font-bold tabular-nums text-gold-200 shadow-glow-gold">
-              <Icon name="trending" className="h-3 w-3" strokeWidth={2.4} />+{gain} {d.gainLabel}
-            </span>
+          {/* contatore follower: grande, cambia colore a ogni incremento */}
+          <div className="relative mt-2.5 overflow-hidden rounded-2xl border border-gold-400/50 bg-[linear-gradient(160deg,var(--color-cobalt-700),var(--color-night-raised))] px-3.5 py-2.5 shadow-glow-gold">
+            <div className="flex items-end justify-between gap-2">
+              <div>
+                <p className="text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-fg-3">{d.followersLabel}</p>
+                <p key={followers} className="follower-num font-display text-[2.5rem] font-extrabold leading-none tracking-[-0.04em] tabular-nums">
+                  {nf.format(followers)}
+                </p>
+              </div>
+              <span key={gain} className="grow-pill mb-0.5 flex shrink-0 items-center gap-1 rounded-full bg-gold-300 px-2.5 py-1 text-[0.75rem] font-bold tabular-nums text-night">
+                <Icon name="trending" className="h-3.5 w-3.5" strokeWidth={2.6} />+{gain} {d.gainLabel}
+              </span>
+            </div>
+            <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[3px] bg-gradient-to-r from-azure-400 via-gold-300 to-azure-400" />
           </div>
 
-          <div className="mt-2.5 flex gap-1.5">
+          <p className="mt-2 text-[0.625rem] leading-snug text-fg-2">
+            <span className="font-semibold text-fg">{d.name}</span> · {d.category}
+            <br />
+            {d.bio[0]} <span className="text-azure-300">{d.bio[1]}</span>
+          </p>
+
+          <div className="mt-2 flex gap-1.5">
             <span className="flex-1 rounded-lg bg-[image:var(--gradient-gold-btn)] py-1.5 text-center text-[0.6875rem] font-bold text-night">{d.follow}</span>
             <span className="flex-1 rounded-lg border border-line-strong py-1.5 text-center text-[0.6875rem] font-semibold text-fg">{d.message}</span>
           </div>
 
-          <ul className="mt-2.5 flex justify-between px-1">
+          <ul className="mt-2 flex justify-between px-1">
             {HIGHLIGHTS.map((h) => (
-              <li key={h.label} className="flex flex-col items-center gap-1">
-                <span className="grid h-10 w-10 place-items-center rounded-full border border-gold-400/50 bg-gold-300/10 text-gold-300">
+              <li key={h.label} className="flex flex-col items-center gap-0.5">
+                <span className="grid h-9 w-9 place-items-center rounded-full border border-gold-400/50 bg-gold-300/10 text-gold-300">
                   <Icon name={h.icon} className="h-4 w-4" />
                 </span>
                 <span className="text-[0.5625rem] text-fg-2">{h.label}</span>
@@ -121,54 +147,29 @@ export function SocialMock() {
             ))}
           </ul>
 
-          <div className="mt-2.5 flex border-y border-line py-1.5 text-fg-3">
-            <span className="flex flex-1 justify-center text-gold-300"><Icon name="layers" className="h-4 w-4" /></span>
-            <span className="flex flex-1 justify-center"><Icon name="film" className="h-4 w-4" /></span>
-            <span className="flex flex-1 justify-center"><Icon name="users" className="h-4 w-4" /></span>
+          <div className="mt-2 flex border-y border-line py-1 text-fg-3">
+            <span className="flex flex-1 justify-center text-gold-300">
+              <Icon name="layers" className="h-4 w-4" />
+            </span>
+            <span className="flex flex-1 justify-center">
+              <Icon name="film" className="h-4 w-4" />
+            </span>
+            <span className="flex flex-1 justify-center">
+              <Icon name="users" className="h-4 w-4" />
+            </span>
           </div>
 
-          {/* feed coerente: due toni (oro / azzurro) alternati, stessa grafica */}
-          <ul className="mt-1.5 grid grid-cols-3 gap-[3px]">
-            {d.feed.map((t, i) => (
-              <li
-                key={t.label}
-                className={cn(
-                  "relative grid aspect-square place-items-center overflow-hidden",
-                  t.tone === "gold"
-                    ? "bg-[linear-gradient(145deg,var(--color-gold-600),var(--color-cobalt-800)_85%)]"
-                    : "bg-[linear-gradient(145deg,var(--color-azure-glow),var(--color-cobalt-800)_85%)]",
-                )}
-              >
-                <span aria-hidden="true" className="bg-grid absolute inset-0 opacity-30" />
-                <Icon name={t.icon} className="relative h-6 w-6 text-fg/90" strokeWidth={1.6} />
-                <span className="absolute inset-x-0 bottom-0 bg-night/55 px-1 py-0.5 text-center font-display text-[0.5rem] font-bold uppercase tracking-wide text-fg">{t.label}</span>
-                {i === 1 && <Icon name="play" className="absolute right-1 top-1 h-2.5 w-2.5 text-fg" />}
-              </li>
-            ))}
-          </ul>
-
-          {/* richieste in chat: più grandi e più veloci */}
-          <ul className="absolute inset-x-2.5 bottom-3 z-10 flex flex-col-reverse gap-1.5">
-            {chat.map((m, i) => (
-              <li
-                key={m.key}
-                className={cn(
-                  "chat-in flex items-center gap-2.5 rounded-2xl border border-azure-300/60 bg-surface-2/95 px-3 py-2.5 shadow-[0_10px_30px_-8px_rgb(0_0_0/0.7)] backdrop-blur",
-                  i === 0 ? "scale-100" : i === 1 ? "scale-[0.97] opacity-90" : "scale-[0.94] opacity-70",
-                )}
-              >
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-azure-400/30 font-display text-[0.8125rem] font-bold text-azure-300">{m.who[0]}</span>
-                <span className="min-w-0 text-[0.8125rem] leading-tight text-fg">
-                  <strong className="block text-[0.6875rem] font-semibold text-azure-300">{m.who}</strong>
-                  {m.text}
-                </span>
+          <ul className="mt-[3px] grid grid-cols-3 gap-[3px]">
+            {d.feed.map((k) => (
+              <li key={k}>
+                <Poster kind={k} />
               </li>
             ))}
           </ul>
         </div>
 
         {/* ===== Schermata 2: campagna pubblicitaria ===== */}
-        <div className={cn("absolute inset-0 flex flex-col px-4 pb-4 pt-10 transition-[opacity,transform] duration-700 ease-out-expo", screen === 1 ? "opacity-100" : "pointer-events-none translate-x-6 opacity-0")}>
+        <div className={cn("absolute inset-0 flex flex-col px-4 pb-4 pt-10 transition-[opacity,transform] duration-700 ease-out-expo", screen === 1 ? "opacity-100" : "pointer-events-none translate-x-8 opacity-0")}>
           <div className="flex items-center justify-between">
             <p className="font-display text-[0.9375rem] font-bold text-fg">{d.ads.title}</p>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-azure-300/50 bg-azure-400/15 px-2 py-0.5 text-[0.625rem] font-semibold text-azure-300">
@@ -181,15 +182,17 @@ export function SocialMock() {
           <div className="relative mt-4 overflow-hidden rounded-2xl border border-gold-400/50 bg-[linear-gradient(160deg,var(--color-cobalt-600),var(--color-night-raised))] p-4 shadow-glow-gold">
             <p className="text-[0.75rem] font-medium text-fg-2">{d.ads.today}</p>
             <p className="mt-1 flex items-end gap-2">
-              <span key={contacts} className="grow-pill text-gold font-display text-[3.25rem] font-bold leading-none tracking-[-0.05em] tabular-nums">{contacts}</span>
-              <span className="mb-1.5 font-display text-[1.125rem] font-semibold text-fg">{d.ads.todayUnit}</span>
+              <span key={contacts} className="grow-pill text-gold font-display text-[3.75rem] font-bold leading-none tracking-[-0.05em] tabular-nums">
+                {contacts}
+              </span>
+              <span className="mb-2 font-display text-[1.125rem] font-semibold text-fg">{d.ads.todayUnit}</span>
             </p>
             <span className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-gold-300 text-night">
               <Icon name="trending" className="h-4 w-4" strokeWidth={2.4} />
             </span>
           </div>
 
-          <div className="mt-4 flex h-28 items-end gap-1.5 rounded-xl border border-line bg-night-raised/60 px-3 pb-3 pt-4">
+          <div className="mt-4 flex h-32 items-end gap-1.5 rounded-xl border border-line bg-night-raised/60 px-3 pb-3 pt-4">
             {d.ads.bars.map((b, i) => (
               <span
                 key={i}
@@ -210,19 +213,56 @@ export function SocialMock() {
         </div>
       </div>
 
-      {/* selettore schermata */}
+      {/* selettore: frecce + due schede ben visibili */}
       <div className="mt-4 flex items-center justify-center gap-2">
-        {["Profilo", "Campagna"].map((label, i) => (
+        <button type="button" onClick={() => go(screen - 1)} aria-label="Schermata precedente" className="grid h-9 w-9 place-items-center rounded-full border border-line-strong text-fg transition-colors hover:border-gold-300 hover:text-gold-300">
+          <Icon name="chevron-left" className="h-4 w-4" />
+        </button>
+        {tabs.map((t, i) => (
           <button
-            key={label}
+            key={t.label}
             type="button"
-            onClick={() => setManual(i)}
+            onClick={() => go(i)}
             aria-pressed={screen === i}
-            className={cn("rounded-full border px-3.5 py-1 text-[0.75rem] font-semibold transition-colors", screen === i ? "border-gold-300 bg-gold-300/15 text-gold-200" : "border-line-strong text-fg-3 hover:text-fg")}
+            className={cn(
+              "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[0.8125rem] font-semibold transition-[background-color,border-color,color,box-shadow] duration-[var(--dur-base)]",
+              screen === i ? "border-gold-300 bg-gold-300 text-night shadow-glow-gold" : "border-line-strong text-fg-2 hover:border-gold-300/60 hover:text-fg",
+            )}
           >
-            {label}
+            <Icon name={t.icon} className="h-4 w-4" />
+            {t.label}
           </button>
         ))}
+        <button type="button" onClick={() => go(screen + 1)} aria-label="Schermata successiva" className="grid h-9 w-9 place-items-center rounded-full border border-line-strong text-fg transition-colors hover:border-gold-300 hover:text-gold-300">
+          <Icon name="chevron-right" className="h-4 w-4" />
+        </button>
+      </div>
+
+      {/* richieste in arrivo: pannello separato, mai sovrapposto al telefono */}
+      <div aria-hidden="true" className="mt-4 rounded-2xl border border-azure-400/40 bg-surface/80 p-3 backdrop-blur-sm">
+        <p className="mb-2 flex items-center justify-between text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-fg-3">
+          {d.requestsLabel}
+          <span key={requests} className="grow-pill rounded-full bg-azure-400 px-2 py-0.5 text-[0.75rem] font-bold tabular-nums text-night">
+            {requests}
+          </span>
+        </p>
+        <ul className="flex flex-col gap-1.5">
+          {chat.map((m, i) => (
+            <li
+              key={m.key}
+              className={cn(
+                "chat-in flex items-center gap-2.5 rounded-xl border px-3 py-2",
+                i === 0 ? "border-gold-300/60 bg-gold-300/10" : "border-line bg-night/50 opacity-80",
+              )}
+            >
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-azure-400/30 font-display text-[0.8125rem] font-bold text-azure-300">{m.who[0]}</span>
+              <span className="min-w-0 text-[0.8125rem] leading-tight text-fg">
+                <strong className="block text-[0.6875rem] font-semibold text-azure-300">{m.who}</strong>
+                {m.text}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
       <figcaption className="mt-3 text-center text-small text-fg-3">{d.note}</figcaption>
     </figure>

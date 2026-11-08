@@ -6,6 +6,8 @@ interface TechBackdropProps {
   tone?: "azure" | "gold" | "mixed";
   /** Aggiunge l'effetto digitale al passaggio del mouse. */
   cursor?: boolean;
+  /** Sfondo più ricco: griglia di quadrati con alcune celle che si accendono e punti luce che brillano. */
+  rich?: boolean;
   className?: string;
 }
 
@@ -13,7 +15,21 @@ interface TechBackdropProps {
  * Sfondo "tech" discreto per le sezioni: griglia sfumata, aloni, tracce di circuito che scorrono piano e,
  * se richiesto, l'effetto digitale al mouse. Tutto aria-hidden, solo opacity/transform.
  */
-export function TechBackdrop({ tone = "mixed", cursor = false, className }: TechBackdropProps) {
+/** Punti luce a posizioni pseudo-casuali ma deterministiche (stesso HTML su server e client). */
+const DOTS = Array.from({ length: 34 }, (_, i) => {
+  const r = (n: number) => {
+    const x = Math.sin(i * 12.9898 + n * 78.233) * 43758.5453;
+    return x - Math.floor(x);
+  };
+  const q = (v: number) => Math.round(v * 100) / 100;
+  return { x: q(r(1) * 100), y: q(r(2) * 100), d: q(r(3) * 6), s: 2 + Math.floor(r(4) * 3), gold: r(5) > 0.62 };
+});
+const CELL = 64;
+const LIT = [
+  [3, 2], [7, 4], [11, 1], [15, 5], [19, 3], [5, 7], [13, 8], [9, 6], [17, 9], [1, 5], [21, 6], [8, 1],
+].map(([c, r], i) => ({ c: c as number, r: r as number, d: i * 0.9, gold: i % 3 === 0 }));
+
+export function TechBackdrop({ tone = "mixed", cursor = false, rich = false, className }: TechBackdropProps) {
   return (
     <div aria-hidden="true" className={cn("pointer-events-none absolute inset-0 -z-10 overflow-hidden", className)}>
       <div className="bg-grid absolute inset-0 opacity-40 [mask-image:radial-gradient(75%_70%_at_50%_45%,#000,transparent)]" />
@@ -44,6 +60,34 @@ export function TechBackdrop({ tone = "mixed", cursor = false, className }: Tech
           <circle cx="680" cy="130" r="2.5" />
         </g>
       </svg>
+      {rich && (
+        <>
+          <div
+            className="absolute inset-0 opacity-70 [mask-image:radial-gradient(85%_80%_at_50%_50%,#000_30%,transparent)]"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, rgb(58 164 212 / 0.14) 1px, transparent 1px), linear-gradient(to bottom, rgb(58 164 212 / 0.14) 1px, transparent 1px)",
+              backgroundSize: `${CELL}px ${CELL}px`,
+            }}
+          />
+          <div className="absolute inset-0 overflow-hidden [mask-image:radial-gradient(90%_85%_at_50%_50%,#000_35%,transparent)]">
+            {LIT.map((l) => (
+              <span
+                key={`${l.c}-${l.r}`}
+                className={cn("tech-lit absolute", l.gold ? "tech-lit--gold" : "")}
+                style={{ left: l.c * CELL, top: l.r * CELL, width: CELL, height: CELL, animationDelay: `${l.d}s` }}
+              />
+            ))}
+          </div>
+          {DOTS.map((d, i) => (
+            <span
+              key={i}
+              className={cn("tech-dot absolute rounded-full", d.gold ? "bg-gold-200 text-gold-300" : "bg-azure-300 text-azure-300")}
+              style={{ left: `${d.x}%`, top: `${d.y}%`, width: d.s, height: d.s, animationDelay: `${d.d}s` }}
+            />
+          ))}
+        </>
+      )}
       {cursor && <DigitalCursor />}
     </div>
   );

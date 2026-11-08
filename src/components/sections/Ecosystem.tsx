@@ -8,6 +8,7 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { Tilt } from "@/components/ui/Tilt";
+import { TechBackdrop } from "@/components/ui/TechBackdrop";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 
 interface BranchProps {
@@ -35,6 +36,7 @@ function Branch({ question, name, line, points, cta, icon, badge, tone }: Branch
             : "bg-[linear-gradient(170deg,var(--color-surface)_0%,var(--color-night-raised)_100%)]",
         )}
       >
+        <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,#000,transparent_80%)]" />
         <div className="relative z-[2] flex h-full flex-col">
           <div className="flex min-h-6 items-center">
             {badge && (
@@ -116,6 +118,7 @@ export function Ecosystem() {
 
   return (
     <Section id="ecosistema" labelledBy="eco-title" className="pt-[clamp(1.5rem,3vw,3rem)]">
+      <TechBackdrop tone="mixed" cursor rich />
       <SectionHeading id="eco-title" overline={e.overline} title={e.title} align="center" />
       <Reveal delay={0.15} blur={4} y={14}>
         <p className="mx-auto mt-6 max-w-2xl text-center text-[clamp(1.0625rem,0.98rem+0.45vw,1.3125rem)] leading-relaxed text-fg-2">{e.description}</p>

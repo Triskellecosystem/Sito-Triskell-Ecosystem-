@@ -31,7 +31,7 @@ export default function AgencyPage() {
       </PageHero>
 
       <Section id="funnel" labelledBy="funnel-title" className="pt-[clamp(1rem,2vw,2rem)]">
-        <TechBackdrop tone="gold" cursor />
+        <TechBackdrop tone="gold" cursor rich />
         <SectionHeading id="funnel-title" overline="Il funnel" title={p.pathTitle} line={p.pathLine} align="center" />
         <div className="mt-12 sm:mt-16">
           <ZigZagSteps path={paths.agency} tone="gold" />

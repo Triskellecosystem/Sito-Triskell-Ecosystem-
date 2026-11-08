@@ -3,21 +3,20 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { site } from "@/content/site";
-import { Icon } from "@/components/ui/Icon";
 
 type CSSVars = React.CSSProperties & { [key: `--${string}`]: string | number };
 const pop = (d: number) => ({ "--d": d }) as CSSVars;
 
 /**
- * Un portatile in 3D che si apre quando entra nello schermo. Sul display scorre un sito Triskell "vero"
- * (hero, numeri, servizi, lavori, prenotazione) a tappe, con un cursore che clicca. Tutto HTML/CSS:
- * il contenuto è scritto in unità del contenitore (cqw), quindi scala con il portatile.
- * Il mouse inclina il portatile. Con reduced motion: aperto e fermo sulla hero.
+ * Un portatile in 3D che si apre quando entra nello schermo. Sul display ci sono i siti veri, tutti e nove, in una
+ * galleria che scorre; poi il cursore si muove da solo, clicca Sfizi Partenopei, lo porta in primo piano e lo fa
+ * scorrere per intero, quindi torna alla galleria. Tutto HTML/CSS in unità del contenitore (cqw).
+ * Il mouse inclina il portatile. Con reduced motion: aperto e fermo sulla galleria.
  */
 export function LaptopShowcase() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const { hero } = site;
-  const shots = site.sitiWeb.items.slice(0, 6);
+  const items = site.sitiWeb.items;
+  const featured = items.find((i) => i.tall && !i.demo) ?? items[0]!;
 
   useEffect(() => {
     const el = rootRef.current;
@@ -50,7 +49,7 @@ export function LaptopShowcase() {
   }, []);
 
   return (
-    <div ref={rootRef} data-reveal="" style={{ "--reveal-y": "40px", "--reveal-blur": "0px" } as CSSVars} className="lp" role="img" aria-label="Un portatile che si apre e mostra un sito Triskell Ecosystem che scorre">
+    <div ref={rootRef} data-reveal="" style={{ "--reveal-y": "40px", "--reveal-blur": "0px" } as CSSVars} className="lp" role="img" aria-label="Un portatile che si apre e mostra i siti realizzati: uno viene aperto e scorre per intero">
       <div aria-hidden="true" className="absolute -inset-x-10 bottom-0 top-1/4 rounded-full bg-[radial-gradient(ellipse,rgb(42_144_195/0.4),transparent_65%)]" />
       <div className="lp-stage" aria-hidden="true">
         <div className="lp-laptop">
@@ -61,119 +60,42 @@ export function LaptopShowcase() {
             </div>
             <div className="lp-screen">
               <div className="lp-frame">
-                <div className="lp-view" style={{ "--base": "2.4s" } as CSSVars}>
-                  <div className="lp-page">
-                    {/* 1 · HERO */}
-                    <section className="lp-sec lp-s1">
-                      <nav className="lp-nav">
-                        <span className="lp-brand">
-                          <Image src="/brand/triskell-medallion.png" alt="" width={64} height={64} sizes="4rem" className="lp-logo" />
-                          Triskell
-                        </span>
-                        <span className="lp-links">
-                          <i>Agency</i>
-                          <i>Academy</i>
-                          <i>Siti web</i>
-                          <i>Chi siamo</i>
-                        </span>
-                        <b className="lp-pill">Prenota ora</b>
-                      </nav>
-                      <div className="lp-hero">
-                        <div>
-                          <p className="lp-over lp-pop" style={pop(0.1)}>
-                            Marketing · AI · Automazioni
-                          </p>
-                          <h4 className="lp-h lp-pop" style={pop(0.25)}>
-                            {hero.titleLines[0]}
-                            <br />
-                            <span className="lp-gold">{hero.titleLines[1]}</span>
-                          </h4>
-                          <p className="lp-sub lp-pop" style={pop(0.45)}>
-                            {hero.titleAccent}
-                          </p>
-                          <p className="lp-btns lp-pop" style={pop(0.6)}>
-                            <b className="lp-pill lp-pill--big">Scopri Agency</b>
-                            <b className="lp-ghost">Academy</b>
-                          </p>
-                        </div>
-                        <div className="lp-orb lp-pop" style={pop(0.35)}>
-                          <span className="lp-ring" />
-                          <span className="lp-ring lp-ring--2" />
-                          <Image src="/brand/triskell-medallion.png" alt="" width={256} height={256} sizes="14rem" className="lp-medal" />
-                        </div>
-                      </div>
-                    </section>
-
-                    {/* 2 · NUMERI */}
-                    <section className="lp-sec lp-s2">
-                      <h5 className="lp-h2 lp-pop" style={pop(5.2)}>
-                        Numeri <span className="lp-gold">reali</span>
-                      </h5>
-                      <div className="lp-stats">
-                        {hero.keyNumbers.map((n, i) => (
-                          <div key={n.label} className="lp-stat lp-pop" style={pop(5.4 + i * 0.25)}>
-                            <strong>
-                              {n.prefix}
-                              {n.value}
-                              {n.suffix}
-                            </strong>
-                            <span>{n.label}</span>
-                            <em>
-                              <u style={{ width: `${[78, 92, 64][i] ?? 70}%` }} />
-                            </em>
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-
-                    {/* 3 · SERVIZI */}
-                    <section className="lp-sec lp-s3">
-                      <h5 className="lp-h2 lp-pop" style={pop(10.3)}>
-                        Tutto per <span className="lp-gold">crescere</span>
-                      </h5>
-                      <div className="lp-cards">
-                        {([
-                          ["rocket", "Agency", "Marketing e clienti"],
-                          ["graduation", "Academy", "Formazione pratica"],
-                          ["monitor", "Siti web", "Veloci e curati"],
-                        ] as const).map(([icon, t, s], i) => (
-                          <div key={t} className="lp-card lp-pop" style={pop(10.5 + i * 0.25)}>
-                            <span className="lp-ico">
-                              <Icon name={icon} strokeWidth={1.7} />
-                            </span>
-                            <strong>{t}</strong>
-                            <span>{s}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-
-                    {/* 4 · LAVORI */}
-                    <section className="lp-sec lp-s4">
-                      <h5 className="lp-h2 lp-pop" style={pop(15.4)}>
-                        Lavori <span className="lp-gold">recenti</span>
-                      </h5>
-                      <div className="lp-mosaic">
-                        {shots.map((s, i) => (
-                          <div key={s.id} className="lp-shot lp-pop" style={pop(15.6 + i * 0.18)}>
-                            <Image src={s.image} alt="" width={640} height={400} sizes="22rem" loading="lazy" />
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-
-                    {/* 5 · PRENOTA */}
-                    <section className="lp-sec lp-s5">
-                      <h5 className="lp-h2 lp-h2--xl lp-pop" style={pop(19.4)}>
-                        Sei curioso?
-                        <br />
-                        <span className="lp-gold">Parliamone.</span>
-                      </h5>
-                      <b className="lp-pill lp-pill--cta lp-pop" style={pop(19.7)}>
-                        Prenota ora
-                      </b>
-                    </section>
+                <div className="lp-view">
+                  <div className="lp-bar">
+                    <i />
+                    <i />
+                    <i />
+                    <span className="lp-url">
+                      <span className="lp-url-a">triskell-ecosystem · i nostri siti</span>
+                      <span className="lp-url-b">{featured.domain}</span>
+                    </span>
                   </div>
+
+                  <div className="lp-gal">
+                    <h5>
+                      I siti che <b>abbiamo costruito</b>
+                    </h5>
+                    <div className="lp-grid">
+                      {items.map((it, i) => (
+                        <figure key={it.id} className={`lp-site lp-pop${it.id === featured.id ? " lp-hot" : ""}`} style={pop(0.1 + i * 0.12)}>
+                          <div data-d={it.domain}>
+                            <i />
+                            <i />
+                            <i />
+                          </div>
+                          <Image src={it.image} alt="" width={640} height={400} sizes="22rem" loading="lazy" />
+                          <p>{it.name}</p>
+                        </figure>
+                      ))}
+                    </div>
+                  </div>
+
+                  {featured.tall && (
+                    <div className="lp-open">
+                      <Image src={featured.tall} alt="" width={1280} height={1560} sizes="50rem" loading="lazy" className="lp-tall" />
+                    </div>
+                  )}
+
                   <svg className="lp-cursor" viewBox="0 0 24 24" fill="none">
                     <path d="M4 2l15 9-6.5 1.6L9 19 4 2z" fill="#fff" stroke="#011a30" strokeWidth="1.4" strokeLinejoin="round" />
                   </svg>

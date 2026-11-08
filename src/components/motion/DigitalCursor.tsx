@@ -2,16 +2,14 @@
 
 import { useEffect, useRef } from "react";
 
-interface Particle { x: number; y: number; vx: number; vy: number; life: number; max: number; ch: string; size: number; gold: boolean }
-interface Circuit { x: number; y: number; dx: number; dy: number; len: number; life: number; max: number }
+interface Spark { x: number; y: number; vx: number; vy: number; life: number; max: number; r: number; gold: boolean; square: boolean; rot: number; vr: number }
 interface Pt { x: number; y: number; t: number }
 
-const GLYPHS = ["0", "1", "0", "1", "{", "}", "<", ">", "/", "+", ";"];
-
 /**
- * Effetto "digitale" al movimento del mouse (scia, cifre, linee a circuito), riusabile in qualsiasi sezione:
- * si aggancia alla <section> più vicina. Canvas leggero, attivo solo mentre ci sono particelle e la sezione è
- * visibile. Disattivato su touch e con prefers-reduced-motion.
+ * Effetto al movimento del mouse, riusabile in qualsiasi sezione: punti luce che si staccano dal cursore e
+ * si collegano tra loro con sottili linee (come una rete), qualche quadratino che ruota e svanisce, e una scia
+ * morbida. Si aggancia alla <section> più vicina. Canvas leggero, attivo solo mentre ci sono particelle e la
+ * sezione è visibile. Disattivato su touch e con prefers-reduced-motion.
  */
 export function DigitalCursor({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -27,8 +25,7 @@ export function DigitalCursor({ className }: { className?: string }) {
 
     const css = getComputedStyle(document.documentElement);
     const azure = css.getPropertyValue("--color-azure-300").trim() || "#3aa4d4";
-    const azureDeep = css.getPropertyValue("--color-azure-400").trim() || "#2a90c3";
-    const gold = css.getPropertyValue("--color-gold-300").trim() || "#f7c85c";
+        const gold = css.getPropertyValue("--color-gold-300").trim() || "#f7c85c";
 
     let w = 0;
     let h = 0;
@@ -43,8 +40,7 @@ export function DigitalCursor({ className }: { className?: string }) {
     };
     resize();
 
-    const particles: Particle[] = [];
-    const circuits: Circuit[] = [];
+    const sparks: Spark[] = [];
     const trail: Pt[] = [];
     let raf = 0;
     let running = false;
@@ -56,17 +52,13 @@ export function DigitalCursor({ className }: { className?: string }) {
     const spawn = (x: number, y: number) => {
       const n = 2 + Math.floor(Math.random() * 2);
       for (let k = 0; k < n; k++) {
-        particles.push({
-          x: x + rnd(-8, 8), y: y + rnd(-8, 8), vx: rnd(-0.5, 0.5), vy: rnd(-1.1, -0.2), life: 0, max: rnd(0.9, 1.7),
-          ch: GLYPHS[Math.floor(Math.random() * GLYPHS.length)] ?? "0", size: rnd(11, 17), gold: Math.random() < 0.2,
+        const square = Math.random() < 0.22;
+        sparks.push({
+          x: x + rnd(-10, 10), y: y + rnd(-10, 10), vx: rnd(-0.35, 0.35), vy: rnd(-0.45, 0.25), life: 0, max: rnd(1.2, 2.2),
+          r: square ? rnd(5, 9) : rnd(1.6, 3.4), gold: Math.random() < 0.3, square, rot: rnd(0, 6.28), vr: rnd(-1.2, 1.2),
         });
       }
-      if (Math.random() < 0.34) {
-        const horizontal = Math.random() < 0.5;
-        circuits.push({ x, y, dx: horizontal ? (Math.random() < 0.5 ? -1 : 1) : 0, dy: horizontal ? 0 : Math.random() < 0.5 ? -1 : 1, len: rnd(36, 96), life: 0, max: rnd(0.9, 1.5) });
-      }
-      while (particles.length > 80) particles.shift();
-      while (circuits.length > 12) circuits.shift();
+      while (sparks.length > 70) sparks.shift();
     };
 
     const frame = (now: number) => {
@@ -74,68 +66,95 @@ export function DigitalCursor({ className }: { className?: string }) {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
       ctx.clearRect(0, 0, w, h);
-      while (trail.length && now - trail[0]!.t > 520) trail.shift();
+
+      // scia morbida
+      while (trail.length && now - trail[0]!.t > 420) trail.shift();
       if (trail.length > 1) {
         ctx.lineCap = "round";
         for (let i = 1; i < trail.length; i++) {
           const a = trail[i - 1]!;
           const b = trail[i]!;
-          const age = 1 - (now - b.t) / 520;
+          const age = Math.max(0, 1 - (now - b.t) / 420);
           ctx.strokeStyle = azure;
-          ctx.globalAlpha = Math.max(0, age) * 0.7;
-          ctx.lineWidth = 1 + age * 2.4;
+          ctx.globalAlpha = age * 0.35;
+          ctx.lineWidth = 1 + age * 2;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
           ctx.stroke();
         }
         const head = trail[trail.length - 1]!;
-        const g = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, 46);
-        g.addColorStop(0, "rgba(58,164,212,0.45)");
+        const g = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, 54);
+        g.addColorStop(0, "rgba(58,164,212,0.32)");
         g.addColorStop(1, "rgba(58,164,212,0)");
-        ctx.globalAlpha = Math.max(0, 1 - (now - head.t) / 520);
+        ctx.globalAlpha = Math.max(0, 1 - (now - head.t) / 420);
         ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(head.x, head.y, 46, 0, 6.283);
+        ctx.arc(head.x, head.y, 54, 0, 6.283);
         ctx.fill();
       }
-      for (let i = circuits.length - 1; i >= 0; i--) {
-        const c = circuits[i]!;
-        c.life += dt;
-        const k = c.life / c.max;
-        if (k >= 1) { circuits.splice(i, 1); continue; }
-        const grow = Math.min(1, k * 3);
-        const ex = c.x + c.dx * c.len * grow;
-        const ey = c.y + c.dy * c.len * grow;
-        ctx.globalAlpha = (1 - k) * 0.85;
-        ctx.strokeStyle = azureDeep;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(c.x, c.y);
-        ctx.lineTo(ex, ey);
-        const bx = ex + (c.dy !== 0 ? c.len * 0.35 * grow : 0);
-        const by = ey + (c.dx !== 0 ? -c.len * 0.35 * grow : 0);
-        ctx.lineTo(bx, by);
-        ctx.stroke();
-        ctx.fillStyle = gold;
-        ctx.beginPath();
-        ctx.arc(bx, by, 2.6, 0, 6.283);
-        ctx.fill();
-      }
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i]!;
+
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const p = sparks[i]!;
         p.life += dt;
-        const k = p.life / p.max;
-        if (k >= 1) { particles.splice(i, 1); continue; }
+        if (p.life >= p.max) { sparks.splice(i, 1); continue; }
         p.x += p.vx * 60 * dt;
         p.y += p.vy * 60 * dt;
-        ctx.globalAlpha = (1 - k) * 0.95;
-        ctx.fillStyle = p.gold ? gold : azure;
-        ctx.font = `${p.size}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-        ctx.fillText(p.ch, p.x, p.y);
+        p.rot += p.vr * dt;
+      }
+
+      // linee sottili tra i punti vicini
+      ctx.lineWidth = 1;
+      for (let i = 0; i < sparks.length; i++) {
+        const a = sparks[i]!;
+        if (a.square) continue;
+        for (let j = i + 1; j < sparks.length; j++) {
+          const b = sparks[j]!;
+          if (b.square) continue;
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d > 96) continue;
+          const alpha = (1 - d / 96) * (1 - a.life / a.max) * (1 - b.life / b.max) * 0.75;
+          ctx.globalAlpha = alpha;
+          ctx.strokeStyle = azure;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+
+      // punti luce e quadratini
+      for (const p of sparks) {
+        const k = p.life / p.max;
+        const fade = k < 0.15 ? k / 0.15 : 1 - (k - 0.15) / 0.85;
+        const col = p.gold ? gold : azure;
+        if (p.square) {
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.globalAlpha = fade * 0.85;
+          ctx.strokeStyle = col;
+          ctx.lineWidth = 1.4;
+          ctx.strokeRect(-p.r / 2, -p.r / 2, p.r, p.r);
+          ctx.restore();
+        } else {
+          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
+          g.addColorStop(0, p.gold ? "rgba(247,200,92,0.85)" : "rgba(120,200,240,0.85)");
+          g.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.globalAlpha = fade;
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 4, 0, 6.283);
+          ctx.fill();
+          ctx.globalAlpha = fade;
+          ctx.fillStyle = "#fff";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 0.6, 0, 6.283);
+          ctx.fill();
+        }
       }
       ctx.globalAlpha = 1;
-      if (!particles.length && !circuits.length && !trail.length) {
+      if (!sparks.length && !trail.length) {
         running = false;
         cancelAnimationFrame(raf);
         ctx.clearRect(0, 0, w, h);

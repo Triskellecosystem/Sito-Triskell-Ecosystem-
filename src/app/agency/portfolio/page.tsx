@@ -22,10 +22,17 @@ export default function PortfolioPage() {
           {portfolio.title.replace(/[[\]]/g, "")}
         </h2>
         <RevealGroup className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" stagger={0.1}>
-          {results.items.map((item) => (
-            <RevealItem key={item.id} y={30} className="h-full">
-              <CaseCard item={item} />
-            </RevealItem>
+          {results.items.map((item, i) => (
+            // la prima riga non usa il reveal (parte opaca): così la foto è subito il candidato LCP
+            i < 4 ? (
+              <div key={item.id} className="h-full">
+                <CaseCard item={item} priority />
+              </div>
+            ) : (
+              <RevealItem key={item.id} y={30} className="h-full">
+                <CaseCard item={item} />
+              </RevealItem>
+            )
           ))}
           <RevealItem y={30} className="h-full lg:col-span-2 xl:col-span-1">
             <NextCaseCard />

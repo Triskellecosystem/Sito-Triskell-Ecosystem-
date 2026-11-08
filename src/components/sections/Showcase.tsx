@@ -49,7 +49,7 @@ export function Showcase() {
         {/* SITI WEB */}
         <div id="panel-sites" role="tabpanel" aria-labelledby="tab-sites" hidden={tab !== "sites"} className="animate-[tab-in_0.6s_var(--ease-out-expo)_backwards]">
           <ul className="grid gap-5 md:grid-cols-3 [&>li]:h-full">
-            {site.sitiWeb.items.slice(0, 3).map((item) => (
+            {site.sitiWeb.featured.flatMap((id) => site.sitiWeb.items.filter((i) => i.id === id)).map((item) => (
               <li key={item.id}>
                 <Tilt max={5} className="h-full">
                   <SiteCard item={item} />

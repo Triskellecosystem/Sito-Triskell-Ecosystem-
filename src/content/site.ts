@@ -85,6 +85,8 @@ export interface CaseStudy {
   /** Tinta della "copertina" (token cromatico del brand). */
   tone: "gold" | "azure" | "cobalt" | "lime" | "rose";
   icon: IconName;
+  /** Foto reale del cliente in /public/cases */
+  image: string;
 }
 
 export interface SiteItem {
@@ -96,6 +98,10 @@ export interface SiteItem {
   url: string;
   /** Screenshot in /public/sites */
   image: string;
+  /** Screenshot lungo (pagina intera) mostrato mentre scorre nel portatile. */
+  tall?: string;
+  /** Sito dimostrativo inventato (non è un cliente reale). */
+  demo?: true;
 }
 
 export interface Tutorial {
@@ -181,7 +187,7 @@ export const site = {
   hero: {
     overline: "Migliora il tuo business con Triskell Ecosystem",
     titleLines: ["Più clienti.", "Più guadagni."],
-    titleAccent: "Meno lavoro ripetitivo.",
+    titleAccent: "Più automatizzi, più scali.",
     subtitle: "Marketing, AI e automazioni per far crescere il tuo business: lo facciamo noi, o ti insegniamo come.",
     primaryCta: { label: "Scopri Agency", href: "/agency" },
     secondaryCta: { label: "Scopri Academy", href: "/academy" },
@@ -296,21 +302,14 @@ export const site = {
       { icon: "calendar", label: "Consulenza gratuita" },
       { icon: "clock", label: "30 minuti" },
       { icon: "zap", label: "Piano su misura" },
+      { icon: "check", label: "Nessun impegno" },
     ] satisfies Array<{ icon: IconName; label: string }>,
     home: { title: "Sei curioso? Parliamone insieme.", lines: ["Sei curioso?", "Parliamone insieme."], text: "Scegli un giorno: ti diciamo come far crescere il tuo business." } satisfies CtaContent,
     results: { title: "Vuoi risultati come questi?", lines: ["Vuoi risultati", "come questi?"], text: "Prenota ora la tua call gratuita." } satisfies CtaContent,
     agency: { title: "Vuoi delegarci il marketing?", lines: ["Vuoi delegarci", "il marketing?"], text: "Una call gratuita: capiamo la tua situazione e ti diciamo cosa possiamo fare." } satisfies CtaContent,
+    sites: { title: "Vuoi delegarci il tuo sito?", lines: ["Vuoi delegarci", "il tuo sito?"], text: "Una call gratuita: ti diciamo come lo faremmo, e quanto tempo serve." } satisfies CtaContent,
     academy: { title: "Vuoi crescere in autonomia?", lines: ["Vuoi crescere", "in autonomia?"], text: "Prenota ora: ti diciamo da dove iniziare." } satisfies CtaContent,
     generic: { title: "Pronto a far crescere il tuo business?", lines: ["Pronto a far crescere", "il tuo business?"], text: "Prenota ora una call gratuita con il team." } satisfies CtaContent,
-    booking: {
-      title: "Scegli quando parliamo",
-      daysLabel: "Giorno",
-      timesLabel: "Orario",
-      days: ["Lun", "Mar", "Mer", "Gio", "Ven"],
-      times: ["10:00", "11:30", "15:00", "17:30"],
-      confirm: "Prenota",
-      note: "Gratuita · 30 minuti · senza impegno",
-    },
   },
 
   agencyPage: {
@@ -364,15 +363,10 @@ export const site = {
       weekGain: "+312 follower questa settimana",
       follow: "Segui",
       message: "Messaggio",
-      feed: [
-        { label: "Open day", icon: "dumbbell", tone: "gold" },
-        { label: "Corso HIIT", icon: "zap", tone: "azure" },
-        { label: "Prova gratuita", icon: "calendar", tone: "gold" },
-        { label: "Trasformazioni", icon: "trending", tone: "azure" },
-        { label: "Nuovi orari", icon: "clock", tone: "azure" },
-        { label: "Il team", icon: "users", tone: "gold" },
-      ] satisfies Array<{ label: string; icon: IconName; tone: "gold" | "azure" }>,
+      feed: ["open", "hiit", "prova", "trasf", "orari", "team"] as const,
       requestsLabel: "Nuove richieste",
+      followersLabel: "follower",
+      tabs: { profile: "Instagram", campaign: "Campagne" },
       chat: [
         { who: "Marco", text: "Ciao! Vorrei info sugli abbonamenti" },
         { who: "Giulia", text: "Posso prenotare una prova gratuita?" },
@@ -420,15 +414,17 @@ export const site = {
     title: "Siti web firmati [William]",
     line: "Siti veloci, curati e pensati per far contattare: clicca per visitarli.",
     visit: "Apri il sito",
+    visitDemo: "Vuoi un sito così?",
+    featured: ["sfizi", "mani", "chiodo"],
     items: [
       { id: "lyamflow", name: "LyamFlow", category: "Software · sito incluso", domain: "lyamflow.com", url: "https://lyamflow.com", image: "/sites/lyamflow.jpg" },
       { id: "doubletwenty", name: "The Double Twenty", category: "Brand · Made in Italy", domain: "thedoubletwenty.it", url: "https://thedoubletwenty.it", image: "/sites/doubletwenty.jpg" },
       { id: "nutrex", name: "Nutrex Lab", category: "Sito online", domain: "nutrexlab.it", url: "https://nutrexlab.it", image: "/sites/nutrex.jpg" },
-      { id: "triskell", name: "Triskell", category: "Sito online", domain: "triskell.vercel.app", url: "https://triskell.vercel.app", image: "/sites/triskell.jpg" },
       { id: "uniqueos", name: "Unique OS", category: "Sito online", domain: "unique-os-three.vercel.app", url: "https://unique-os-three.vercel.app", image: "/sites/uniqueos.jpg" },
-      { id: "sfizi", name: "Sfizi Partenopei", category: "Ristorazione · Lugano", domain: "sfizipartenopeilugano.ch", url: "https://sfizipartenopeilugano.ch", image: "/sites/sfizi.jpg" },
+      { id: "sfizi", name: "Sfizi Partenopei", category: "Ristorazione · Lugano", domain: "sfizipartenopeilugano.ch", url: "https://sfizipartenopeilugano.ch", image: "/sites/sfizi.jpg", tall: "/sites/sfizi-full.jpg" },
       { id: "alleria", name: "Alleria Trattoria Pizzeria", category: "Ristorazione · Lugano", domain: "alleriatrattoriapizzeria.ch", url: "https://alleriatrattoriapizzeria.ch", image: "/sites/alleria.jpg" },
       { id: "chiodo", name: "Ristorante Il Chiodo", category: "Ristorazione", domain: "ristorante-il-chiodo.vercel.app", url: "https://ristorante-il-chiodo.vercel.app", image: "/sites/chiodo.jpg" },
+      { id: "aurea", name: "Aurea Wellness", category: "Esempio · Benessere", domain: "aurea-wellness.it", url: "/contatti", image: "/sites/demo.jpg", tall: "/sites/demo-full.jpg", demo: true }, // TODO: sostituire con un sito reale
       { id: "mani", name: "Affittacamere Manì", category: "Ospitalità · Sicilia", domain: "affittacamere-mani.vercel.app", url: "https://affittacamere-mani.vercel.app", image: "/sites/mani.jpg" },
     ] satisfies SiteItem[],
   },
@@ -465,25 +461,25 @@ export const site = {
     items: [
       { id: "forme-fitness", sector: "Fitness & Wellness", place: "Varese", client: "Forme Fitness", tag: "Meta Ads",
         stats: [{ value: "30–60", label: "Lead al mese" }, { value: "5–25K€", label: "Fatturato mensile" }],
-        text: "Un sistema pubblicitario continuativo che porta contatti qualificati ogni mese, da tre anni e in crescita.", tone: "lime", icon: "dumbbell" },
+        text: "Un sistema pubblicitario continuativo che porta contatti qualificati ogni mese, da tre anni e in crescita.", tone: "lime", icon: "dumbbell", image: "/cases/forme-fitness.webp" },
       { id: "urban-fitness", sector: "Fitness ed EMS", place: "Lecco", client: "Urban Fitness Lecco", tag: "Meta Ads · CRM",
         stats: [{ value: "30–60", label: "Lead al mese" }, { value: "~1 su 3", label: "Prova prenotata" }],
-        text: "Da zero a un sistema continuativo di acquisizione clienti: Meta Ads, social, CRM, follow-up e formazione commerciale.", tone: "rose", icon: "zap" },
+        text: "Da zero a un sistema continuativo di acquisizione clienti: Meta Ads, social, CRM, follow-up e formazione commerciale.", tone: "rose", icon: "zap", image: "/cases/urban-fitness.webp" },
       { id: "forme-at-home", sector: "Digital Platform", place: "Coaching online", client: "ForMe Fitness at Home", tag: "Piattaforma · Area membri",
         stats: [{ value: "Da 0", label: "Punto di partenza" }, { value: "~2,5 anni", label: "Collaborazione" }],
-        text: "Da zero a piattaforma digitale: il metodo ForMe portato online, con percorsi in vendita e fatturato ricorrente.", tone: "lime", icon: "app" },
+        text: "Da zero a piattaforma digitale: il metodo ForMe portato online, con percorsi in vendita e fatturato ricorrente.", tone: "lime", icon: "app", image: "/cases/forme-at-home.webp" },
       { id: "mela-med", sector: "Local Business Growth", place: "Avellino", client: "Mela Med & Fitness", tag: "ADV · Social · AI",
         stats: [{ value: "3 anni", label: "Collaborazione" }, { value: "200–250€", label: "ADV al mese" }],
-        text: "Da studio in crisi a un sistema strutturato di acquisizione clienti, con Irelia AI che segue i contatti.", tone: "azure", icon: "bot" },
+        text: "Da studio in crisi a un sistema strutturato di acquisizione clienti, con Irelia AI che segue i contatti.", tone: "azure", icon: "bot", image: "/cases/mela-med.webp" },
       { id: "vip-fit", sector: "Local Fitness Growth", place: "Monza", client: "Vip Fit Monza", tag: "Meta Ads locali",
         stats: [{ value: "500+", label: "Contatti in un anno" }, { value: "~700€", label: "Meta Ads al mese" }],
-        text: "Oltre 500 contatti qualificati in un anno con campagne locali su tecnologie per l'allenamento.", tone: "rose", icon: "target" },
+        text: "Oltre 500 contatti qualificati in un anno con campagne locali su tecnologie per l'allenamento.", tone: "rose", icon: "target", image: "/cases/vip-fit.webp" },
       { id: "gabriele-gatti", sector: "Healthcare Lead Generation", place: "Meda", client: "Gabriele Gatti", tag: "Sito · Landing · Meta Ads",
         stats: [{ value: "10–30", label: "Contatti al mese" }, { value: "~250€", label: "Meta Ads al mese" }],
-        text: "Sito WordPress, landing page per la prima visita e Meta Ads locali: le ricerche online diventano richieste di appuntamento.", tone: "cobalt", icon: "heart" },
+        text: "Sito WordPress, landing page per la prima visita e Meta Ads locali: le ricerche online diventano richieste di appuntamento.", tone: "cobalt", icon: "heart", image: "/cases/gabriele-gatti.webp" },
       { id: "emme-diffusion", sector: "Education Lead Generation", place: "Genova", client: "Emme Diffusion Academy", tag: "Google Ads",
         stats: [{ value: "20–30", label: "Contatti a campagna" }, { value: "100–200€", label: "Al mese" }],
-        text: "Google Ads per promuovere corsi professionali di bellezza, con un budget contenuto.", tone: "gold", icon: "search" },
+        text: "Google Ads per promuovere corsi professionali di bellezza, con un budget contenuto.", tone: "gold", icon: "search", image: "/cases/emme-diffusion.webp" },
     ] satisfies CaseStudy[],
   },
 
@@ -504,9 +500,9 @@ export const site = {
     line: "Mente, corpo e anima, riletti per il mondo digitale.",
     /** I tre livelli del medaglione, dall'alto in basso (come nel video di riferimento). */
     layers: [
-      { title: "Le tre spirali", text: "Mente, corpo e anima." },
-      { title: "Il circuito", text: "La rete che li collega." },
-      { title: "Il cerchio", text: "Un'unica energia." },
+      { name: "Mente", title: "Le tre spirali", text: "Strumenti, dati e AI al servizio del business." },
+      { name: "Corpo", title: "Il circuito", text: "Persone, relazioni e creatività al centro." },
+      { name: "Anima", title: "Il cerchio", text: "Visione e innovazione per crescere nel tempo." },
     ], // TODO: conferma copy dei tre livelli
     pillars: [
       { from: "Mente", to: "Digitale", text: "Strumenti, dati e AI al servizio del business.", icon: "cpu" },
@@ -566,7 +562,8 @@ export const site = {
     overline: "Altro · Risorsa gratuita · PDF di 10 pagine",
     title: "Il libretto sul [Vibe Coding]",
     line: "Come si costruiscono siti e app descrivendo all'intelligenza artificiale cosa vuoi ottenere.",
-    coverAlt: "Copertina del libro «Vibe Coding»",
+    coverAlt: "Libro «Vibe Coding» in 3D",
+    dragHint: "Trascina per ruotarlo · doppio click per rimetterlo dritto",
     /** Sezione "Da dove partire?": come sul sito originale. */
     guide: {
       overline: "[ 10 ] Vibe Coding · La nostra guida",

@@ -20,7 +20,7 @@ export default function WebsitesPage() {
     <>
       <PageHero overline={p.overline} title={p.title} line={p.line} crumbs={[{ label: "Agency", href: "/agency" }, { label: "Siti web" }]} aside={<LaptopShowcase />} asideClassName="lg:-mr-6" />
       <Section id="siti" labelledBy="siti-title" className="pt-[clamp(1rem,2vw,2rem)]">
-        <TechBackdrop tone="azure" cursor />
+        <TechBackdrop tone="azure" cursor rich />
         <h2 id="siti-title" className="sr-only">
           {p.title.replace(/[[\]]/g, "")}
         </h2>
@@ -32,7 +32,7 @@ export default function WebsitesPage() {
           ))}
         </RevealGroup>
       </Section>
-      <CtaBand content={site.cta.agency} />
+      <CtaBand content={site.cta.sites} />
     </>
   );
 }

@@ -110,7 +110,7 @@ export function Paths() {
   const { paths } = site;
   return (
     <Section id="percorsi" labelledBy="paths-title">
-      <TechBackdrop tone="mixed" />
+      <TechBackdrop tone="mixed" rich />
       <SectionHeading id="paths-title" overline={paths.overline} title={paths.title} line={paths.line} align="center" />
       <RevealGroup className="mx-auto mt-10 grid max-w-5xl gap-5 sm:mt-14 lg:grid-cols-2 lg:gap-8" stagger={0.14} alternate="far">
         <RevealItem y={0}>

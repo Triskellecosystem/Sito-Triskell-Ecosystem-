@@ -72,7 +72,7 @@ export function RevealRoot() {
           io.unobserve(el);
         }
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.01 },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.01 },
     );
 
     document.querySelectorAll<HTMLElement>(SELECTOR).forEach((el) => {

@@ -41,12 +41,14 @@ Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti; il pulsante è g
 ## Come sono fatte le animazioni
 
 - **Reveal, titoli a maschera, count-up, micro-visual**: componenti *server* + CSS (solo `opacity`/`transform`/`filter`) attivati da **un solo** `IntersectionObserver` (`RevealRoot`). Zero idratazione per istanza.
-- **Hero**: logo reale su una scena in blu trasparente: pavimento digitale in prospettiva (CSS 3D), lastre di vetro, fasci di luce, rete di nodi e impulsi e anelli HUD. Il mouse sposta la scena e lascia tracce digitali (canvas attivo solo mentre ci sono particelle). Su mobile / touch / reduced motion la scena è statica. Al passaggio del mouse le parole bianche del titolo diventano oro.
+- **Hero**: logo reale su una scena in blu trasparente: pavimento digitale in prospettiva (CSS 3D), lastre di vetro, fasci di luce, rete di nodi e impulsi e anelli HUD. Il mouse sposta la scena e fa nascere punti luce collegati da sottili linee, con qualche quadratino (`DigitalCursor`, canvas attivo solo mentre ci sono particelle). Su mobile / touch / reduced motion la scena è statica. Al passaggio del mouse le parole bianche del titolo diventano oro.
 - **Simbolo 3D**: il logo reale è separato in livelli con `scripts/design/gen_logo_layers.py`; mentre scorri il medaglione si inclina e si impila in verticale (spirali sopra, disco blu al centro, cerchio oro sotto) con le etichette accanto, come nel video di riferimento.
 - **Logo interattivo** (`LogoTilt`): respira in idle e si inclina in 3D verso il mouse, con un riflesso che segue il cursore.
 - **Effetto digitale al mouse** riusabile (`DigitalCursor`, `TechBackdrop cursor`): hero, funnel, risultati, prenota.
 - **Entrate dai lati**: `Reveal from="left|right|scale|far-left|far-right"` e `RevealGroup alternate="far"` (da fuori schermo fino al centro: `RevealRoot` osserva il contenitore perché un elemento fuori schermo non interseca mai il viewport). Settori, funnel e percorso Academy (`ZigZagSteps`) li usano.
-- **Portatile 3D** (`LaptopShowcase`): coperchio che si apre, sito che scorre a tappe con cursore; tutto CSS in unità `cqw`.
+- **Portatile 3D** (`LaptopShowcase`): coperchio che si apre, galleria con tutti i siti, cursore che apre Sfizi Partenopei e lo fa scorrere; tutto CSS in unità `cqw`.
+- **Libro 3D** (`Book3D`): cuboide CSS trascinabile in ogni direzione, con inerzia.
+- **Sfondi tech** (`TechBackdrop rich`): griglia di quadrati con celle che si accendono e punti luce.
 - **Pulsanti**: restano sul loro asse (nessun effetto magnetico); feedback solo con luce in hover e al click.
 - **Menu e dropdown**: Motion (`LazyMotion` + `m`, solo le feature necessarie).
 - **Smooth scroll** Lenis: non su touch né con `prefers-reduced-motion`; con una "zona morta" che ignora i micro-impulsi del touchpad (dita appoggiate) finché non c'è un gesto deliberato.

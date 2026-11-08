@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { site, type CaseStudy } from "@/content/site";
 import { cn } from "@/lib/cn";
@@ -6,23 +7,21 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { CountUp } from "@/components/motion/CountUp";
 
-/** Tinte della copertina: tutte costruite con i colori del brand (nessun colore fuori palette). */
-const COVER: Record<CaseStudy["tone"], string> = {
-  gold: "bg-[linear-gradient(135deg,var(--color-gold-700),var(--color-cobalt-800)_75%)]",
-  azure: "bg-[linear-gradient(135deg,var(--color-azure-glow),var(--color-cobalt-800)_75%)]",
-  cobalt: "bg-[linear-gradient(135deg,var(--color-cobalt-400),var(--color-night-glow)_80%)]",
-  lime: "bg-[linear-gradient(150deg,var(--color-azure-400),var(--color-gold-700)_95%)]",
-  rose: "bg-[linear-gradient(150deg,var(--color-gold-500),var(--color-cobalt-700)_80%)]",
-};
-
 /** Case study: copertina con icona e tag, due numeri grandi, una riga di sintesi. */
-export function CaseCard({ item, href }: { item: CaseStudy; href?: string }) {
+export function CaseCard({ item, href, priority = false }: { item: CaseStudy; href?: string; priority?: boolean }) {
   return (
     <article id={item.id} className="group/case relative flex h-full scroll-mt-28 flex-col overflow-hidden rounded-card border border-line bg-[linear-gradient(170deg,var(--color-surface-2),var(--color-night-raised))] transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-gold-300/60 hover:shadow-[0_0_40px_-12px_rgb(247_200_92/0.45)]">
-      <div className={cn("relative h-32 overflow-hidden", COVER[item.tone])}>
-        <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-50" />
-        <Icon name={item.icon} aria-hidden className="absolute -right-3 -top-3 h-32 w-32 text-white/10 transition-transform duration-[var(--dur-slow)] ease-out-expo group-hover/case:scale-110 group-hover/case:-rotate-6" strokeWidth={1.1} />
-        <span className="absolute bottom-3 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-night/60 px-2.5 py-1 text-[0.6875rem] font-semibold uppercase tracking-wider text-fg backdrop-blur">
+      <div className="relative h-44 overflow-hidden bg-night">
+        <Image
+          src={item.image}
+          alt={`${item.client}: immagine del progetto`}
+          fill
+          priority={priority}
+          sizes="(min-width: 1280px) 20rem, (min-width: 640px) 45vw, 92vw"
+          className="object-cover transition-transform duration-[900ms] ease-out-expo group-hover/case:scale-[1.07]"
+        />
+        <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-night/85 via-night/10 to-transparent" />
+        <span className="absolute bottom-3 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-night/70 px-2.5 py-1 text-[0.6875rem] font-semibold uppercase tracking-wider text-fg backdrop-blur">
           <Icon name={item.icon} className="h-3.5 w-3.5 text-gold-300" />
           {item.tag}
         </span>

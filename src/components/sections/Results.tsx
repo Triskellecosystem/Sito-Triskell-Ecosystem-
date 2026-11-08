@@ -10,7 +10,7 @@ export function Results() {
   const { results } = site;
   return (
     <Section id={results.id} labelledBy="results-title">
-      <TechBackdrop tone="azure" cursor />
+      <TechBackdrop tone="azure" cursor rich />
       <SectionHeading id="results-title" overline={results.overline} title={results.title} line={results.line} align="center" />
       <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 sm:mt-12 xl:grid-cols-4" stagger={0.12} alternate>
         {results.items.slice(0, 4).map((item) => (

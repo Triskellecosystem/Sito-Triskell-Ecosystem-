@@ -29,7 +29,7 @@ export default function AcademyPage() {
       </PageHero>
 
       <Section id="percorso" labelledBy="percorso-title" className="pt-[clamp(1rem,2vw,2rem)]">
-        <TechBackdrop tone="azure" cursor />
+        <TechBackdrop tone="azure" cursor rich />
         <SectionHeading id="percorso-title" overline="Il percorso" title={p.pathTitle} line={p.pathLine} align="center" />
         <div className="mt-12 sm:mt-16">
           <ZigZagSteps path={paths.academy} tone="azure" />

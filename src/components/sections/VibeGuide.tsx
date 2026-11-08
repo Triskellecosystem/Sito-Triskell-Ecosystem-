@@ -1,10 +1,9 @@
-import Image from "next/image";
 import { site } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { TechBackdrop } from "@/components/ui/TechBackdrop";
-import { Tilt } from "@/components/ui/Tilt";
+import { Book3D } from "@/components/ui/Book3D";
 import { Reveal } from "@/components/motion/Reveal";
 
 /**
@@ -18,24 +17,13 @@ export function VibeGuide() {
       <TechBackdrop tone="azure" cursor />
       <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
         <Reveal from="far-left" blur={0} className="lg:col-span-5">
-          <Tilt max={9}>
-            <div className="float-slow relative mx-auto w-[min(72vw,19rem)]">
-              <div aria-hidden="true" className="absolute -inset-8 rounded-full bg-[radial-gradient(circle,rgb(42_144_195/0.45),transparent_65%)]" />
-              <Image
-                src="/brand/vibe-coding-libro.webp"
-                alt={site.vibeCoding.coverAlt}
-                width={1120}
-                height={1400}
-                sizes="(min-width: 1024px) 19rem, 72vw"
-                loading="lazy"
-                className="relative h-auto w-full rounded-3xl [mask-image:radial-gradient(ellipse_72%_72%_at_50%_50%,#000_58%,transparent_100%)]"
-              />
-              <span className="absolute -right-3 top-4 z-10 grid h-[4.5rem] w-[4.5rem] rotate-6 place-items-center rounded-full bg-[image:var(--gradient-gold-btn)] font-display text-[1.375rem] font-bold text-night shadow-glow-gold">
-                <span aria-hidden="true" className="btn-ping absolute inset-0 rounded-full border-2 border-gold-200" />
-                {g.price}
-              </span>
-            </div>
-          </Tilt>
+          <div className="relative mx-auto w-fit">
+            <Book3D cover="/brand/vibe-cover.webp" alt={site.vibeCoding.coverAlt} title="Vibe Coding" hint={site.vibeCoding.dragHint} />
+            <span className="pointer-events-none absolute right-2 top-2 z-10 grid h-[4.5rem] w-[4.5rem] rotate-6 place-items-center rounded-full bg-[image:var(--gradient-gold-btn)] font-display text-[1.375rem] font-bold text-night shadow-glow-gold">
+              <span aria-hidden="true" className="btn-ping absolute inset-0 rounded-full border-2 border-gold-200" />
+              {g.price}
+            </span>
+          </div>
         </Reveal>
 
         <div className="lg:col-span-7">

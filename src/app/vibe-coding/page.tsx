@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { PageHero } from "@/components/sections/PageHero";
 import { VibeGuide } from "@/components/sections/VibeGuide";
@@ -7,7 +6,7 @@ import { VibeStepPath } from "@/components/sections/VibeStepPath";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { Tilt } from "@/components/ui/Tilt";
+import { Book3D } from "@/components/ui/Book3D";
 import { Reveal } from "@/components/motion/Reveal";
 import { site } from "@/content/site";
 
@@ -37,25 +36,10 @@ function Disclosure({ name, items }: { name: string; items: Array<{ title: strin
   );
 }
 
-/** Copertina del libro, con inclinazione 3D al mouse e bordi sfumati. */
-function Cover({ lazy = false }: { lazy?: boolean }) {
+/** Il libro in 3D: si trascina per ruotarlo nello spazio. */
+function Cover() {
   const v = site.vibeCoding;
-  return (
-    <Tilt max={9}>
-      <div className="float-slow relative mx-auto w-[min(78vw,22rem)]">
-        <div aria-hidden="true" className="absolute -inset-8 rounded-full bg-[radial-gradient(circle,rgb(42_144_195/0.4),transparent_65%)]" />
-        <Image
-          src="/brand/vibe-coding-libro.webp"
-          alt={v.coverAlt}
-          width={1120}
-          height={1400}
-          sizes="(min-width: 1024px) 22rem, 78vw"
-          loading={lazy ? "lazy" : "eager"}
-          className="relative h-auto w-full rounded-3xl [mask-image:radial-gradient(ellipse_72%_72%_at_50%_50%,#000_58%,transparent_100%)]"
-        />
-      </div>
-    </Tilt>
-  );
+  return <Book3D cover="/brand/vibe-cover.webp" alt={v.coverAlt} title="Vibe Coding" hint={v.dragHint} />;
 }
 
 export default function VibeCodingPage() {
@@ -116,7 +100,7 @@ export default function VibeCodingPage() {
         <div className="container-x text-center">
           {/* su mobile la copertina compare qui, ben oltre la prima schermata */}
           <div className="mb-10 lg:hidden">
-            <Cover lazy />
+            <Cover />
           </div>
           <h2 className="text-[clamp(1.75rem,1.2rem+2.4vw,3rem)] font-bold leading-[1.08] tracking-[-0.035em] text-fg">Pronto a partire?</h2>
           <p className="mx-auto mt-4 max-w-xl text-lead text-fg-2">Scarica l&apos;estratto gratuito: sono le prime 10 pagine del libro.</p>
