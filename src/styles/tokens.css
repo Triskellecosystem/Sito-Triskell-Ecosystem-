@@ -123,11 +123,11 @@
   --gradient-gold-metal: linear-gradient(135deg, var(--color-gold-100) 0%, var(--color-gold-200) 28%, var(--color-gold-500) 62%, var(--color-gold-700) 100%);
   --gradient-beam: conic-gradient(
     from 0deg,
-    rgb(247 200 92 / 0.12) 0deg,
+    rgb(247 200 92 / 0.28) 0deg,
     var(--color-gold-300) 70deg,
-    var(--color-gold-100) 100deg,
-    rgb(247 200 92 / 0.12) 190deg,
-    rgb(247 200 92 / 0.12) 360deg
+    var(--color-gold-100) 105deg,
+    rgb(247 200 92 / 0.28) 200deg,
+    rgb(247 200 92 / 0.28) 360deg
   );
   --gradient-bg-hero: radial-gradient(60% 55% at 72% 12%, rgb(5 76 137 / 0.55) 0%, rgb(1 26 48 / 0.7) 45%, transparent 75%);
   --gradient-bg-cta: radial-gradient(55% 60% at 15% 100%, rgb(5 56 96 / 0.7) 0%, transparent 70%);

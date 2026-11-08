@@ -15,7 +15,7 @@ export function Results() {
         <div className="lg:col-span-4 lg:pt-4">
           <SectionHeading id="results-title" overline={results.overline} title={results.title} line={results.line} />
         </div>
-        <Reveal className="min-w-0 lg:col-span-8" y={36}>
+        <Reveal className="min-w-0 lg:col-span-8" from="right" blur={0}>
           <ResultsCarousel />
         </Reveal>
       </div>

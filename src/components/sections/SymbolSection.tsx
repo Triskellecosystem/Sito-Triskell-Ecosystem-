@@ -14,10 +14,12 @@ type CSSVars = React.CSSProperties & { [key: `--${string}`]: string | number };
  * misurati sul medaglione. Il nucleo (triangolo centrale) è un livello a parte, così non si spezza.
  */
 const SECTORS = [
-  { from: 320, span: 106, z: 70 },
-  { from: 66, span: 135, z: 140 },
-  { from: 201, span: 119, z: 210 },
+  { from: 320, span: 106, z: 40 },
+  { from: 66, span: 135, z: 90 },
+  { from: 201, span: 119, z: 140 },
 ] as const;
+/** Quanto si allontana ogni spirale dal centro (px) quando la scena è scomposta. */
+const SPREAD = 104;
 const CORE = { cx: "50.5%", cy: "48.5%", r: "14%" } as const;
 
 const sizes = "(min-width: 1024px) 30rem, 90vw";
@@ -37,18 +39,31 @@ export function SymbolSection() {
     const el = sceneRef.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.style.setProperty("--e", "0.72");
+      el.style.setProperty("--e", "0.8");
       return;
     }
     let raf = 0;
+    let loop = 0;
     let near = false;
+    let e = 0;
+    let spin = 0;
+    let last = 0;
     const update = () => {
       raf = 0;
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight;
       const d = Math.abs(r.top + r.height / 2 - vh * 0.5) / (vh * 0.62);
       const k = Math.min(1, Math.max(0, 1 - d));
-      el.style.setProperty("--e", (k * k * (3 - 2 * k)).toFixed(3));
+      e = k * k * (3 - 2 * k);
+      el.style.setProperty("--e", e.toFixed(3));
+    };
+    // le spirali girano in cerchio (solo mentre la scena è scomposta e visibile)
+    const spinLoop = (now: number) => {
+      loop = requestAnimationFrame(spinLoop);
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      spin = (spin + dt * 22) % 360;
+      el.style.setProperty("--spin", e > 0.01 ? (spin * e).toFixed(2) : "0");
     };
     const onScroll = () => {
       if (near && !raf) raf = requestAnimationFrame(update);
@@ -56,7 +71,16 @@ export function SymbolSection() {
     const io = new IntersectionObserver(
       ([entry]) => {
         near = !!entry?.isIntersecting;
-        if (near) onScroll();
+        if (near) {
+          onScroll();
+          if (!loop) {
+            last = performance.now();
+            loop = requestAnimationFrame(spinLoop);
+          }
+        } else {
+          cancelAnimationFrame(loop);
+          loop = 0;
+        }
       },
       { rootMargin: "30% 0px" },
     );
@@ -67,6 +91,7 @@ export function SymbolSection() {
     return () => {
       io.disconnect();
       cancelAnimationFrame(raf);
+      cancelAnimationFrame(loop);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
@@ -92,7 +117,7 @@ export function SymbolSection() {
       <div aria-hidden="true" className="pointer-events-none absolute left-[-10%] top-1/2 h-[40rem] w-[40rem] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgb(5_76_137/0.35),transparent_65%)]" />
 
       <div className="sym relative grid items-center gap-10 lg:grid-cols-12 lg:gap-12" data-active={active ?? undefined}>
-        <Reveal className="mx-auto w-full max-w-[26rem] lg:col-span-5 lg:max-w-none" y={30} blur={0}>
+        <Reveal className="mx-auto w-full max-w-[26rem] lg:col-span-5 lg:max-w-none" from="left" blur={0}>
           <div
             ref={sceneRef}
             className="sym3d relative mx-auto aspect-square w-full max-w-[30rem]"
@@ -116,38 +141,54 @@ export function SymbolSection() {
                     <Image src="/brand/triskell-layer-disc.png" alt="" width={640} height={640} sizes={sizes} className="sym3d-layer" style={{ "--z": -90 } as CSSVars} />
                     <Image src="/brand/triskell-layer-ring.png" alt="" width={640} height={640} sizes={sizes} className="sym3d-layer" style={{ "--z": -25 } as CSSVars} />
 
-                    {SECTORS.map((sec, i) => {
-                      const mask = [
-                        `conic-gradient(from ${sec.from}deg at 50% 50%, #000 0deg ${sec.span}deg, transparent ${sec.span}deg)`,
-                        `radial-gradient(circle at ${CORE.cx} ${CORE.cy}, transparent 0 ${CORE.r}, #000 calc(${CORE.r} + 0.6%))`,
-                      ].join(", ");
-                      return (
-                        <Image
-                          key={sec.from}
-                          src="/brand/triskell-layer-coils.png"
-                          alt=""
-                          width={640}
-                          height={640}
-                          sizes={sizes}
-                          data-i={i}
-                          className="sym3d-layer sym3d-coil"
-                          style={{ "--z": sec.z, "--i": i, maskImage: mask, WebkitMaskImage: mask, maskComposite: "intersect", WebkitMaskComposite: "source-in" } as CSSVars}
-                        />
-                      );
-                    })}
-                    <Image
-                      src="/brand/triskell-layer-coils.png"
-                      alt=""
-                      width={640}
-                      height={640}
-                      sizes={sizes}
-                      className="sym3d-layer"
-                      style={{
-                        "--z": 285,
-                        maskImage: `radial-gradient(circle at ${CORE.cx} ${CORE.cy}, #000 0 ${CORE.r}, transparent calc(${CORE.r} + 0.6%))`,
-                        WebkitMaskImage: `radial-gradient(circle at ${CORE.cx} ${CORE.cy}, #000 0 ${CORE.r}, transparent calc(${CORE.r} + 0.6%))`,
-                      } as CSSVars}
-                    />
+                    {/* le tre spirali: separate, distanziate, in orbita attorno al centro */}
+                    <div className="sym3d-orbit">
+                      {SECTORS.map((sec, i) => {
+                        const mask = [
+                          `conic-gradient(from ${sec.from}deg at 50% 50%, #000 0deg ${sec.span}deg, transparent ${sec.span}deg)`,
+                          `radial-gradient(circle at ${CORE.cx} ${CORE.cy}, transparent 0 ${CORE.r}, #000 calc(${CORE.r} + 0.6%))`,
+                        ].join(", ");
+                        const rad = ((sec.from + sec.span / 2) * Math.PI) / 180;
+                        return (
+                          <Image
+                            key={sec.from}
+                            src="/brand/triskell-layer-coils.png"
+                            alt=""
+                            width={640}
+                            height={640}
+                            sizes={sizes}
+                            data-i={i}
+                            className="sym3d-layer sym3d-coil"
+                            style={{
+                              "--z": sec.z,
+                              "--i": i,
+                              "--dx": (Math.sin(rad) * SPREAD).toFixed(1),
+                              "--dy": (-Math.cos(rad) * SPREAD).toFixed(1),
+                              maskImage: mask,
+                              WebkitMaskImage: mask,
+                              maskComposite: "intersect",
+                              WebkitMaskComposite: "source-in",
+                            } as CSSVars}
+                          />
+                        );
+                      })}
+                    </div>
+                    {/* nucleo (triangolo centrale): in alto, ruota in senso opposto */}
+                    <div className="sym3d-core">
+                      <Image
+                        src="/brand/triskell-layer-coils.png"
+                        alt=""
+                        width={640}
+                        height={640}
+                        sizes={sizes}
+                        className="sym3d-layer"
+                        style={{
+                          "--z": 200,
+                          maskImage: `radial-gradient(circle at ${CORE.cx} ${CORE.cy}, #000 0 ${CORE.r}, transparent calc(${CORE.r} + 0.6%))`,
+                          WebkitMaskImage: `radial-gradient(circle at ${CORE.cx} ${CORE.cy}, #000 0 ${CORE.r}, transparent calc(${CORE.r} + 0.6%))`,
+                        } as CSSVars}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

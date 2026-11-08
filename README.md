@@ -14,16 +14,16 @@ npm run todos      # elenco dei segnaposto da sostituire (--strict per fallire s
 
 | Pagina | Percorso | Contenuto |
 |---|---|---|
-| Home | `/` | Hero, "Cos'è Triskell Ecosystem?" (definizione + schema dei due rami), "Cosa ottieni step dopo step", metodo, storie di crescita, simbolo 3D |
-| Agency | `/agency` | Funnel gestito da noi, servizi, "Come lavoriamo", link a Siti web e Portfolio |
+| Home | `/` | Hero con scena 3D e effetto digitale al mouse, "Cos'è Triskell Ecosystem?" (schema dei due rami), "Cosa ottieni step dopo step", metodo, storie di crescita, simbolo 3D |
+| Agency | `/agency` | Titolo forte + mockup profilo social, funnel a zig-zag, servizi, call gratuita, lavori interattivi (siti web / portfolio) |
 | Siti web | `/agency/siti-web` | Vetrina dei siti realizzati da William (oggi segnaposto) |
 | Portfolio | `/agency/portfolio` | Progetti e risultati |
-| Academy | `/academy` | Percorso per diventare indipendente + tutorial video |
-| Chi siamo | `/chi-siamo` | Team (Tomaso, William, collaboratori occasionali) |
+| Academy | `/academy` | Anteprima del corso, percorso a zig-zag, tutorial video |
+| Chi siamo | `/chi-siamo` | Tomaso e William, con percorso professionale ad espansione |
+| Libretto Vibe Coding | `/vibe-coding` | Il libro in 6 idee, percorso a passi, domande veloci (nel menu "Altro") |
 | Contatti | `/contatti` | Form "Prenota ora" + FAQ |
-| Altro | `/ai-lab`, `/risorse` | AI Lab (in arrivo) e Libreria risorse (segnaposto) |
 
-Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti di ogni pagina; testo e titolo si cambiano in `site.cta`.
+Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti; il pulsante è grande e lampeggiante. Testo e titolo si cambiano in `site.cta`.
 
 ## Dove si modifica cosa
 
@@ -41,8 +41,9 @@ Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti di ogni pagina; t
 ## Come sono fatte le animazioni
 
 - **Reveal, titoli a maschera, count-up, micro-visual**: componenti *server* + CSS (solo `opacity`/`transform`/`filter`) attivati da **un solo** `IntersectionObserver` (`RevealRoot`). Zero idratazione per istanza.
-- **Hero**: logo reale su sfondo vivo (rete di nodi e impulsi in canvas da 768px in su, aurora e anelli HUD che ruotano via CSS transform; su mobile restano fermi). Il titolo è CSS puro senza opacità iniziale; al passaggio del mouse le parole bianche diventano oro.
-- **Simbolo 3D**: il logo reale è separato in livelli (fondo, anello, tre spirali, nucleo) con `scripts` in Python/OpenCV; la scena usa CSS 3D (`perspective`, `translateZ`) guidata dallo scroll e dal mouse.
+- **Hero**: logo reale su una scena in blu trasparente: pavimento digitale in prospettiva (CSS 3D), lastre di vetro, fasci di luce, rete di nodi e impulsi e anelli HUD. Il mouse sposta la scena e lascia tracce digitali (canvas attivo solo mentre ci sono particelle). Su mobile / touch / reduced motion la scena è statica. Al passaggio del mouse le parole bianche del titolo diventano oro.
+- **Simbolo 3D**: il logo reale è separato in livelli (fondo, anello, tre spirali, nucleo) con `scripts/design/gen_logo_layers.py`; la scena usa CSS 3D guidata dallo scroll e dal mouse: le tre spirali si distanziano e girano in cerchio.
+- **Entrate dai lati**: `Reveal from="left|right|scale"` e `RevealGroup alternate`; i percorsi Agency/Academy sono a zig-zag (`ZigZagSteps`).
 - **Pulsanti**: restano sul loro asse (nessun effetto magnetico); feedback solo con luce in hover e al click.
 - **Come lavoriamo**: GSAP ScrollTrigger (pin + scrub), importato dinamicamente e solo da 768 px in su.
 - **Menu e dropdown**: Motion (`LazyMotion` + `m`, solo le feature necessarie).
@@ -60,7 +61,7 @@ Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti di ogni pagina; t
 
 | | Perf | A11y | Best Practices | SEO | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|---|
-| Mobile | 96–100 | 100 | 100 | 100 | 0,9 s | 0 | 80–210 ms |
+| Mobile | 100 | 100 | 100 | 100 | 1,2 s | 0 | 40–90 ms |
 | Desktop | 100 | 100 | 100 | 100 | 0,7 s | 0 | 0 ms |
 
 ## Da collegare / da fornire

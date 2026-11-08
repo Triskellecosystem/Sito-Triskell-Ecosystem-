@@ -15,7 +15,7 @@ export default function AboutPage() {
   return (
     <>
       <PageHero overline={about.overline} title={about.title} line={about.line} crumbs={[{ label: "Chi siamo" }]} />
-      <About withHeading={false} />
+      <About />
       <CtaBand content={site.cta.generic} />
     </>
   );

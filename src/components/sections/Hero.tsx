@@ -1,7 +1,7 @@
 import { site } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { CountUp } from "@/components/motion/CountUp";
-import { MatrixBackground } from "@/components/motion/MatrixBackground";
+import { HeroBackdrop } from "./HeroBackdrop";
 import { HeroVisual } from "./HeroVisual";
 
 /**
@@ -17,9 +17,8 @@ export function Hero() {
       aria-labelledby="hero-title"
       className="relative isolate overflow-hidden pb-[clamp(2rem,4vw,3.5rem)] pt-[calc(var(--header-h)+clamp(1.5rem,5vh,4.5rem))]"
     >
-      <div aria-hidden="true" className="bg-grid absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,#000,transparent_88%)]" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 bg-[image:var(--gradient-bg-hero)]" />
-      <MatrixBackground className="absolute inset-0 -z-10 h-full w-full opacity-[0.3] [mask-image:radial-gradient(70%_70%_at_30%_35%,transparent_20%,#000_100%)]" />
+      <HeroBackdrop />
 
       <div className="container-x grid items-center gap-x-8 gap-y-14 lg:grid-cols-12">
         <div className="lg:col-span-7">
@@ -56,7 +55,7 @@ export function Hero() {
             <Button href={hero.primaryCta.href} size="lg" icon="arrow-right">
               {hero.primaryCta.label}
             </Button>
-            <Button href={hero.secondaryCta.href} variant="secondary" size="lg" icon="graduation" iconPosition="start">
+            <Button href={hero.secondaryCta.href} size="lg" icon="graduation" iconPosition="start">
               {hero.secondaryCta.label}
             </Button>
           </div>

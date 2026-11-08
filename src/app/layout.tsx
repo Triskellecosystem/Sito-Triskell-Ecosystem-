@@ -68,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <RevealRoot />
           <ScrollProgress />
           <Header />
-          <main id="main">{children}</main>
+          <main id="main" className="overflow-x-clip">{children}</main>
           <Footer />
         </Providers>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />

@@ -1,71 +1,119 @@
-import { site } from "@/content/site";
-import { LogoMark } from "@/components/brand/LogoMark";
-import { Section, SectionHeading } from "@/components/ui/Section";
+"use client";
+
+import { useId, useState } from "react";
+import { site, type TeamMember } from "@/content/site";
+import { cn } from "@/lib/cn";
+import { Icon } from "@/components/ui/Icon";
+import { Section } from "@/components/ui/Section";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
-import { Parallax } from "@/components/motion/Parallax";
-import { cn } from "@/lib/cn";
 
-/**
- * Chi siamo: due card ritratto con "foto" segnaposto elegante (monogramma oro in filigrana + simbolo),
- * la seconda sfalsata in verticale su desktop per rompere la simmetria. Sotto, la fascia dei collaboratori.
- */
-export function About({ withHeading = true }: { withHeading?: boolean }) {
+/** Ritratto stilizzato (silhouette) al posto della foto: si sostituisce con l'immagine vera. */
+function Portrait({ initials }: { initials: string }) {
+  return (
+    <div className="relative aspect-[4/4.3] overflow-hidden bg-[linear-gradient(160deg,var(--color-cobalt-600),var(--color-night-glow)_58%,var(--color-surface))]">
+      <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-60" />
+      <div aria-hidden="true" className="absolute left-1/2 top-[30%] h-[70%] w-[90%] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgb(42_144_195/0.5),transparent_66%)]" />
+      <svg viewBox="0 0 400 430" aria-hidden="true" className="absolute inset-0 h-full w-full">
+        <defs>
+          <linearGradient id={`body-${initials}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="var(--color-cobalt-400)" />
+            <stop offset="0.55" stopColor="var(--color-cobalt-700)" />
+            <stop offset="1" stopColor="var(--color-night-glow)" />
+          </linearGradient>
+          <linearGradient id={`rim-${initials}`} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="var(--color-gold-200)" stopOpacity="0.9" />
+            <stop offset="0.5" stopColor="var(--color-gold-200)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {/* spalle e busto */}
+        <path d="M30 430c0-92 58-138 120-154 18-5 30-14 36-30h28c6 16 18 25 36 30 62 16 120 62 120 154z" fill={`url(#body-${initials})`} />
+        <path d="M30 430c0-92 58-138 120-154" fill="none" stroke={`url(#rim-${initials})`} strokeWidth="3" />
+        {/* collo e testa */}
+        <rect x="180" y="214" width="40" height="52" rx="16" fill="var(--color-cobalt-700)" />
+        <ellipse cx="200" cy="158" rx="54" ry="68" fill="var(--color-cobalt-500)" />
+        <ellipse cx="200" cy="158" rx="54" ry="68" fill="none" stroke={`url(#rim-${initials})`} strokeWidth="3" />
+      </svg>
+      <span aria-hidden="true" className="absolute bottom-3 right-4 font-display text-[4.5rem] font-bold leading-none text-gold opacity-20">
+        {initials}
+      </span>
+    </div>
+  );
+}
+
+function MemberCard({ m, offset }: { m: TeamMember; offset: boolean }) {
+  const [open, setOpen] = useState(false);
+  const id = useId();
   const { about } = site;
   return (
-    <Section id={about.id} labelledBy="about-title">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px hairline" />
-      {withHeading && <SectionHeading id="about-title" overline={about.overline} title={about.title} line={about.line} />}
+    <Spotlight className={cn("group/card h-full rounded-card border border-line bg-surface transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-gold-400/50 hover:shadow-[0_0_44px_-14px_rgb(247_200_92/0.4)]", offset && "lg:mt-20")}>
+      <article className="relative z-[2]">
+        <Portrait initials={m.initials} />
+        <div className="p-6 sm:p-8">
+          <h3 className="text-[clamp(1.75rem,1.4rem+1.2vw,2.5rem)] font-bold leading-none tracking-[-0.03em] text-fg">{m.name}</h3>
+          <p className="mt-2 text-small font-semibold uppercase tracking-[0.12em] text-gold-400">{m.role}</p>
+          <p className="mt-4 font-display text-[1.25rem] font-semibold leading-snug tracking-tight text-fg">{m.headline}</p>
+          <p className="mt-2 text-body text-fg-2">{m.bio}</p>
 
-      <RevealGroup className={cn(withHeading && "mt-12 sm:mt-16", "grid gap-5 sm:grid-cols-2 lg:mx-auto lg:max-w-4xl lg:gap-8")} stagger={0.15}>
+          <dl className="mt-6 grid grid-cols-3 gap-2 border-t border-line pt-5">
+            {m.facts.map((f) => (
+              <div key={f.label}>
+                <dd className="font-display text-[clamp(1.25rem,1.05rem+0.8vw,1.75rem)] font-bold leading-none tracking-[-0.03em] text-gold">{f.value}</dd>
+                <dt className="mt-1.5 text-[0.75rem] leading-tight text-fg-2">{f.label}</dt>
+              </div>
+            ))}
+          </dl>
+
+          <button
+            type="button"
+            aria-expanded={open}
+            aria-controls={id}
+            onClick={() => setOpen((v) => !v)}
+            className="mt-6 inline-flex items-center gap-2 rounded-full border border-gold-400/50 px-5 py-2.5 text-small font-semibold text-gold-200 transition-[background-color,border-color,box-shadow] duration-[var(--dur-base)] hover:border-gold-300 hover:bg-gold-300/10 hover:shadow-[0_0_30px_-6px_rgb(247_200_92/0.5)] active:bg-gold-300/20"
+          >
+            {open ? about.less : about.more}
+            <Icon name="chevron-down" className={cn("h-4 w-4 transition-transform duration-[var(--dur-base)] ease-out-expo", open && "rotate-180")} />
+          </button>
+
+          {/* percorso "ad espansione" */}
+          <div id={id} role="region" aria-label={`Percorso di ${m.name}`} data-open={open} className="acc-panel">
+            <div>
+              <ol className="relative mt-6 space-y-4 border-l-2 border-gold-400/40 pl-6">
+                {m.curriculum.map((step, i) => (
+                  <li key={step} className="relative text-body text-fg" style={{ transitionDelay: open ? `${i * 70}ms` : "0ms" }}>
+                    <span aria-hidden="true" className="absolute -left-[1.9375rem] top-1.5 h-3 w-3 rounded-full border-2 border-gold-300 bg-night" />
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </div>
+      </article>
+    </Spotlight>
+  );
+}
+
+/**
+ * Chi siamo: due card ritratto, la seconda sfalsata più in basso. Ognuna ha titolo, numeri chiave
+ * e un percorso professionale che si espande al click. Foto e curriculum sono segnaposto da sostituire.
+ */
+export function About() {
+  const { about } = site;
+  return (
+    <Section id="team" labelledBy="team-title" className="pt-[clamp(1rem,2vw,2rem)]">
+      <h2 id="team-title" className="sr-only">
+        {about.title.replace(/[[\]]/g, "")}
+      </h2>
+      <RevealGroup className="grid gap-6 md:grid-cols-2 lg:mx-auto lg:max-w-5xl lg:gap-10" stagger={0.18} alternate>
         {about.team.map((m, i) => (
-          <RevealItem key={m.name} y={40} className={cn(i === 1 && "lg:mt-16")}>
-            <Parallax distance={i === 1 ? 14 : 6}>
-              <Spotlight className="group/card h-full rounded-card border border-line bg-surface transition-[border-color] duration-[var(--dur-base)] ease-out-expo hover:border-gold-400/50">
-                <article className="relative z-[2]">
-                  {/* Foto segnaposto */}
-                  <div className="relative aspect-[4/4.4] overflow-hidden bg-[linear-gradient(160deg,var(--color-cobalt-700),var(--color-night-glow)_60%,var(--color-surface))]">
-                    <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-70" />
-                    <LogoMark sizes="320px" className="absolute -right-12 -top-8 h-[85%] w-auto opacity-[0.16]" />
-                    <span
-                      aria-hidden="true"
-                      className="text-gold absolute inset-0 grid place-items-center font-display text-[clamp(7rem,5rem+9vw,11rem)] font-bold leading-none opacity-30 transition-transform duration-[var(--dur-slow)] ease-out-expo group-hover/card:scale-105"
-                    >
-                      {m.initials}
-                    </span>
-                    <span className="absolute bottom-3 left-3 rounded-full border border-line-strong bg-night/70 px-3 py-1 text-[0.6875rem] font-medium uppercase tracking-wider text-fg-2 backdrop-blur">
-                      {about.photoNote}
-                    </span>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-h3 text-fg">{m.name}</h3>
-                    <p className="mt-1.5 text-small font-semibold uppercase tracking-[0.12em] text-gold-400">{m.role}</p>
-                    <p className="mt-3 text-body text-fg-2">{m.bio}</p>
-                  </div>
-                </article>
-              </Spotlight>
-            </Parallax>
+          <RevealItem key={m.name} y={40}>
+            <MemberCard m={m} offset={i === 1} />
           </RevealItem>
         ))}
       </RevealGroup>
-
-      <Reveal className="mt-10 lg:mx-auto lg:max-w-4xl" delay={0.1}>
-        <div className="flex flex-col items-start gap-5 rounded-card border border-dashed border-line-strong p-6 sm:flex-row sm:items-center">
-          <div aria-hidden="true" className="flex -space-x-3">
-            {[0, 1, 2].map((i) => (
-              <span key={i} className="grid h-11 w-11 place-items-center rounded-full border-2 border-night bg-surface-2 text-fg-3" style={{ opacity: 1 - i * 0.2 }}>
-                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-                  <circle cx="12" cy="9" r="3.5" />
-                  <path d="M5 20c.8-3.5 3.6-5 7-5s6.2 1.5 7 5" />
-                </svg>
-              </span>
-            ))}
-          </div>
-          <div>
-            <h3 className="font-display text-[1.125rem] font-semibold tracking-tight text-fg">{about.extra.title}</h3>
-            <p className="mt-1 text-body text-fg-2">{about.extra.text}</p>
-          </div>
-        </div>
+      <Reveal className="sr-only">
+        <p>{about.line}</p>
       </Reveal>
     </Section>
   );

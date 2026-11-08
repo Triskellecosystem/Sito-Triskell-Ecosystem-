@@ -24,8 +24,8 @@ export function PathColumn({ path, tone, showCta = true }: PathColumnProps) {
       )}
     >
       <div aria-hidden="true" className={cn("absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent to-transparent", gold ? "via-gold-300/80" : "via-azure-300/80")} />
-      <p className={cn("font-display text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)]", gold ? "text-gold-400" : "text-azure-300")}>{path.name}</p>
-      <h3 className="mt-2 text-[clamp(1.375rem,1.1rem+1.2vw,1.875rem)] font-bold leading-tight tracking-[-0.025em] text-fg">{path.tagline}</h3>
+      <h3 className={cn("font-display text-[clamp(2.75rem,2rem+3.6vw,4.5rem)] font-bold leading-none tracking-[-0.045em]", gold ? "text-gold" : "text-azure-300")}>{path.name}</h3>
+      <p className="mt-3 text-[clamp(1.125rem,1rem+0.5vw,1.375rem)] font-semibold leading-snug tracking-tight text-fg">{path.tagline}</p>
 
       <ol className="relative mt-8 flex-1">
         <span aria-hidden="true" className={cn("absolute bottom-6 left-[1.4375rem] top-6 w-px", gold ? "bg-gradient-to-b from-gold-300/70 via-gold-300/25 to-gold-300/5" : "bg-gradient-to-b from-azure-300/70 via-azure-300/25 to-azure-300/5")} />
@@ -52,7 +52,7 @@ export function PathColumn({ path, tone, showCta = true }: PathColumnProps) {
 
       {showCta && (
         <div className="mt-8">
-          <Button href={path.cta.href} variant={gold ? "primary" : "secondary"} size="lg" icon="arrow-right">
+          <Button href={path.cta.href} size="lg" icon="arrow-right">
             {path.cta.label}
           </Button>
         </div>

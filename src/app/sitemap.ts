@@ -11,8 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/agency/portfolio", 0.7],
     ["/chi-siamo", 0.7],
     ["/contatti", 0.8],
-    ["/risorse", 0.5],
-    ["/ai-lab", 0.5],
+    ["/vibe-coding", 0.6],
   ];
   return pages.map(([path, priority]) => ({
     url: `${site.brand.url}${path}`,

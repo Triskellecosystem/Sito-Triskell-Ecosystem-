@@ -13,18 +13,23 @@ interface PageHeroProps {
   line: string;
   crumbs?: Crumb[];
   children?: React.ReactNode;
+  /** Visual a lato (es. mockup animato). Con `aside` il titolo occupa 7/12 e il visual 5/12. */
+  aside?: React.ReactNode;
+  /** Classi del contenitore del visual (es. "max-lg:hidden" per nasconderlo su mobile). */
+  asideClassName?: string;
 }
 
 /**
  * Intestazione delle pagine interne: breadcrumb, overline, titolo (parti in [oro]) e una riga.
  * Il titolo usa solo un'animazione a fuoco (blur + traslazione, mai opacità) per restare candidato LCP.
  */
-export function PageHero({ overline, title, line, crumbs = [], children }: PageHeroProps) {
+export function PageHero({ overline, title, line, crumbs = [], children, aside, asideClassName }: PageHeroProps) {
   return (
     <section className="relative isolate overflow-hidden pb-[clamp(2.5rem,5vw,4.5rem)] pt-[calc(var(--header-h)+clamp(2rem,5vh,4rem))]">
       <div aria-hidden="true" className="bg-grid absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,#000,transparent_90%)]" />
       <div aria-hidden="true" className="absolute inset-0 -z-20 bg-[image:var(--gradient-bg-hero)]" />
-      <div className="container-x">
+      <div className={aside ? "container-x grid items-center gap-x-10 gap-y-14 lg:grid-cols-12" : "container-x"}>
+        <div className={aside ? "lg:col-span-7" : undefined}>
         {crumbs.length > 0 && (
           <nav aria-label="Percorso" className="mb-6 animate-[fade-in_0.8s_var(--ease-soft)_both]">
             <ol className="flex flex-wrap items-center gap-2 text-small text-fg-3">
@@ -58,7 +63,9 @@ export function PageHero({ overline, title, line, crumbs = [], children }: PageH
           <GoldText text={title} />
         </h1>
         <p className="mt-6 max-w-xl animate-[fade-in_0.9s_0.3s_var(--ease-soft)_both] text-lead text-fg-2">{line}</p>
-        {children && <div className="mt-8 flex animate-[fade-in_0.9s_0.4s_var(--ease-soft)_both] flex-wrap gap-4">{children}</div>}
+        {children && <div className="mt-8 flex animate-[fade-in_0.9s_0.4s_var(--ease-soft)_both] flex-wrap items-center gap-4">{children}</div>}
+        </div>
+        {aside && <div className={`relative lg:col-span-5 ${asideClassName ?? ""}`}>{aside}</div>}
       </div>
     </section>
   );

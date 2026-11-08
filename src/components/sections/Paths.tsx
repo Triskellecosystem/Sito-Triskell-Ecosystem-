@@ -9,7 +9,7 @@ export function Paths() {
   return (
     <Section id="percorsi" labelledBy="paths-title">
       <SectionHeading id="paths-title" overline={paths.overline} title={paths.title} line={paths.line} />
-      <RevealGroup className="mt-10 grid gap-5 sm:mt-14 lg:grid-cols-2 lg:gap-6" stagger={0.14}>
+      <RevealGroup className="mt-10 grid gap-5 sm:mt-14 lg:grid-cols-2 lg:gap-8" stagger={0.14} alternate>
         <RevealItem y={36}>
           <PathColumn path={paths.agency} tone="gold" />
         </RevealItem>

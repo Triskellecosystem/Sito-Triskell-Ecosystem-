@@ -94,7 +94,11 @@ export interface Pillar {
 export interface TeamMember {
   name: string;
   role: string;
+  headline: string;
   bio: string;
+  facts: Array<{ value: string; label: string }>;
+  /** Tappe del percorso professionale, mostrate "ad espansione". */
+  curriculum: string[];
   initials: string;
 }
 
@@ -141,8 +145,7 @@ export const site = {
         label: "Altro",
         href: "#",
         children: [
-          { label: "AI Lab", href: "/ai-lab", hint: "Sperimentazione e strumenti AI" },
-          { label: "Libreria risorse", href: "/risorse", hint: "Guide, modelli e strumenti" },
+          { label: "Libretto Vibe Coding", href: "/vibe-coding", hint: "Costruisci siti e app con l'AI" },
         ],
       },
     ] satisfies NavLink[],
@@ -250,45 +253,89 @@ export const site = {
       { icon: "clock", label: "30 minuti" },
       { icon: "zap", label: "Piano su misura" },
     ] satisfies Array<{ icon: IconName; label: string }>,
-    home: { title: "Non sai da dove partire?", text: "Prenota una call gratuita: ti consigliamo la strada giusta." } satisfies CtaContent,
+    home: { title: "Sei curioso?", text: "Parliamone insieme: troviamo la soluzione migliore per te." } satisfies CtaContent,
     results: { title: "Vuoi risultati come questi?", text: "Prenota ora la tua call gratuita." } satisfies CtaContent,
-    agency: { title: "Vuoi delegarci tutto?", text: "Prenota ora: partiamo dalla tua situazione." } satisfies CtaContent,
-    academy: { title: "Vuoi diventare autonomo?", text: "Prenota ora: ti diciamo da dove iniziare." } satisfies CtaContent,
+    agency: { title: "Vuoi delegarci tutto il lato marketing?", text: "Prenota una call gratuita: capiamo la tua situazione e ti diciamo cosa possiamo fare." } satisfies CtaContent,
+    academy: { title: "Vuoi far crescere la tua attività in modo indipendente?", text: "Prenota ora: ti diciamo da dove iniziare." } satisfies CtaContent,
     generic: { title: "Pronto a far crescere il tuo business?", text: "Prenota ora una call gratuita con il team." } satisfies CtaContent,
   },
 
   agencyPage: {
     overline: "Agency",
-    title: "Deleghi tutto, [cresci tu]",
-    line: "Strategia, campagne, siti e automazioni: ci pensiamo noi.",
+    title: "Non pensare a niente: [deleghi tutto a noi]",
+    line: "Strategia, social, campagne, siti e automazioni: ci pensiamo noi dall'inizio ai risultati.",
     pathTitle: "Il tuo funnel, [gestito da noi]",
     pathLine: "Ecco cosa facciamo, step dopo step.",
     servicesTitle: "Cosa possiamo fare [per te]",
     servicesLine: "Scegliamo insieme cosa serve davvero al tuo business.",
     services: [
-      { icon: "share", title: "Gestione social media", text: "Contenuti curati e pubblicati con costanza." },
-      { icon: "target", title: "Meta Ads e Google Ads", text: "Campagne che portano contatti e clienti veri." },
-      { icon: "globe", title: "Siti web", text: "Siti veloci e chiari, pensati per farti contattare.", href: "/agency/siti-web" },
-      { icon: "users", title: "CRM personale", text: "Un CRM su misura per gestire contatti e vendite." },
+      { icon: "smartphone", title: "Gestione social media", text: "Contenuti curati e pubblicati con costanza." },
+      { icon: "click", title: "Meta Ads e Google Ads", text: "Campagne che portano contatti e clienti veri." },
+      { icon: "monitor", title: "Siti web", text: "Siti veloci e chiari, pensati per farti contattare." },
+      { icon: "database", title: "CRM personale", text: "Un CRM su misura per gestire contatti e vendite." },
       { icon: "workflow", title: "Automazioni su misura", text: "Risposte, contatti e report che si gestiscono da soli." },
-      { icon: "bot", title: "Applicazioni su misura", text: "Strumenti digitali costruiti sul tuo modo di lavorare." },
-      { icon: "clapperboard", title: "Video con l'AI", text: "Video professionali creati con l'intelligenza artificiale." },
-      { icon: "compass", title: "Strategia e posizionamento", text: "Un piano chiaro per farti scegliere dal mercato." },
+      { icon: "code", title: "Applicazioni su misura", text: "Strumenti digitali costruiti sul tuo modo di lavorare." },
+      { icon: "film", title: "Video con l'AI", text: "Video professionali creati con l'intelligenza artificiale." },
+      { icon: "crosshair", title: "Strategia e posizionamento", text: "Un piano chiaro per farti scegliere dal mercato." },
     ] satisfies Service[], // TODO: conferma copy
+    call: {
+      overline: "Si parte da qui",
+      title: "Prenota una call [gratuita]",
+      line: "Nessun impegno: capiamo insieme da dove partire.",
+      points: [
+        { icon: "messages", title: "Ci racconti la tua situazione", text: "Dove sei oggi e dove vuoi arrivare." },
+        { icon: "search", title: "Guardiamo il tuo funnel", text: "Vediamo cosa funziona e cosa si può migliorare." },
+        { icon: "rocket", title: "Ti diciamo cosa fare", text: "Un piano chiaro e un pacchetto su misura." },
+      ] satisfies Array<{ icon: IconName; title: string; text: string }>,
+    },
+    showcase: {
+      overline: "I nostri lavori",
+      title: "Guarda cosa [costruiamo]",
+      line: "Siti web e progetti reali, scegli cosa vedere.",
+      tabs: { sites: "Siti web", portfolio: "Portfolio" },
+      sitesCta: { label: "Tutti i siti web", href: "/agency/siti-web" },
+      portfolioCta: { label: "Tutto il portfolio", href: "/agency/portfolio" },
+    },
+    /** Esempio dimostrativo (profilo social di una palestra): dati INVENTATI, da sostituire con un caso reale. */
+    demo: {
+      note: "Esempio dimostrativo",
+      handle: "palestra.esempio",
+      name: "Palestra Esempio",
+      category: "Palestra · Fitness",
+      stats: [
+        { value: "128", label: "post" },
+        { value: "12,4 K", label: "follower" },
+        { value: "310", label: "seguiti" },
+      ],
+      gain: "+312 follower questa settimana",
+      requestsLabel: "Richieste oggi",
+      chat: [
+        { who: "Marco", text: "Ciao! Vorrei info sugli abbonamenti" },
+        { who: "Giulia", text: "Posso prenotare una prova gratuita?" },
+        { who: "Luca", text: "Avete corsi la sera?" },
+        { who: "Sara", text: "Quanto costa il pacchetto 3 mesi?" },
+      ],
+    }, // TODO: dato reale (sostituire con un profilo vero e i risultati reali)
     portfolioCta: { label: "Guarda il portfolio", href: "/agency/portfolio" },
     sitesCta: { label: "Guarda i nostri siti", href: "/agency/siti-web" },
   },
-
   academyPage: {
     overline: "Academy",
-    title: "Diventa [indipendente]",
+    title: "Diventa [indipendente] sulle migliori strategie di marketing e AI",
     line: "Impari a vendere, fare marketing e usare l'AI da solo.",
     pathTitle: "Il tuo percorso, [step dopo step]",
     pathLine: "Per te in prima persona, o per i tuoi dipendenti.",
     videosTitle: "Guarda i [tutorial]",
     videosLine: "Video pratici su marketing, AI e automazioni.",
+    /** Anteprima di una lezione: dati INVENTATI a scopo dimostrativo. */
+    demo: {
+      note: "Esempio dimostrativo",
+      lesson: "Lezione 3 · Il funnel di vendita",
+      modules: ["Processi di vendita", "Marketing", "Intelligenza artificiale", "Automazioni"],
+      progress: "Percorso completato",
+      badge: "Ora sei autonomo",
+    }, // TODO: dato reale
   },
-
   sitiWeb: {
     overline: "Agency · Siti web",
     title: "Siti web firmati [William]",
@@ -309,21 +356,6 @@ export const site = {
     overline: "Agency · Portfolio",
     title: "Progetti e [risultati]",
     line: "Alcuni lavori, con i loro numeri.",
-  },
-
-  risorse: {
-    overline: "Altro · Risorse",
-    title: "Libreria [risorse]",
-    line: "Guide, modelli e strumenti per far crescere il tuo business.",
-    soon: "In arrivo",
-    items: [
-      { icon: "search", title: "Guida al funnel di vendita", tag: "Guida" },
-      { icon: "share", title: "Calendario contenuti social", tag: "Modello" },
-      { icon: "users", title: "Modello di CRM", tag: "Modello" },
-      { icon: "bot", title: "Prompt AI per il marketing", tag: "Raccolta" },
-      { icon: "workflow", title: "Automazioni da copiare", tag: "Template" },
-      { icon: "clapperboard", title: "Video tutorial", tag: "Video" },
-    ] satisfies Array<{ icon: IconName; title: string; tag: string }>, // TODO: dato reale (risorse vere)
   },
 
   contatti: {
@@ -399,29 +431,110 @@ export const site = {
   },
 
   about: {
-    id: "chi-siamo",
     overline: "Chi siamo",
-    title: "Un team piccolo, [visione grande]",
-    line: "Le persone dietro Triskell Ecosystem.",
+    title: "Competenza costruita [sul campo]",
+    line: "Un team che il settore lo ha già vissuto da dentro.",
+    more: "Leggi il percorso",
+    less: "Chiudi il percorso",
     team: [
       {
         name: "Tomaso",
-        role: "Founder",
-        bio: "Strategia, marketing e intelligenza artificiale.", // TODO: dato reale (bio definitiva)
+        role: "Founder · Marketing e strategia",
+        headline: "10 anni di marketing, partito dentro le agenzie",
+        bio: "Ha imparato il mestiere sul campo: prima per altre agenzie, poi ha deciso di costruire qualcosa di suo.",
+        facts: [
+          { value: "10", label: "anni di esperienza" },
+          { value: "50+", label: "clienti gestiti" },
+          { value: "10.000 €", label: "al giorno in campagne" },
+        ],
+        curriculum: [
+          "Inizia a lavorare nel marketing digitale per altre agenzie",
+          "Gestisce campagne politiche, anche da 10.000 € al giorno",
+          "Segue più di 50 clienti in contemporanea",
+          "Mette a punto un metodo basato su funnel, dati e automazioni",
+          "Decide di creare qualcosa di suo: nasce Triskell Ecosystem",
+        ],
         initials: "T",
       },
       {
         name: "William",
         role: "Web developer",
-        bio: "Siti veloci, performance e automazioni.", // TODO: dato reale (bio definitiva)
+        headline: "Siti veloci, curati e pensati per far contattare",
+        bio: "Costruisce siti, CRM e strumenti su misura, con un occhio fisso a velocità e risultati.",
+        facts: [
+          { value: "5+", label: "anni di sviluppo web" },
+          { value: "40+", label: "siti realizzati" },
+          { value: "100", label: "obiettivo performance" },
+        ],
+        curriculum: [
+          "Inizia a sviluppare siti web per professionisti e attività locali",
+          "Passa a progetti più strutturati: e-commerce e applicazioni",
+          "Si specializza in performance, SEO tecnica e accessibilità",
+          "Costruisce CRM e automazioni su misura per i clienti",
+          "Oggi cura tutta la parte tecnica di Triskell Ecosystem",
+        ],
         initials: "W",
       },
-    ] satisfies TeamMember[],
-    photoNote: "Foto in arrivo", // TODO: foto reali del team
-    extra: {
-      title: "Collaboratori occasionali",
-      text: "Video maker, designer e specialisti, coinvolti per progetto.",
-    },
+    ] satisfies TeamMember[], // TODO: dato reale (curriculum, numeri e foto: testi segnaposto da correggere)
+  },
+  vibeCoding: {
+    overline: "Altro · Risorsa gratuita · PDF di 10 pagine",
+    title: "Il libretto sul [Vibe Coding]",
+    line: "Come si costruiscono siti e app descrivendo all'intelligenza artificiale cosa vuoi ottenere.",
+    coverAlt: "Copertina del libro «Vibe Coding»",
+    badges: ["Gratis", "Senza saper programmare", "Pensato per chi ha un'attività"],
+    // TODO: collegare nel nuovo sito il modulo email (estratto PDF) e il checkout; per ora i pulsanti portano al sito originale.
+    freeCta: { label: "Scarica l'estratto gratis", href: "https://www.triskellecosystem.com/risorse/vibe-coding-estratto" },
+    buyCta: { label: "Leggi il libro completo", href: "https://www.triskellecosystem.com/vibe-coding" },
+    ideasTitle: "Il libro in [6 idee]",
+    ideasLine: "Leggi i titoli: bastano a farti un'idea. Tocca un punto per aprirlo.",
+    ideas: [
+      {
+        title: "Le idee restano ferme",
+        text: "Lo sviluppo tradizionale costa mesi prima di sapere se un'idea funziona. Preventivi, specifiche, passaggi di mano, attese: il costo vero non è solo economico, è tempo, energia e opportunità perse. La complessità tecnica ha reso lo sviluppo un territorio per pochi. Oggi nuovi strumenti stanno abbassando la barriera d'ingresso.",
+      },
+      {
+        title: "Descrivi il risultato, l'AI scrive il codice",
+        text: "È il passaggio dalla scrittura del codice all'orchestrazione dell'intento. Invece di dire al computer come fare ogni cosa, riga per riga, descrivi cosa vuoi ottenere. Conta meno la sintassi di un linguaggio, conta di più saper descrivere bene un problema e riconoscere quando la soluzione è giusta.",
+      },
+      {
+        title: "Funziona a giri: chiedi, guardi, correggi",
+        text: "Il processo non sparisce: diventa un giro di richieste, verifiche e correzioni che si ripete finché il risultato corrisponde all'obiettivo. Il giudizio finale resta sempre tuo.",
+      },
+      {
+        title: "Lo strumento giusto dipende dalla fase",
+        text: "Tre famiglie: dall'idea all'app, editor con l'AI dentro, agenti a cui delegare. I nomi degli strumenti cambiano in fretta, per questo il libro non ti dà «il migliore»: ti insegna a leggere la mappa.",
+      },
+      {
+        title: "Cambiano i numeri di un'attività",
+        text: "Il libro riporta una stima di costi di sviluppo più bassi del 20–40%. Tempo: una prima versione in ore o giorni invece che in mesi. Investimento iniziale: meno soldi da impegnare prima di avere risposte dal mercato. Produttività: più tempo su strategia e decisioni. Il vantaggio si sposta dal saper costruire al sapere che cosa vale la pena costruire.",
+      },
+      {
+        title: "Velocità sì, ma con metodo",
+        text: "Sicurezza, qualità e privacy non si saltano solo perché si fa prima. L'essere umano resta sempre dove si decide. Controlli prima di mettere online qualcosa. Prima il valore, poi lo strumento.",
+      },
+    ],
+    stepsTitle: "Prova il percorso, [passo per passo]",
+    stepsLine: "Tocca un passo per vedere cosa fai tu e cosa fa l'AI.",
+    youLabel: "Cosa fai tu",
+    aiLabel: "Cosa fa l'AI",
+    steps: [
+      { n: "Idea", you: "Definisci obiettivo, contesto e vincoli: per chi è, cosa deve fare, cosa non deve fare.", ai: "Niente, per ora: qui decidi tu.", ex: "Esempio: «Un modulo di prenotazione per il mio studio, 4 fasce orarie al giorno»." },
+      { n: "Richiesta", you: "Descrivi il risultato che vuoi, con parole semplici e precise.", ai: "Interpreta che cosa intendi.", ex: "Più la richiesta è chiara, migliore è la prima versione." },
+      { n: "Prima versione", you: "Guardi cosa è uscito.", ai: "Costruisce struttura e codice.", ex: "In minuti, non in settimane: è qui che il Vibe Coding fa la differenza." },
+      { n: "Revisione", you: "Dai indicazioni, chiedi modifiche.", ai: "Corregge e migliora.", ex: "«Il pulsante più grande, aggiungi il campo telefono»: si ripete finché serve." },
+      { n: "Verifica", you: "Controlli qualità, sicurezza, coerenza.", ai: "Aiuta a trovare gli errori.", ex: "È il passaggio che non si salta: il giudizio resta tuo." },
+      { n: "Online", you: "Metti online per davvero.", ai: "Prepara il rilascio.", ex: "Dall'idea al prodotto usabile, con meno intermediari." },
+    ],
+    faqTitle: "Domande [veloci]",
+    faq: [
+      { q: "L'estratto è davvero gratuito?", a: "Sì. Lasci la tua email e scarichi subito il PDF. Nessun pagamento, nessun abbonamento." },
+      { q: "Serve saper programmare?", a: "No. Il libro è scritto per chi non è un programmatore: serve saper descrivere bene quello che vuoi ottenere." },
+      { q: "Cosa c'è nel libro completo in più?", a: "Tutti e dieci i capitoli: il processo passo per passo, la mappa degli strumenti per ogni fase, i numeri, i rischi da controllare e il metodo per iniziare." },
+      { q: "Come ricevo il libro dopo l'acquisto?", a: "Subito dopo il pagamento ricevi via email il link al PDF, e lo trovi sempre anche nella tua Area Membri Triskell." },
+    ],
+    disclaimer:
+      "Riassunto a scopo informativo del libro «Vibe Coding» (Serie AI & Futuro, Vol. 1, 2026). Le stime economiche sono quelle riportate nel libro e vanno lette come ordini di grandezza, non come garanzie di risultato. I nomi degli strumenti citati sono marchi dei rispettivi proprietari; Triskell Ecosystem non è affiliata a nessuno di loro.",
   },
 
   faq: {
@@ -504,8 +617,7 @@ export const site = {
         links: [
           { label: "Siti web", href: "/agency/siti-web" },
           { label: "Portfolio", href: "/agency/portfolio" },
-          { label: "AI Lab", href: "/ai-lab" },
-          { label: "Libreria risorse", href: "/risorse" },
+          { label: "Libretto Vibe Coding", href: "/vibe-coding" },
         ],
       },
       {
@@ -526,13 +638,6 @@ export const site = {
     ] satisfies Social[],
     legal: "P.IVA 00000000000", // TODO: dato reale (P.IVA / ragione sociale)
     rights: "Tutti i diritti riservati.",
-  },
-
-  aiLab: {
-    overline: "AI Lab",
-    title: "Il laboratorio AI [sta arrivando]",
-    line: "Esperimenti, strumenti e integrazioni su misura.",
-    cta: { label: "Torna alla home", href: "/" },
   },
 
   a11y: {

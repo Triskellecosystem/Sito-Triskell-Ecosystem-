@@ -3,7 +3,7 @@ import { cn } from "@/lib/cn";
 import { Icon, type IconName } from "./Icon";
 
 type Variant = "primary" | "secondary" | "ghost";
-type Size = "sm" | "md" | "lg";
+type Size = "sm" | "md" | "lg" | "xl";
 
 interface CommonProps {
   variant?: Variant;
@@ -11,6 +11,8 @@ interface CommonProps {
   icon?: IconName;
   /** Posizione dell'icona (default: dopo il testo). */
   iconPosition?: "start" | "end";
+  /** Lampeggia: anello che si espande e alone che pulsa. Per le azioni "Prenota ora". */
+  pulse?: boolean;
   className?: string;
   children: React.ReactNode;
 }
@@ -40,11 +42,12 @@ const sizes: Record<Size, string> = {
   sm: "h-10 px-4 text-[0.875rem]",
   md: "h-12 px-6 text-[0.9375rem]",
   lg: "h-14 px-7 text-[1rem]",
+  xl: "h-16 px-9 text-[1.125rem] sm:h-[4.25rem] sm:px-12 sm:text-[1.25rem]",
 };
 
 /** Bottone / link con 3 varianti. Riflesso "shine" sulla primaria, freccia che scorre. */
 export function Button(props: ButtonProps | LinkProps) {
-  const { variant = "primary", size = "md", icon, iconPosition = "end", className, children, ...rest } = props;
+  const { variant = "primary", size = "md", icon, iconPosition = "end", pulse = false, className, children, ...rest } = props;
   const classes = cn(base, variants[variant], sizes[size], className);
 
   const content = (
@@ -69,17 +72,28 @@ export function Button(props: ButtonProps | LinkProps) {
     </>
   );
 
+  const withPulse = (button: React.ReactNode) =>
+    pulse ? (
+      <span className="relative inline-flex">
+        <span aria-hidden="true" className="btn-halo pointer-events-none absolute -inset-2 rounded-[22px] bg-gold-300/45 blur-xl" />
+        <span aria-hidden="true" className="btn-ping pointer-events-none absolute inset-0 rounded-[14px] border-2 border-gold-200" />
+        {button}
+      </span>
+    ) : (
+      button
+    );
+
   if ("href" in props && props.href !== undefined) {
     const { href, ...anchorRest } = rest as Omit<LinkProps, keyof CommonProps>;
-    return (
-      <Link href={href} className={classes} {...anchorRest}>
+    return withPulse(
+      <Link href={href} className={cn(classes, pulse && "relative")} {...anchorRest}>
         {content}
-      </Link>
+      </Link>,
     );
   }
-  return (
-    <button type="button" className={classes} {...(rest as Omit<ButtonProps, keyof CommonProps>)}>
+  return withPulse(
+    <button type="button" className={cn(classes, pulse && "relative")} {...(rest as Omit<ButtonProps, keyof CommonProps>)}>
       {content}
-    </button>
+    </button>,
   );
 }
