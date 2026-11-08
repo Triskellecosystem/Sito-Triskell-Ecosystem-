@@ -10,10 +10,12 @@ interface TriskellMarkProps {
   /** Disegna i tre bracci con un'animazione di path drawing. */
   draw?: boolean;
   strokeWidth?: number;
+  /** Tratto oro uniforme (per filigrane sottili, dove il fondo del gradiente risulterebbe fangoso). */
+  flat?: boolean;
 }
 
 /** Simbolo triskell: tre bracci a spirale ruotati di 120°, gradiente oro metallico. */
-export function TriskellMark({ className, title, draw = false, strokeWidth = 4.6 }: TriskellMarkProps) {
+export function TriskellMark({ className, title, draw = false, strokeWidth = 4.6, flat = false }: TriskellMarkProps) {
   const id = useId().replace(/:/g, "");
   const gradient = `tm-${id}`;
   const rotations = [0, 120, 240];
@@ -36,7 +38,7 @@ export function TriskellMark({ className, title, draw = false, strokeWidth = 4.6
           <stop offset="1" stopColor="var(--color-gold-700)" />
         </linearGradient>
       </defs>
-      <g stroke={`url(#${gradient})`} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+      <g stroke={flat ? "var(--color-gold-400)" : `url(#${gradient})`} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
         {rotations.map((deg, i) => (
           <path
             key={deg}
