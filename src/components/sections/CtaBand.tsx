@@ -16,10 +16,10 @@ export function CtaBand({ content }: { content: CtaContent }) {
     <section aria-label={content.title} className="relative isolate py-[clamp(1.25rem,3vw,2.25rem)]">
       <TechBackdrop tone="gold" cursor />
       <div className="container-x">
-        <Reveal y={26} blur={0} from="scale">
+        <Reveal y={26} blur={0} from="scale" className="mx-auto w-full lg:w-fit">
           <BeamCard>
-            <div className="relative overflow-hidden rounded-[inherit] bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-night-raised)_55%,var(--color-surface))] px-5 py-6 sm:px-8 sm:py-7 lg:px-10">
-              <div className="relative grid items-center gap-5 text-center lg:grid-cols-[1fr_auto] lg:gap-12 lg:text-left">
+            <div className="relative overflow-hidden rounded-[inherit] bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-night-raised)_55%,var(--color-surface))] px-5 py-6 sm:px-8 sm:py-6 lg:px-9">
+              <div className="relative grid items-center gap-5 text-center lg:grid-cols-[auto_auto] lg:gap-14 lg:text-left">
                 <div>
                   <h2 className="text-[clamp(1.5rem,1.1rem+1.7vw,2.375rem)] font-bold leading-[1.08] tracking-[-0.035em] text-fg">
                     <Reveal as="span" from="far-left" blur={0} className="block">
@@ -30,7 +30,7 @@ export function CtaBand({ content }: { content: CtaContent }) {
                     </Reveal>
                   </h2>
                   <Reveal delay={0.4} y={12} blur={0}>
-                    <p className="mt-2.5 text-[0.9375rem] leading-snug text-fg-2 lg:max-w-md">{content.text}</p>
+                    <p className="mt-2 text-[0.9375rem] leading-snug text-fg-2 [text-wrap:balance] lg:max-w-[22rem]">{content.text}</p>
                   </Reveal>
                 </div>
 

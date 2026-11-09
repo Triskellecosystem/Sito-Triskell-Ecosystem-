@@ -764,3 +764,15 @@ li:hover > .slide-x .svc-card { animation-play-state: paused; }
 .cover-slide { opacity: 0; animation: cover-slide calc(var(--n) * 3.2s) ease-in-out infinite; animation-delay: calc(var(--i) * 3.2s - var(--n) * 3.2s); }
 .cover-slide:first-child { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .cover-slide { animation: none; } .cover-slide:not(:first-child) { display: none; } }
+
+/* Follower sull'immagine del profilo: a ogni incremento il numero scatta dal blu all'oro (resta leggibile su bianco) */
+@keyframes follower-live { 0% { color: #1d4ed8; transform: scale(1.18); } 60% { color: #b45309; } 100% { color: #000; transform: scale(1); } }
+.follower-live { animation: follower-live 0.42s ease-out; }
+@media (prefers-reduced-motion: reduce) { .follower-live { animation: none; } }
+
+/* Aurora azzurra chiara (libro Vibe Coding e sezione "Il libro in 6 idee") */
+@keyframes aurora-spin { to { transform: rotate(360deg); } }
+.aurora-azure { background: conic-gradient(from 0deg, rgb(140 215 255 / 0.4), transparent 22%, rgb(60 170 230 / 0.42) 45%, transparent 68%, rgb(140 215 255 / 0.4)); animation: aurora-spin 50s linear infinite; }
+@keyframes book-aura { 0%, 100% { opacity: 0.55; transform: scale(0.96); } 50% { opacity: 1; transform: scale(1.06); } }
+.book-aura { animation: book-aura 5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .aurora-azure, .book-aura { animation: none; } }

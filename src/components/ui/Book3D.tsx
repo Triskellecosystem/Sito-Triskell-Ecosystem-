@@ -142,7 +142,11 @@ export function Book3D({ cover, alt, title, hint, className }: Book3DProps) {
 
   return (
     <div className={cn("relative mx-auto w-fit", className)}>
-      <div aria-hidden="true" className="absolute -inset-10 rounded-full bg-[radial-gradient(circle,rgb(42_144_195/0.35),transparent_65%)]" />
+      {/* aura azzurra chiara dietro al libro: alone che pulsa e luce che gira piano */}
+      <div aria-hidden="true" className="pointer-events-none absolute -inset-20 [mask-image:radial-gradient(circle,#000_30%,transparent_70%)]">
+        <div className="aurora-azure absolute inset-0 rounded-full opacity-80" />
+      </div>
+      <div aria-hidden="true" className="book-aura pointer-events-none absolute -inset-14 rounded-full bg-[radial-gradient(circle,rgb(140_215_255/0.55),rgb(60_170_230/0.28)_40%,transparent_68%)]" />
       <div ref={hit} role="img" aria-label={`${alt}. ${hint}`} className="relative cursor-grab touch-none select-none p-10 sm:p-12">
       <div ref={stage} className="book-stage relative" style={{ perspective: "1400px" }}>
         <div ref={book} className="book">

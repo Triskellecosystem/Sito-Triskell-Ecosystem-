@@ -124,7 +124,7 @@ export function Ecosystem() {
       </div>
       <SectionHeading id="eco-title" overline={e.overline} title={e.title} align="center" />
       <Reveal delay={0.15} blur={4} y={14}>
-        <p className="mx-auto mt-6 max-w-2xl text-center text-[clamp(1.0625rem,0.98rem+0.45vw,1.3125rem)] leading-relaxed text-fg-2">{e.description}</p>
+        <p className="mx-auto mt-6 max-w-2xl text-balance text-center text-[clamp(1.0625rem,0.98rem+0.45vw,1.3125rem)] leading-relaxed text-fg-2">{e.description}</p>
       </Reveal>
 
       {/* ---- COSTELLAZIONE: i settori arrivano da sinistra e da destra, in ordine, verso il logo ---- */}

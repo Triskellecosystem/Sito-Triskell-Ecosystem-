@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { CtaBand } from "@/components/sections/CtaBand";
+import { ContactLinks } from "@/components/sections/ContactLinks";
 import { PageHero } from "@/components/sections/PageHero";
 import { VibeGuide } from "@/components/sections/VibeGuide";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { TechBackdrop } from "@/components/ui/TechBackdrop";
 import { Book3D } from "@/components/ui/Book3D";
 import { Reveal } from "@/components/motion/Reveal";
 import { site } from "@/content/site";
@@ -75,6 +76,11 @@ export default function VibeCodingPage() {
       <VibeGuide />
 
       <Section id="idee" labelledBy="idee-title">
+        {/* sfondo più ricco: aurora azzurra che gira piano, griglia e punti luce */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="aurora-azure absolute left-1/2 top-1/2 h-[56rem] w-[56rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 [mask-image:radial-gradient(circle,#000_20%,transparent_68%)]" />
+        </div>
+        <TechBackdrop tone="azure" rich cursor />
         <SectionHeading id="idee-title" overline="01" title={v.ideasTitle} line={v.ideasLine} align="center" />
         <Reveal className="mt-10" blur={0}>
           <Disclosure name="idea" items={v.ideas} />
@@ -105,7 +111,7 @@ export default function VibeCodingPage() {
         </div>
       </section>
 
-      <CtaBand content={site.cta.generic} />
+      <ContactLinks />
     </>
   );
 }

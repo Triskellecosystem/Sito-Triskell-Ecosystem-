@@ -31,7 +31,7 @@ export function AcademyCourses() {
         </dl>
       </Reveal>
 
-      <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08} alternate>
+      <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08} alternate="far">
         {c.items.map((it) => (
           <RevealItem key={it.id} y={28} className="h-full">
             <a
@@ -67,33 +67,73 @@ export function AcademyCourses() {
           </RevealItem>
         ))}
 
-        {/* cosa ottieni + pulsante */}
-        <RevealItem y={28} className="h-full">
-          <div className="flex h-full flex-col justify-between rounded-card border border-gold-400/40 bg-[linear-gradient(160deg,var(--color-cobalt-600),var(--color-night-raised))] p-6">
-            <div>
-              <ul className="space-y-3">
-                {c.perks.map((p) => (
-                  <li key={p} className="flex items-start gap-3 text-[0.9375rem] leading-snug text-fg">
-                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border border-gold-400/50 bg-gold-300/10 text-gold-300">
-                      <Icon name="check" className="h-3 w-3" strokeWidth={2.5} />
+      </RevealGroup>
+
+      {/* YouTube: le copertine dei nostri video */}
+      <div className="mt-16 sm:mt-20">
+        <SectionHeading id="yt-title" overline="YouTube" title={c.youtube.title} line={c.youtube.line} align="center" />
+        <RevealGroup className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08} alternate>
+          {c.youtube.videos.map((v) => (
+            <RevealItem key={v.id} y={26} className="h-full">
+              <a
+                href={`https://www.youtube.com/watch?v=${v.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/y block overflow-hidden rounded-card border border-line bg-surface transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-gold-300/70 hover:shadow-[0_0_40px_-12px_rgb(247_200_92/0.5)]"
+              >
+                <div className="relative aspect-video overflow-hidden bg-night">
+                  <Image src={`/youtube/${v.id}.jpg`} alt={`Video: ${v.title}`} fill sizes="(min-width: 1024px) 26rem, (min-width: 640px) 45vw, 92vw" className="object-cover transition-transform duration-[900ms] ease-out-expo group-hover/y:scale-[1.05]" />
+                  <span aria-hidden="true" className="absolute inset-0 grid place-items-center bg-night/25 opacity-0 transition-opacity duration-[var(--dur-base)] group-hover/y:opacity-100">
+                    <span className="grid h-14 w-14 place-items-center rounded-full bg-gold-300 text-night shadow-glow-gold">
+                      <Icon name="play" className="h-6 w-6" />
                     </span>
-                    {p}
+                  </span>
+                </div>
+                <p className="p-4 font-display text-[1rem] font-semibold leading-snug tracking-tight text-fg">{v.title}</p>
+              </a>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+        <Reveal y={14} blur={0} className="mt-8 flex justify-center">
+          <Button href={c.youtube.channel.href} target="_blank" rel="noopener noreferrer" size="md" variant="secondary" icon="arrow-up-right">
+            {c.youtube.channel.label}
+          </Button>
+        </Reveal>
+      </div>
+
+      {/* In fondo, da solo: cosa troverai nell'Academy */}
+      <Reveal y={26} blur={0} className="mt-16 sm:mt-20">
+        <div className="relative overflow-hidden rounded-card border border-gold-400/40 bg-[linear-gradient(160deg,var(--color-cobalt-600),var(--color-night-raised))] p-6 sm:p-8">
+          <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 opacity-30 [mask-image:linear-gradient(to_right,#000,transparent_80%)]" />
+          <div className="relative grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:items-center">
+            <div>
+              <h3 className="font-display text-[clamp(1.5rem,1.2rem+1.2vw,2.125rem)] font-bold tracking-[-0.03em] text-fg">{c.includes.title}</h3>
+              <ul className="mt-5 grid gap-4 sm:grid-cols-2">
+                {c.includes.items.map((it) => (
+                  <li key={it.title} className="flex items-start gap-3">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-gold-400/45 bg-gold-300/10 text-gold-300">
+                      <Icon name={it.icon} className="h-5 w-5" strokeWidth={1.7} />
+                    </span>
+                    <span className="text-[0.9375rem] leading-snug text-fg-2">
+                      <strong className="block font-display text-[1.0625rem] font-semibold text-fg">{it.title}</strong>
+                      {it.text}
+                    </span>
                   </li>
                 ))}
               </ul>
-              <blockquote className="mt-6 border-l-2 border-gold-300/60 pl-4 text-[0.9375rem] italic leading-snug text-fg-2">
+            </div>
+            <div className="flex flex-col items-start gap-5 lg:items-center lg:text-center">
+              <blockquote className="border-l-2 border-gold-300/60 pl-4 text-[0.9375rem] italic leading-snug text-fg-2 lg:border-l-0 lg:pl-0">
                 “{c.quote}”
                 <footer className="mt-1.5 text-[0.75rem] not-italic text-fg-3">{c.quoteBy}</footer>
               </blockquote>
-            </div>
-            <div className="mt-6">
-              <Button href={c.cta.href} target="_blank" rel="noopener noreferrer" size="md" icon="arrow-up-right" pulse>
+              <Button href={c.cta.href} target="_blank" rel="noopener noreferrer" size="lg" icon="arrow-up-right" pulse>
                 {c.cta.label}
               </Button>
             </div>
           </div>
-        </RevealItem>
-      </RevealGroup>
+        </div>
+      </Reveal>
     </Section>
   );
 }

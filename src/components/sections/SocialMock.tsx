@@ -1,17 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { Icon, type IconName } from "@/components/ui/Icon";
-import { GymLogo, Poster } from "./SocialPosters";
 
-const HIGHLIGHTS: Array<{ icon: IconName; label: string }> = [
-  { icon: "dumbbell", label: "Corsi" },
-  { icon: "trophy", label: "Risultati" },
-  { icon: "users", label: "Team" },
-  { icon: "bell", label: "Offerte" },
-];
 
 const nf = new Intl.NumberFormat("it-IT");
 /** Incrementi dei follower a ogni battito: tanti piccoli (+1, +2, +3) e ogni tanto un salto grande (+100, +150). */
@@ -92,7 +86,7 @@ export function SocialMock() {
 
       <div
         aria-hidden="true"
-        className="relative aspect-[9/16.6] touch-pan-y select-none overflow-hidden rounded-[2.4rem] border-[6px] border-line-strong bg-night shadow-[0_40px_90px_-30px_rgb(0_0_0/0.9),0_0_0_1px_rgb(42_144_195/0.35)]"
+        className="relative aspect-[9/17.4] touch-pan-y select-none overflow-hidden rounded-[2.4rem] border-[6px] border-line-strong bg-night shadow-[0_40px_90px_-30px_rgb(0_0_0/0.9),0_0_0_1px_rgb(42_144_195/0.35)]"
         onPointerDown={(e) => {
           drag.current = e.clientX;
         }}
@@ -103,93 +97,32 @@ export function SocialMock() {
       >
         <span className="absolute left-1/2 top-2 z-30 h-5 w-24 -translate-x-1/2 rounded-full bg-night-deep" />
 
-        {/* ===== Schermata 1: profilo Instagram ===== */}
-        <div className={cn("absolute inset-0 flex flex-col px-3.5 pb-3 pt-9 transition-[opacity,transform] duration-700 ease-out-expo", screen === 0 ? "opacity-100" : "pointer-events-none -translate-x-8 opacity-0")}>
-          <div className="flex items-center justify-between text-fg">
-            <p className="flex items-center gap-1 text-[0.8125rem] font-bold">
-              {d.handle}
-              <Icon name="badge" className="h-3.5 w-3.5 text-azure-300" />
-            </p>
-            <span className="flex items-center gap-3">
-              <Icon name="plus" className="h-4 w-4" />
+        {/* ===== Schermata 1: profilo Instagram (schermata reale) con follower e messaggi che si aggiornano ===== */}
+        <div className={cn("absolute inset-0 overflow-hidden bg-white pt-6 transition-[opacity,transform] duration-700 ease-out-expo", screen === 0 ? "opacity-100" : "pointer-events-none -translate-x-8 opacity-0")}>
+          <div className="relative w-full [container-type:inline-size]">
+            <Image src="/brand/instagram-eleva.webp" alt="" width={720} height={1500} sizes="21rem" priority className="block h-auto w-full" />
+
+            {/* messaggi in alto a destra (al posto dei tre puntini): il badge cresce con le richieste */}
+            <span className="absolute right-[2.5%] top-[0.9%] grid h-[2.6%] w-[8.5%] place-items-center bg-white">
               <span className="relative">
-                <Icon name="messages" className="h-[1.1rem] w-[1.1rem]" />
-                <span key={requests} className="grow-pill absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-gold-300 px-1 text-[0.5625rem] font-bold tabular-nums text-night">{requests}</span>
+                <Icon name="messages" className="h-[5.5cqw] w-[5.5cqw] text-black" strokeWidth={2} />
+                <span key={requests} className="grow-pill absolute -right-[2.2cqw] -top-[2.2cqw] grid h-[4.4cqw] min-w-[4.4cqw] place-items-center rounded-full bg-[#c1121f] px-[1cqw] text-[2.6cqw] font-bold tabular-nums text-white">{requests}</span>
               </span>
             </span>
-          </div>
 
-          <div className="mt-2.5 flex items-center gap-3">
-            <span className="grid h-[3.9rem] w-[3.9rem] shrink-0 place-items-center rounded-full bg-[conic-gradient(from_200deg,var(--color-gold-300),var(--color-azure-400),var(--color-gold-300))] p-[2.5px]">
-              <span className="block h-full w-full overflow-hidden rounded-full">
-                <GymLogo />
+            {/* follower: stesso punto e stesso stile dell'originale, ma il numero cresce e cambia colore */}
+            <span className="absolute left-[52.6%] top-[5.9%] flex h-[5%] w-[19.5%] flex-col items-center justify-center bg-white text-black">
+              <span key={followers} className="follower-live text-[4.5cqw] font-bold leading-none tabular-nums">
+                {nf.format(followers)}
               </span>
+              <span className="mt-[0.8cqw] text-[3.9cqw] leading-none">{d.followersLabel}</span>
             </span>
-            {/* post · follower · seguiti: come su Instagram; i follower sono in evidenza, crescono e cambiano colore */}
-            <dl className="grid flex-1 grid-cols-[1fr_1.55fr_1fr] items-start text-center">
-              <div>
-                <dd className="font-display text-[1rem] font-bold leading-none text-fg">{d.posts}</dd>
-                <dt className="mt-1 text-[0.625rem] text-fg-3">post</dt>
-              </div>
-              <div className="rounded-xl border border-gold-400/45 bg-gold-300/10 px-1 py-1 shadow-glow-gold">
-                <dd key={followers} className="follower-num font-display text-[1.375rem] font-extrabold leading-none tracking-[-0.03em] tabular-nums">
-                  {nf.format(followers)}
-                </dd>
-                <dt className="mt-1 text-[0.625rem] font-semibold text-gold-200">{d.followersLabel}</dt>
-              </div>
-              <div>
-                <dd className="font-display text-[1rem] font-bold leading-none text-fg">{d.following}</dd>
-                <dt className="mt-1 text-[0.625rem] text-fg-3">seguiti</dt>
-              </div>
-            </dl>
-          </div>
-          <div className="mt-1.5 flex justify-end">
-            <span key={gain} className="grow-pill flex items-center gap-1 rounded-full bg-gold-300 px-2.5 py-0.5 text-[0.6875rem] font-bold tabular-nums text-night">
-              <Icon name="trending" className="h-3 w-3" strokeWidth={2.6} />+{gain} {d.gainLabel}
+
+            {/* crescita di oggi */}
+            <span key={gain} className="grow-pill absolute right-[3%] top-[13.6%] flex items-center gap-[1cqw] rounded-full bg-[#1d4ed8] px-[2.6cqw] py-[1.1cqw] text-[3.6cqw] font-bold tabular-nums text-white shadow-md">
+              <Icon name="trending" className="h-[3.6cqw] w-[3.6cqw]" strokeWidth={2.8} />+{gain} {d.gainLabel}
             </span>
           </div>
-
-          <p className="mt-2 text-[0.625rem] leading-snug text-fg-2">
-            <span className="font-semibold text-fg">{d.name}</span> · {d.category}
-            <br />
-            {d.bio[0]} <span className="text-azure-300">{d.bio[1]}</span>
-          </p>
-
-          <div className="mt-2 flex gap-1.5">
-            <span className="flex-1 rounded-lg bg-[image:var(--gradient-gold-btn)] py-1.5 text-center text-[0.6875rem] font-bold text-night">{d.follow}</span>
-            <span className="flex-1 rounded-lg border border-line-strong py-1.5 text-center text-[0.6875rem] font-semibold text-fg">{d.message}</span>
-          </div>
-
-          <ul className="mt-2 flex justify-between px-1">
-            {HIGHLIGHTS.map((h) => (
-              <li key={h.label} className="flex flex-col items-center gap-0.5">
-                <span className="grid h-9 w-9 place-items-center rounded-full border border-gold-400/50 bg-gold-300/10 text-gold-300">
-                  <Icon name={h.icon} className="h-4 w-4" />
-                </span>
-                <span className="text-[0.5625rem] text-fg-2">{h.label}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-2 flex border-y border-line py-1 text-fg-3">
-            <span className="flex flex-1 justify-center text-gold-300">
-              <Icon name="layers" className="h-4 w-4" />
-            </span>
-            <span className="flex flex-1 justify-center">
-              <Icon name="film" className="h-4 w-4" />
-            </span>
-            <span className="flex flex-1 justify-center">
-              <Icon name="users" className="h-4 w-4" />
-            </span>
-          </div>
-
-          <ul className="mt-[3px] grid grid-cols-3 gap-[3px]">
-            {d.feed.map((k) => (
-              <li key={k}>
-                <Poster kind={k} />
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* ===== Schermata 2: campagna pubblicitaria ===== */}
