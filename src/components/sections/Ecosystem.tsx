@@ -80,7 +80,7 @@ function Branch({ question, name, line, points, cta, icon, tone }: BranchProps) 
 /** Un settore: pillola numerata che arriva da fuori schermo verso il logo, nell'ordine indicato da `k`. */
 function Sector({ label, icon, align, k }: { label: string; icon: IconName; align: "left" | "right"; k: number }) {
   return (
-    <Reveal as="li" from={align === "left" ? "far-left" : "far-right"} blur={0} delay={k * 0.3} className={cn("flex items-center", ["max-md:order-1", "max-md:order-2", "max-md:order-3", "max-md:order-4"][k], align === "right" && "lg:flex-row-reverse")}>
+    <Reveal as="li" from={align === "left" ? "far-left" : "far-right"} blur={0} delay={k * 0.3} className={cn("flex items-center", align === "right" && "lg:flex-row-reverse")}>
       <span
         style={{ "--k": k } as React.CSSProperties}
         className="eco-bob inline-flex items-center gap-3 rounded-full border border-line-strong bg-surface/85 py-2 pl-2 pr-5 max-md:min-w-0 max-md:flex-1 max-md:gap-2 max-md:pr-3 font-display text-[1.0625rem] font-semibold tracking-tight text-fg shadow-card backdrop-blur-sm"
@@ -123,8 +123,8 @@ export function Ecosystem() {
       {/* ---- COSTELLAZIONE: i settori arrivano da sinistra e da destra, in ordine, verso il logo ---- */}
       <div className="mt-1 sm:mt-2 max-md:mt-8">
         <p className="mb-14 max-md:mb-4 text-center text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-3">{e.sectorsLabel}</p>
-        <div className="eco-sectors mx-auto grid max-w-4xl items-center gap-y-8 max-md:grid-cols-2 max-md:gap-3 lg:grid-cols-[1fr_auto_1fr] lg:gap-x-10">
-          <ul className="order-2 flex flex-wrap justify-center gap-3 max-md:contents lg:order-1 lg:grid lg:grid-cols-1 lg:justify-items-end lg:gap-9">
+        <div className="mx-auto grid max-w-4xl items-center gap-y-8 max-md:grid-cols-2 max-md:gap-3 lg:grid-cols-[1fr_auto_1fr] lg:gap-x-10">
+          <ul className="order-2 flex flex-wrap justify-center gap-3 max-md:flex-nowrap max-md:flex-col max-md:gap-3 lg:order-1 lg:grid lg:grid-cols-1 lg:justify-items-end lg:gap-9">
             {m && <Sector {...m} align="left" k={0} />}
             {auto && <Sector {...auto} align="left" k={2} />}
           </ul>
@@ -141,7 +141,7 @@ export function Ecosystem() {
             </LogoTilt>
           </Reveal>
 
-          <ul className="order-3 flex flex-wrap justify-center gap-3 max-md:contents lg:grid lg:grid-cols-1 lg:justify-items-start lg:gap-9">
+          <ul className="order-3 flex flex-wrap justify-center gap-3 max-md:flex-nowrap max-md:flex-col max-md:gap-3 lg:grid lg:grid-cols-1 lg:justify-items-start lg:gap-9">
             {ai && <Sector {...ai} align="right" k={1} />}
             {form && <Sector {...form} align="right" k={3} />}
           </ul>

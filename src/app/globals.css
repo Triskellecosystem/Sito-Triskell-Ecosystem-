@@ -961,23 +961,10 @@ html[data-no-loader] .loader { display: none; }
   .m-carousel::-webkit-scrollbar { display: none; }
   .m-carousel > * { flex: 0 0 80%; min-width: 0; scroll-snap-align: center; }
   .m-carousel > [data-reveal-item] { --reveal-x: 0px !important; --reveal-r: 0deg !important; }
-  /* simbolo: nessuna scena 3D né sezione "appesa" allo scroll */
-  .sym-track { height: auto; }
-  .sym-sticky { position: static; min-height: 0; }
 }
 @media (max-width: 767px) {
-  /* i settori in griglia 2x2 non arrivano da fuori schermo: sono subito visibili */
-  .eco-sectors [data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; }
-}
-@media (max-width: 767px) {
-  /* Chi siamo: la foto del team è subito visibile (niente schermata vuota in attesa dello scroll) */
-  .ti-track { height: auto !important; }
-  .ti-track .ti-sticky { position: static !important; min-height: 0 !important; padding-block: 1rem !important; }
-  .ti-track .ti-wrap { width: 94vw !important; }
-  .ti-track .ti-frame { clip-path: none !important; filter: none !important; }
-  .ti-track .ti-frame [data-img] { transform: none !important; }
-  .ti-track .ti-label { opacity: 1 !important; transform: none !important; }
-  .ti-track .ti-beam, .ti-track .ti-sweep { display: none; }
+  /* Chi siamo: la foto del team è larga quanto il contenuto, quindi perfettamente centrata */
+  .ti-wrap, .ti-track .ti-wrap { width: 100%; aspect-ratio: 4 / 3; }
   /* risorse: il libro un po' più piccolo, così la prima schermata mostra già l'archivio */
   .book-stage { --bw: 11rem; --bh: 16.5rem; --bd: 1.8rem; }
 }
@@ -990,12 +977,10 @@ html[data-no-loader] .loader { display: none; }
   .slide-x { transform: translate3d(calc((1 - var(--p)) * var(--dir, 1) * 42vw), 0, 0) rotate(calc((1 - var(--p)) * var(--dir, 1) * 3deg)); opacity: calc(0.15 + var(--p) * 0.85); }
   /* il riquadro trasparente dietro la hero non serve: al suo posto c'è il logo */
   .hero-sheet { display: none; }
-  .hero-emblem { position: relative; display: grid; margin-left: 1.4rem; width: 6rem; height: 6rem; place-items: center; }
-  .hero-emblem::before { content: ""; position: absolute; inset: -45%; border-radius: 50%; background: radial-gradient(circle, rgb(247 200 92 / 0.34), transparent 62%); animation: loader-pulse 3s ease-in-out infinite; }
-  .hero-emblem-ring { position: absolute; inset: -0.6rem; border-radius: 50%; border: 1.5px dashed rgb(247 200 92 / 0.55); animation: loader-spin 18s linear infinite; }
-  .hero-emblem-ring--b { inset: -1.3rem; border: 1.5px solid transparent; border-top-color: var(--color-azure-300); border-right-color: rgb(42 144 195 / 0.45); animation-duration: 9s; animation-direction: reverse; }
+  /* logo piccolo accanto alla riga di apertura: nessun anello, nessuno spazio vuoto */
+  .hero-emblem { flex: none; }
   /* simbolo piatto: le tre spirali si accendono a turno */
-  .symflat { position: relative; width: min(62vw, 14rem); aspect-ratio: 1; margin: 0.5rem auto 1.5rem; animation: symflat-float 5s ease-in-out infinite; }
+  .symflat { position: relative; width: min(52vw, 12rem); aspect-ratio: 1; margin: 0.25rem auto 1rem; rotate: calc(var(--sp, 0) * 30deg); animation: symflat-float 5s ease-in-out infinite; }
   .symflat img { position: absolute; inset: 0; width: 100%; height: 100%; }
   .symflat-glow { position: absolute; inset: -25%; border-radius: 50%; background: radial-gradient(circle, rgb(247 200 92 / 0.28), transparent 62%); animation: loader-pulse 3s ease-in-out infinite; }
   .symflat .sf-spiral { opacity: 0; transition: opacity 0.6s var(--ease-soft); filter: brightness(2.6) saturate(1.7) drop-shadow(0 0 12px rgb(255 200 80 / 0.95)); mix-blend-mode: screen; }
@@ -1012,4 +997,31 @@ html[data-no-loader] .loader { display: none; }
 @keyframes symflat-float { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-6px) rotate(1.5deg); } }
 @keyframes btn-m-breathe { 0%, 100% { filter: brightness(1); box-shadow: var(--shadow-glow-gold); } 50% { filter: brightness(1.1); box-shadow: 0 0 0 1px rgb(255 247 190 / 0.4), 0 0 30px 2px rgb(255 185 27 / 0.55); } }
 @keyframes btn-m-edge { 0%, 100% { border-color: var(--color-line-strong); box-shadow: 0 0 0 0 rgb(247 200 92 / 0); } 50% { border-color: rgb(247 200 92 / 0.7); box-shadow: 0 0 20px -2px rgb(247 200 92 / 0.4); } }
-@media (prefers-reduced-motion: reduce) { .btn-m-primary, .btn-m-secondary, .btn-m-shine, .symflat, .hero-emblem::before, .hero-emblem-ring, .symflat-glow { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .btn-m-primary, .btn-m-secondary, .btn-m-shine, .symflat, .symflat-glow { animation: none !important; } }
+
+/* ==========================================================================
+   Chi siamo, telefono: la stessa scena cinematografica del computer (camera che si avvicina, didascalie che compaiono)
+   Solo sotto 768px e solo se il movimento è consentito; altrimenti resta la versione semplice.
+   ========================================================================== */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .ps .ps-desktop { display: block; }
+  .ps .ps-mobile-wrap { display: none; }
+  .ps-track { height: 430vh; }
+  .ps-anchor, .ps[data-layout="right"] .ps-anchor { left: 50%; top: 38%; }
+  .ps-stage, .ps[data-layout="right"] .ps-stage { perspective-origin: 50% 38%; }
+  .ps-world { --fh: min(54svh, 138vw); }
+  .ps-name { font-size: clamp(3.25rem, 19vw, 5rem); }
+  .ps-rim, .ps-streak, .ps-sheen { display: none; }
+  .ps-dot:nth-of-type(n + 10) { display: none; }
+  /* testi in basso, sopra uno sfumato scuro, una fase alla volta */
+  .ps-text, .ps-text--r, .ps-text--l { left: var(--gutter); right: var(--gutter); width: auto; top: auto; bottom: 2.6rem; height: 40%; max-height: none; transform: none; z-index: 6; }
+  .ps-text::before { content: ""; position: absolute; inset: -4.5rem -1.5rem -2.6rem; z-index: -1; background: linear-gradient(to top, var(--color-night) 62%, transparent); pointer-events: none; }
+  .ps-phase { justify-content: flex-end; padding-bottom: 0.25rem; }
+  .ps-phase h3 { font-size: 1.625rem !important; line-height: 1.1 !important; margin-top: 0.5rem !important; }
+  .ps-phase > p:not(:first-child) { font-size: 0.9375rem; line-height: 1.4; margin-top: 0.5rem; max-width: none; }
+  .ps-phase dl { margin-top: 0.75rem !important; gap: 1.25rem !important; }
+  .ps-phase dd { font-size: 1.875rem !important; }
+  .ps-phase ul { margin-top: 0.75rem !important; gap: 0.5rem !important; }
+  .ps-phase li p:last-child { display: none; }
+  .ps-phase li { padding: 0.55rem 0.75rem !important; }
+}

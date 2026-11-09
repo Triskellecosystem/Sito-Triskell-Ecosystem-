@@ -112,7 +112,8 @@ export function PersonScroll({ person, index }: { person: Person; index: number 
       return;
     }
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (!window.matchMedia("(min-width: 1024px)").matches) return;
+    // computer e telefono: scena cinematografica; il tablet (768–1023px) resta con la versione semplice
+    if (!window.matchMedia("(min-width: 1024px)").matches && !window.matchMedia("(max-width: 767px)").matches) return;
     const phases = Array.from(th.children) as HTMLElement[];
     const dir = left ? 1 : -1;
     let raf = 0;

@@ -23,15 +23,10 @@ export function Hero() {
 
       <div className="container-x grid items-center gap-x-8 gap-y-14 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          {/* solo telefono: il logo, piccolo e vivo, al posto della grande scena */}
-          <div aria-hidden="true" className="hero-emblem mb-6 md:hidden">
-            <span className="hero-emblem-ring" />
-            <span className="hero-emblem-ring hero-emblem-ring--b" />
-            <LogoMark size={96} priority sizes="96px" className="relative h-24 w-24 drop-shadow-[0_8px_20px_rgb(0_0_0/0.55)]" />
-          </div>
-          <p className="mb-6 inline-flex animate-[fade-in_0.8s_var(--ease-soft)_both] flex-wrap items-center gap-x-3 gap-y-1 text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-2">
-            <span aria-hidden="true" className="h-px w-8 bg-gold-400/70" />
-            {hero.overline}
+          <p className="mb-6 inline-flex animate-[fade-in_0.8s_var(--ease-soft)_both] flex-wrap items-center gap-x-3 gap-y-1 max-md:flex-nowrap max-md:items-center max-md:gap-3 text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-2">
+            <span aria-hidden="true" className="h-px w-8 bg-gold-400/70 max-md:hidden" />
+            <LogoMark aria-hidden="true" size={52} sizes="52px" className="hero-emblem relative h-[3.25rem] w-[3.25rem] shrink-0 drop-shadow-[0_6px_14px_rgb(0_0_0/0.55)] md:hidden" />
+            <span>{hero.overline}</span>
           </p>
 
           {/* Un unico blocco di testo (le parole sono <span> inline, non inline-block): resta il candidato LCP.

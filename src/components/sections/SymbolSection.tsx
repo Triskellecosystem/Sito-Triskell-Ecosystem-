@@ -42,6 +42,7 @@ export function SymbolSection() {
   const lock = useRef(-1);
   const trackRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
+  const flatRef = useRef<HTMLDivElement>(null);
 
   const pick = (i: number) => setSpiral(i);
   const items = symbol.spirals.map((sp) => ({ name: sp.name, tag: symbol.layersLabel, text: sp.text }));
@@ -51,12 +52,9 @@ export function SymbolSection() {
     const track = trackRef.current;
     const scene = sceneRef.current;
     if (!track || !scene) return;
-    // telefono: niente scena 3D legata allo scroll; le tre spirali del logo si accendono a turno da sole
-    if (window.matchMedia("(max-width: 767px)").matches) {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      const id = window.setInterval(() => setSpiral((s) => (s + 1) % 3), 2600);
-      return () => window.clearInterval(id);
-    }
+    // telefono: il logo piatto; le tre spirali si accendono in base a quanto scorri (un terzo di scroll ciascuna)
+    const phone = window.matchMedia("(max-width: 767px)").matches;
+    const flat = flatRef.current;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       scene.style.setProperty("--e", "0.5");
       return;
@@ -68,6 +66,15 @@ export function SymbolSection() {
       const r = track.getBoundingClientRect();
       const span = Math.max(1, r.height - window.innerHeight);
       const p = Math.min(1, Math.max(0, -r.top / span));
+      if (phone) {
+        flat?.style.setProperty("--sp", p.toFixed(3));
+        const k = p < 0.34 ? 0 : p < 0.67 ? 1 : 2;
+        if (k !== lock.current) {
+          lock.current = k;
+          setSpiral(k);
+        }
+        return;
+      }
       // si scompone scendendo, resta aperto per un tratto, poi si RICOMPONE prima della fine
       const e = smooth(0.06, 0.38, p) * (1 - smooth(0.68, 0.94, p));
       scene.style.setProperty("--e", e.toFixed(3));
@@ -123,7 +130,7 @@ export function SymbolSection() {
       <div ref={trackRef} className="sym-track mt-4">
         <div className="sym sym-sticky" data-active={active}>
           <div className="grid w-full items-center gap-4 lg:grid-cols-12 lg:gap-12">
-            <div className="symflat md:hidden" data-active={active} role="img" aria-label={site.hero.symbolAlt}>
+            <div ref={flatRef} className="symflat md:hidden" data-active={active} role="img" aria-label={site.hero.symbolAlt}>
               <span aria-hidden="true" className="symflat-glow" />
               <Image src="/brand/triskell-layer-ring.png" alt="" width={640} height={640} sizes="14rem" />
               <Image src="/brand/triskell-layer-disc.png" alt="" width={640} height={640} sizes="14rem" style={{ filter: "brightness(1.6) saturate(1.4)" }} />
@@ -225,7 +232,7 @@ export function SymbolSection() {
                       <span className={active === i ? "text-gold" : undefined}>{it.name}</span>
                       <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-fg-3 sm:text-[0.75rem]">{it.tag}</span>
                     </h3>
-                    <p className={cn("mt-1.5 text-[0.9375rem] leading-snug text-fg-2 sm:mt-2 sm:text-[1rem]", active !== i && "max-lg:hidden max-md:block")}>{it.text}</p>
+                    <p className={cn("mt-1.5 text-[0.9375rem] leading-snug text-fg-2 sm:mt-2 sm:text-[1rem]", active !== i && "max-lg:hidden")}>{it.text}</p>
                   </div>
                 </li>
               ))}
