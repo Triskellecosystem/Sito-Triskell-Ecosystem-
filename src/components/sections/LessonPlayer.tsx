@@ -178,10 +178,10 @@ export function LessonPlayer() {
                 </li>
               ))}
             </ul>
-            <button type="button" aria-label="Video precedenti" onClick={() => scroll(-1)} className="absolute -left-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full border border-line-strong bg-night/90 text-fg shadow-card hover:border-gold-300 hover:text-gold-300">
+            <button type="button" aria-label="Video precedenti" onClick={() => scroll(-1)} className="absolute -left-3 top-1/2 grid h-8 w-8 max-md:h-10 max-md:w-10 -translate-y-1/2 place-items-center rounded-full border border-line-strong bg-night/90 text-fg shadow-card hover:border-gold-300 hover:text-gold-300">
               <Icon name="chevron-left" className="h-4 w-4" />
             </button>
-            <button type="button" aria-label="Video successivi" onClick={() => scroll(1)} className="absolute -right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full border border-line-strong bg-night/90 text-fg shadow-card hover:border-gold-300 hover:text-gold-300">
+            <button type="button" aria-label="Video successivi" onClick={() => scroll(1)} className="absolute -right-3 top-1/2 grid h-8 w-8 max-md:h-10 max-md:w-10 -translate-y-1/2 place-items-center rounded-full border border-line-strong bg-night/90 text-fg shadow-card hover:border-gold-300 hover:text-gold-300">
               <Icon name="chevron-right" className="h-4 w-4" />
             </button>
           </div>

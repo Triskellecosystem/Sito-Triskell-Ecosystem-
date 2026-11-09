@@ -23,7 +23,7 @@ export function RisorseGrid({ items, filters }: { items: Risorsa[]; filters: rea
               aria-pressed={f === k}
               onClick={() => setF(k)}
               className={cn(
-                "rounded-full border px-5 py-2 text-small font-semibold transition-colors",
+                "rounded-full border px-5 py-2 max-md:py-3 text-small font-semibold transition-colors",
                 f === k ? "border-gold-300 bg-gold-300 text-night" : "border-line-strong text-fg-2 hover:border-gold-400/60 hover:text-gold-200",
               )}
             >
@@ -45,7 +45,7 @@ export function RisorseGrid({ items, filters }: { items: Risorsa[]; filters: rea
                 </div>
               </div>
               <div className="flex flex-1 flex-col gap-3 p-6">
-                <p className="flex items-center justify-between text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)]">
+                <p className="flex items-center justify-between max-md:flex-wrap max-md:gap-x-3 text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)]">
                   <span className="text-gold-400">
                     {r.kind} <span className="text-fg-3">· {r.family}</span>
                   </span>

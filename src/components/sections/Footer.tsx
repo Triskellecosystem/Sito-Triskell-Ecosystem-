@@ -52,13 +52,13 @@ export function Footer() {
       </div>
 
       <div className="border-t border-line">
-        <div className="container-x flex flex-col gap-2 py-6 text-small text-fg-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="container-x flex flex-col gap-2 py-6 max-sm:pb-24 text-small text-fg-3 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {site.brand.name}. {footer.rights}
           </p>
           <p className="sm:text-right">
             {footer.legal} ·{" "}
-            <a className="underline-offset-4 hover:text-gold-300 hover:underline" href={`mailto:${site.brand.email}`}>
+            <a className="underline-offset-4 hover:text-gold-300 hover:underline max-md:inline-block max-md:py-2.5" href={`mailto:${site.brand.email}`}>
               {site.brand.email}
             </a>
           </p>

@@ -52,7 +52,7 @@ export function CaseCard({ item, priority = false }: { item: CaseStudy; href?: s
 
         <p className="mt-4 flex-1 text-[0.9375rem] leading-snug text-fg-2">{item.text}</p>
 
-        <button type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" className="case-open mt-5 inline-flex w-fit items-center gap-2 text-small font-semibold text-gold-300 transition-colors hover:text-gold-100">
+        <button type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" className="case-open mt-5 max-md:py-2.5 inline-flex w-fit items-center gap-2 text-small font-semibold text-gold-300 transition-colors hover:text-gold-100">
           {site.portfolio.open}
           <Icon name="arrow-right" className="h-4 w-4" />
         </button>

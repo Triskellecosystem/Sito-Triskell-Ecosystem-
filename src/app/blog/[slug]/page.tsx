@@ -51,7 +51,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div className="container-x mx-auto max-w-3xl">
           <nav aria-label="Percorso" className="mb-6">
             <ol className="flex flex-wrap items-center gap-2 text-small text-fg-3">
-              <li><Link href="/" className="transition-colors hover:text-gold-300">Home</Link></li>
+              <li><Link href="/" className="transition-colors hover:text-gold-300 max-md:inline-block max-md:py-3">Home</Link></li>
               <li className="flex items-center gap-2"><Icon name="chevron-right" className="h-3.5 w-3.5" /><Link href="/blog" className="transition-colors hover:text-gold-300">Blog</Link></li>
             </ol>
           </nav>

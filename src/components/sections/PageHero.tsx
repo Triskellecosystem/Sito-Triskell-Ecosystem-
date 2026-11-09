@@ -38,7 +38,7 @@ export function PageHero({ overline, title, line, crumbs = [], children, aside, 
           <nav aria-label="Percorso" className="mb-6 animate-[fade-in_0.8s_var(--ease-soft)_both]">
             <ol className="flex flex-wrap items-center gap-2 text-small text-fg-3">
               <li>
-                <Link href="/" className="transition-colors hover:text-gold-300">
+                <Link href="/" className="transition-colors hover:text-gold-300 max-md:inline-block max-md:py-3">
                   Home
                 </Link>
               </li>
@@ -66,7 +66,7 @@ export function PageHero({ overline, title, line, crumbs = [], children, aside, 
         <h1 className="max-w-3xl animate-[line-up_1s_var(--ease-out-expo)_backwards] text-[clamp(2.25rem,1.3rem+3.6vw,4.25rem)] leading-[1.04] tracking-[-0.035em] text-fg">
           <GoldText text={title} pulse={pulseGold} />
         </h1>
-        <p className="mt-6 max-w-xl animate-[fade-in_0.9s_0.3s_var(--ease-soft)_both] whitespace-pre-line text-lead text-fg-2 [text-wrap:balance]">{line}</p>
+        <p className="mt-6 max-w-xl animate-[fade-in_0.9s_0.3s_var(--ease-soft)_both] whitespace-pre-line text-lead text-fg-2 [text-wrap:balance] max-md:whitespace-normal">{line}</p>
         {children && <div className="mt-8 flex animate-[fade-in_0.9s_0.4s_var(--ease-soft)_both] flex-wrap items-center gap-4">{children}</div>}
         </div>
         {aside && <div className={`relative lg:col-span-5 ${asideClassName ?? ""}`}>{aside}</div>}

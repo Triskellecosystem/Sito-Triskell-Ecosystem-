@@ -68,9 +68,9 @@ export function Assistant() {
         onClick={toggle}
         aria-expanded={open}
         aria-label={open ? `Chiudi ${ASSISTANT_NAME}` : `Apri ${ASSISTANT_NAME}, l'assistente AI`}
-        className="group/t relative grid h-[4.25rem] w-[4.25rem] place-items-center rounded-full border-2 border-azure-300/70 bg-night-raised/90 shadow-[0_10px_34px_-6px_rgb(0_0_0/0.8),0_0_30px_-6px_rgb(58_164_212/0.7)] backdrop-blur transition-[border-color,box-shadow,transform] duration-[var(--dur-base)] ease-out-expo hover:border-gold-300 hover:shadow-[0_10px_34px_-6px_rgb(0_0_0/0.8),0_0_36px_-4px_rgb(247_200_92/0.7)] sm:h-[4.75rem] sm:w-[4.75rem]"
+        className="group/t relative grid h-[3.25rem] w-[3.25rem] place-items-center rounded-full border-2 border-azure-300/70 bg-night-raised/90 shadow-[0_10px_34px_-6px_rgb(0_0_0/0.8),0_0_30px_-6px_rgb(58_164_212/0.7)] backdrop-blur transition-[border-color,box-shadow,transform] duration-[var(--dur-base)] ease-out-expo hover:border-gold-300 hover:shadow-[0_10px_34px_-6px_rgb(0_0_0/0.8),0_0_36px_-4px_rgb(247_200_92/0.7)] sm:h-[4.75rem] sm:w-[4.75rem]"
       >
-        <TriskiRobot className="h-[3.4rem] w-[3.4rem] sm:h-[3.8rem] sm:w-[3.8rem]" />
+        <TriskiRobot className="h-[2.6rem] w-[2.6rem] sm:h-[3.8rem] sm:w-[3.8rem]" />
         <span className="absolute -left-1.5 -top-1.5 rounded-full bg-gold-300 px-1.5 py-0.5 font-display text-[0.5625rem] font-bold uppercase tracking-wider text-night">AI</span>
       </button>
     </div>

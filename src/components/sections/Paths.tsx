@@ -33,18 +33,18 @@ function ImpactColumn({ path, tone }: { path: Path; tone: "gold" | "azure" }) {
       {/* catena di effetti: ogni riga si accende dopo la precedente */}
       <ol className="relative mt-7">
         {impact.points.map((pt, i) => (
-          <li key={pt.title} style={{ "--i": i } as CSSVars} className="impact-row relative flex items-center gap-4 pb-6 last:pb-0">
+          <li key={pt.title} style={{ "--i": i } as CSSVars} className="impact-row relative flex items-center gap-4 pb-6 last:pb-0 max-md:flex-wrap max-md:pl-0">
             {/* collegamento verso il basso */}
             <span aria-hidden="true" className={cn("impact-link absolute left-[1.5rem] top-[3.25rem] h-[calc(100%-3rem)] w-px -translate-x-1/2 bg-gradient-to-b", gold ? "from-gold-300/80 to-gold-300/10" : "from-azure-300/80 to-azure-300/10")} />
             <span className={cn("impact-dot relative z-[1] grid h-12 w-12 shrink-0 place-items-center rounded-full border bg-night", border, accent)}>
               <Icon name={pt.icon} className="h-5 w-5" strokeWidth={1.7} />
             </span>
-            <div className="min-w-0 flex-1">
+            <div className="min-w-0 flex-1 max-md:basis-[calc(100%-4rem)]">
               <h4 className="font-display text-[1.125rem] font-semibold tracking-tight text-fg">{pt.title}</h4>
               <p className="mt-0.5 text-[0.9375rem] leading-snug text-fg-2">{pt.text}</p>
             </div>
             {pt.stat && (
-              <p className="shrink-0 text-right">
+              <p className="shrink-0 text-right max-md:ml-16 max-md:basis-full max-md:text-left">
                 {pt.stat.still ? (
                   <span className={cn("block font-display text-[clamp(1.5rem,1.2rem+1.1vw,2.125rem)] font-bold leading-none tracking-[-0.04em]", accent)}>
                     {pt.stat.prefix}

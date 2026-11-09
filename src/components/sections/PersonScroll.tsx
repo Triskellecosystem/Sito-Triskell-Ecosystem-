@@ -44,10 +44,10 @@ function PhaseContent({ ph, tone, big }: { ph: PersonPhase; tone: Person["tone"]
       </h3>
       {ph.text && <p className="mt-4 max-w-md text-[1.0625rem] leading-relaxed text-fg-2">{ph.text}</p>}
       {ph.stats && (
-        <dl className="mt-6 flex gap-8">
+        <dl className="mt-6 flex gap-8 max-md:flex-wrap max-md:gap-x-6 max-md:gap-y-4">
           {ph.stats.map((st) => (
             <div key={st.label}>
-              <dd className={cn("font-display text-[clamp(2.5rem,2rem+2vw,3.75rem)] font-extrabold leading-none tracking-[-0.045em]", accent)}>{st.value}</dd>
+              <dd className={cn("font-display text-[clamp(2.5rem,2rem+2vw,3.75rem)] max-md:text-[2.25rem] font-extrabold leading-none tracking-[-0.045em]", accent)}>{st.value}</dd>
               <dt className="mt-1.5 text-[0.8125rem] text-fg-2">{st.label}</dt>
             </div>
           ))}

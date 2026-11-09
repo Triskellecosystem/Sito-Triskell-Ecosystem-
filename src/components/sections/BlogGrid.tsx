@@ -36,7 +36,7 @@ export function BlogGrid({ posts, categories }: { posts: BlogCardData[]; categor
             aria-pressed={cat === c.key}
             onClick={() => setCat(c.key)}
             className={cn(
-              "rounded-full border px-5 py-2 text-small font-semibold transition-colors",
+              "rounded-full border px-5 py-2 max-md:py-3 text-small font-semibold transition-colors",
               cat === c.key ? "border-gold-300 bg-gold-300 text-night" : "border-line-strong text-fg-2 hover:border-gold-400/60 hover:text-gold-200",
             )}
           >

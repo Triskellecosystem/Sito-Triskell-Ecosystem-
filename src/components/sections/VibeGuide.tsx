@@ -56,7 +56,7 @@ export function VibeGuide() {
               <Button href={g.primary.href} target="_blank" rel="noopener noreferrer" size="lg" icon="arrow-right">
                 {g.primary.label}
               </Button>
-              <a href={g.secondary.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 font-display text-[1rem] font-semibold text-fg transition-colors hover:text-gold-200">
+              <a href={g.secondary.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 font-display text-[1rem] font-semibold text-fg transition-colors hover:text-gold-200 max-md:py-3">
                 {g.secondary.label}
                 <Icon name="arrow-up-right" className="h-4 w-4" />
               </a>
