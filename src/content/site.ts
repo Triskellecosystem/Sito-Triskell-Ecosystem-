@@ -113,15 +113,25 @@ export interface Pillar {
   icon: IconName;
 }
 
-export interface TeamMember {
+export interface PersonCard {
+  kicker: string;
+  title: string;
+  text: string;
+  stats?: Array<{ value: string; label: string }>;
+  tags?: string[];
+}
+
+export interface Person {
+  id: string;
   name: string;
-  role: string;
-  headline: string;
-  bio: string;
-  facts: Array<{ value: string; label: string }>;
-  /** Tappe del percorso professionale, mostrate "ad espansione". */
-  curriculum: string[];
-  initials: string;
+  short: string;
+  tone: "azure" | "red";
+  image: string;
+  desk: string;
+  /** Punti d'interesse sulla foto (frazioni 0-1) per i primi piani. */
+  face: { u: number; v: number };
+  watch: { u: number; v: number };
+  cards: PersonCard[];
 }
 
 export interface Faq {
@@ -560,46 +570,50 @@ export const site = {
         { title: "Risultati", text: "Misuriamo, ottimizziamo e scaliamo.", icon: "trending", points: ["Report chiari", "Test e ottimizzazione", "Crescita costante"] },
       ] satisfies Array<{ title: string; text: string; icon: IconName; points: string[] }>,
     }, // TODO: conferma copy
-    team: [
+    intro: {
+      title: "Il team principale",
+      text: "Due fondatori, due competenze: Tomaso guida marketing, advertising e AI; William progetta e costruisce i siti. Scorri per conoscerli da vicino.",
+      hint: "Scorri: prima Tomaso, poi William",
+      labels: [
+        { name: "Tomaso Forno", role: "Founder · Marketing e AI", tone: "azure", side: "left" },
+        { name: "William Argintieri", role: "Web designer · Siti web", tone: "red", side: "right" },
+      ],
+    },
+    /** Le due persone: ogni scheda compare mentre si "gira attorno" alla figura scorrendo. Foto in /public/team. */
+    people: [
       {
-        name: "Tomaso",
-        role: "Founder · Marketing e strategia",
-        headline: "10 anni di marketing, partito dentro le agenzie",
-        bio: "Ha imparato il mestiere sul campo: prima per altre agenzie, poi ha deciso di costruire qualcosa di suo.",
-        facts: [
-          { value: "10", label: "anni di marketing" },
-          { value: "50+", label: "clienti seguiti" },
-          { value: "100K+", label: "lead generati" },
+        id: "tomaso",
+        name: "Tomaso Forno",
+        short: "Tomaso",
+        tone: "azure",
+        image: "/team/tomaso.webp",
+        desk: "/team/tomaso-desk.webp",
+        face: { u: 0.46, v: 0.135 },
+        watch: { u: 0.66, v: 0.49 },
+        cards: [
+          { kicker: "Founder", title: "Fondatore di Triskell Ecosystem", text: "Ha creato l'ecosistema che unisce marketing, intelligenza artificiale, automazioni e formazione." },
+          { kicker: "Esperienza", title: "Da più di 10 anni nel settore", text: "Partito dentro le agenzie, oggi guida il suo progetto con un metodo basato su funnel, dati e automazioni.", stats: [{ value: "10+", label: "anni di marketing" }] },
+          { kicker: "Competenze", title: "Esperto in advertising e AI", text: "Campagne che portano contatti veri, sistemi che li seguono da soli.", tags: ["Meta Ads", "Google Ads", "Intelligenza artificiale", "Funnel"] },
+          { kicker: "Risultati", title: "Clienti seguiti e lead generati", text: "«L'AI ti permette di donare al mondo ogni idea che prima avresti messo nel cassetto.»", stats: [{ value: "50+", label: "clienti seguiti" }, { value: "100K+", label: "lead generati" }] },
         ],
-        curriculum: [
-          "Inizia a lavorare nel marketing digitale per altre agenzie",
-          "Gestisce campagne a grande budget, comprese campagne politiche", // TODO: dato reale (importo e risultato più importante da confermare)
-          "Segue più di 50 clienti nel tempo, dal fitness ai servizi",
-          "Mette a punto un metodo basato su funnel, dati e automazioni",
-          "Decide di creare qualcosa di suo: nasce Triskell Ecosystem",
-        ],
-        initials: "T",
       },
       {
-        name: "William",
-        role: "Web developer",
-        headline: "Siti veloci, curati e pensati per far contattare",
-        bio: "Costruisce siti, CRM e strumenti su misura, con un occhio fisso a velocità e risultati.",
-        facts: [
-          { value: "5+", label: "anni di sviluppo" },
-          { value: "9", label: "siti online" },
-          { value: "100", label: "punteggio Lighthouse" },
+        id: "william",
+        name: "William Argintieri",
+        short: "William",
+        tone: "red",
+        image: "/team/william.webp",
+        desk: "/team/william-desk.webp",
+        face: { u: 0.5, v: 0.11 },
+        watch: { u: 0.66, v: 0.485 },
+        cards: [
+          { kicker: "Web design", title: "Si occupa dei nostri siti", text: "Web designer e fondatore di LyamFlow: progetta siti su misura per ristoranti, attività locali, brand e aziende." },
+          { kicker: "Metodo", title: "Dal primo colloquio alla pubblicazione", text: "Segue ogni progetto in prima persona, senza intermediari.", stats: [{ value: "9", label: "siti online" }] },
+          { kicker: "Competenze", title: "Design, sviluppo e animazioni", text: "Siti veloci, curati e pensati per far contattare.", tags: ["Web design", "Sviluppo", "Animazioni", "LyamFlow"] },
+          { kicker: "LyamFlow", title: "Ha costruito LyamFlow", text: "Il software con il sito web incluso. «Non costruiamo solo siti web. Costruiamo esperienze digitali.»", tags: ["LyamFlow", "Sito incluso", "Esperienze digitali"] },
         ],
-        curriculum: [
-          "Inizia a sviluppare siti web per professionisti e attività locali",
-          "Passa a progetti più strutturati: e-commerce e applicazioni",
-          "Si specializza in performance, SEO tecnica e accessibilità",
-          "Costruisce CRM e automazioni su misura per i clienti",
-          "Oggi cura tutta la parte tecnica di Triskell Ecosystem",
-        ],
-        initials: "W",
       },
-    ] satisfies TeamMember[], // TODO: dato reale (curriculum, numeri e foto: testi segnaposto da correggere)
+    ] satisfies Person[], // TODO: conferma testi e numeri (da foto/bio fornite)
   },
   vibeCoding: {
     overline: "Altro · Risorsa gratuita · PDF di 10 pagine",

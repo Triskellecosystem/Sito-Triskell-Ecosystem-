@@ -49,6 +49,12 @@
   --color-azure-400: #2a90c3;
   --color-azure-300: #3aa4d4;
   --color-azure-glow: #0b81b1;
+  /* Rosso "brace": identifica William (come l'azzurro identifica Tomaso) */
+  --color-ember-200: #ffb199;
+  --color-ember-300: #ff7a52;
+  --color-ember-400: #ff4d2e;
+  --color-ember-500: #e63a1f;
+  --color-ember-700: #7a1d12;
 
   /* --- Tipografia ----------------------------------------------------------- */
   --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
