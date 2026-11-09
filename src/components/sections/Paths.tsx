@@ -62,11 +62,11 @@ function ImpactColumn({ path, tone }: { path: Path; tone: "gold" | "azure" }) {
 
       {/* Agency: il grafico cresce · Academy: le competenze si riempiono */}
       {impact.meters ? (
-        <div className="mt-6 min-h-64 flex-1">
+        <div className="mt-5 flex-1">
           <ScrollMeters labels={impact.meters} />
         </div>
       ) : (
-        <div className="mt-6 flex min-h-24 flex-1 items-end gap-1.5" aria-hidden="true">
+        <div className="mt-5 flex min-h-24 flex-1 items-end gap-1.5" aria-hidden="true">
           {BARS.map((h, i) => (
             <span key={i} style={{ height: `${h}%`, "--i": i } as CSSVars} className="impact-bar block flex-1 origin-bottom rounded-t-md bg-gradient-to-t from-gold-600/70 to-gold-300" />
           ))}

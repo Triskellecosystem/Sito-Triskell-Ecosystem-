@@ -128,18 +128,18 @@ export function ScrollMeters({ labels }: { labels: string[] }) {
   }, []);
 
   return (
-    <ul ref={host} className="flex h-full flex-col justify-around gap-7 py-2" aria-label="Competenze che acquisisci">
+    <ul ref={host} className="flex h-full flex-col justify-around gap-4 py-1" aria-label="Competenze che acquisisci">
       {labels.map((m) => (
         <li key={m} data-meter="">
-          <div className="flex items-center justify-between text-[clamp(1.0625rem,1rem+0.3vw,1.25rem)] font-semibold tracking-tight text-fg-2">
+          <div className="flex items-center justify-between text-[1rem] font-semibold tracking-tight text-fg-2">
             <span className="meter-label">{m}</span>
-            <span className="meter-check grid h-6 w-6 place-items-center rounded-full bg-gold-300 text-night">
-              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <span className="meter-check grid h-5 w-5 place-items-center rounded-full bg-gold-300 text-night">
+              <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 12l5 5 9-10" />
               </svg>
             </span>
           </div>
-          <div className="mt-2.5 h-4 overflow-hidden rounded-full bg-line">
+          <div className="mt-2 h-3 overflow-hidden rounded-full bg-line">
             <span className="meter-fill block h-full origin-left rounded-full" style={{ transform: "scaleX(1)" }} />
           </div>
         </li>
