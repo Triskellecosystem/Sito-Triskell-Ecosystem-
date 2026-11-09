@@ -28,11 +28,11 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-[image:var(--gradient-gold-btn)] text-night shadow-glow-gold " +
+    "btn-m-primary bg-[image:var(--gradient-gold-btn)] text-night shadow-glow-gold " +
     "hover:brightness-105 hover:shadow-[0_0_0_1px_rgb(255_247_190/0.7),0_0_44px_2px_rgb(255_185_27/0.6)] " +
     "active:brightness-[1.18] active:shadow-[0_0_0_2px_rgb(255_247_190/0.95),0_0_70px_10px_rgb(255_200_70/0.85)]",
   secondary:
-    "border border-line-strong bg-night/40 text-fg backdrop-blur-sm " +
+    "btn-m-secondary border border-line-strong bg-night/40 text-fg backdrop-blur-sm " +
     "hover:border-gold-300/80 hover:text-gold-200 hover:shadow-[0_0_30px_-4px_rgb(247_200_92/0.5)] " +
     "active:border-gold-200 active:bg-gold-300/15 active:text-gold-100 active:shadow-[0_0_0_1px_rgb(253_218_90/0.8),0_0_50px_2px_rgb(247_200_92/0.65)]",
   ghost: "text-fg-2 hover:text-fg active:text-gold-200",
@@ -55,7 +55,7 @@ export function Button(props: ButtonProps | LinkProps) {
       {variant === "primary" && (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/45 to-transparent opacity-0 group-hover/btn:animate-[shine_0.9s_var(--ease-out-expo)] group-hover/btn:opacity-100"
+          className="btn-m-shine pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/45 to-transparent opacity-0 group-hover/btn:animate-[shine_0.9s_var(--ease-out-expo)] group-hover/btn:opacity-100"
         />
       )}
       {icon && iconPosition === "start" && <Icon name={icon} className="h-[1.1em] w-[1.1em] shrink-0" />}

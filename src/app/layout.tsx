@@ -7,6 +7,7 @@ import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { RevealRoot } from "@/components/motion/RevealRoot";
 import { Header } from "@/components/sections/Header";
 import { Footer } from "@/components/sections/Footer";
+import { MobileMotion } from "@/components/motion/MobileMotion";
 import { Loader } from "@/components/brand/Loader";
 import { Assistant } from "@/components/assistant/Assistant";
 import "./globals.css";
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <Providers>
           <SmoothScroll />
+          <MobileMotion />
           <RevealRoot />
           <ScrollProgress />
           <Header />

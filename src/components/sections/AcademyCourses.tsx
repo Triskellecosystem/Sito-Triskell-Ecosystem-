@@ -32,7 +32,7 @@ export function AcademyCourses() {
         </dl>
       </Reveal>
 
-      <RevealGroup className="m-carousel mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08} alternate="far">
+      <RevealGroup className="m-carousel m-auto mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08} alternate="far">
         {c.items.map((it) => (
           <RevealItem key={it.id} y={28} className="h-full">
             <a

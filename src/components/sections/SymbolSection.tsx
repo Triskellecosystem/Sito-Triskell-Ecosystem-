@@ -51,6 +51,12 @@ export function SymbolSection() {
     const track = trackRef.current;
     const scene = sceneRef.current;
     if (!track || !scene) return;
+    // telefono: niente scena 3D legata allo scroll; le tre spirali del logo si accendono a turno da sole
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const id = window.setInterval(() => setSpiral((s) => (s + 1) % 3), 2600);
+      return () => window.clearInterval(id);
+    }
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       scene.style.setProperty("--e", "0.5");
       return;
@@ -117,6 +123,31 @@ export function SymbolSection() {
       <div ref={trackRef} className="sym-track mt-4">
         <div className="sym sym-sticky" data-active={active}>
           <div className="grid w-full items-center gap-4 lg:grid-cols-12 lg:gap-12">
+            <div className="symflat md:hidden" data-active={active} role="img" aria-label={site.hero.symbolAlt}>
+              <span aria-hidden="true" className="symflat-glow" />
+              <Image src="/brand/triskell-layer-ring.png" alt="" width={640} height={640} sizes="14rem" />
+              <Image src="/brand/triskell-layer-disc.png" alt="" width={640} height={640} sizes="14rem" style={{ filter: "brightness(1.6) saturate(1.4)" }} />
+              <Image src="/brand/triskell-layer-coils.png" alt="" width={640} height={640} sizes="14rem" />
+              {SECTORS.map((sec, i) => {
+                const mask = [
+                  `conic-gradient(from ${sec.from}deg at 50% 50%, #000 0deg ${sec.span}deg, transparent ${sec.span}deg)`,
+                  `radial-gradient(circle at ${CORE.cx} ${CORE.cy}, transparent 0 ${CORE.r}, #000 calc(${CORE.r} + 0.6%))`,
+                ].join(", ");
+                return (
+                  <Image
+                    key={sec.from}
+                    src="/brand/triskell-layer-coils.png"
+                    alt=""
+                    width={640}
+                    height={640}
+                    sizes="14rem"
+                    data-i={i}
+                    className="sf-spiral"
+                    style={{ maskImage: mask, WebkitMaskImage: mask, maskComposite: "intersect", WebkitMaskComposite: "source-in" } as CSSVars}
+                  />
+                );
+              })}
+            </div>
             <div className="max-md:hidden lg:col-span-6">
               <div ref={sceneRef} className="sym3d" onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
                 <div className="relative mx-auto w-full max-w-[34rem]" role="img" aria-label={site.hero.symbolAlt}>

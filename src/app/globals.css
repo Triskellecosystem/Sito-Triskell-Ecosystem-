@@ -970,10 +970,6 @@ html[data-no-loader] .loader { display: none; }
   .eco-sectors [data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; }
 }
 @media (max-width: 767px) {
-  /* niente card che arrivano di lato (si vedevano tagliate): sono già al loro posto */
-  .slide-x { transform: none !important; opacity: 1 !important; }
-}
-@media (max-width: 767px) {
   /* Chi siamo: la foto del team è subito visibile (niente schermata vuota in attesa dello scroll) */
   .ti-track { height: auto !important; }
   .ti-track .ti-sticky { position: static !important; min-height: 0 !important; padding-block: 1rem !important; }
@@ -985,3 +981,35 @@ html[data-no-loader] .loader { display: none; }
   /* risorse: il libro un po' più piccolo, così la prima schermata mostra già l'archivio */
   .book-stage { --bw: 11rem; --bh: 16.5rem; --bd: 1.8rem; }
 }
+
+/* ==========================================================================
+   Telefono: più movimento, come sul computer (solo sotto 768px)
+   ========================================================================== */
+@media (max-width: 767px) {
+  /* le card entrano di lato legate allo scroll, con una corsa più breve di quella da computer */
+  .slide-x { transform: translate3d(calc((1 - var(--p)) * var(--dir, 1) * 42vw), 0, 0) rotate(calc((1 - var(--p)) * var(--dir, 1) * 3deg)); opacity: calc(0.15 + var(--p) * 0.85); }
+  /* il riquadro trasparente dietro la hero non serve: al suo posto c'è il logo */
+  .hero-sheet { display: none; }
+  .hero-emblem { position: relative; display: grid; margin-left: 1.4rem; width: 6rem; height: 6rem; place-items: center; }
+  .hero-emblem::before { content: ""; position: absolute; inset: -45%; border-radius: 50%; background: radial-gradient(circle, rgb(247 200 92 / 0.34), transparent 62%); animation: loader-pulse 3s ease-in-out infinite; }
+  .hero-emblem-ring { position: absolute; inset: -0.6rem; border-radius: 50%; border: 1.5px dashed rgb(247 200 92 / 0.55); animation: loader-spin 18s linear infinite; }
+  .hero-emblem-ring--b { inset: -1.3rem; border: 1.5px solid transparent; border-top-color: var(--color-azure-300); border-right-color: rgb(42 144 195 / 0.45); animation-duration: 9s; animation-direction: reverse; }
+  /* simbolo piatto: le tre spirali si accendono a turno */
+  .symflat { position: relative; width: min(62vw, 14rem); aspect-ratio: 1; margin: 0.5rem auto 1.5rem; animation: symflat-float 5s ease-in-out infinite; }
+  .symflat img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .symflat-glow { position: absolute; inset: -25%; border-radius: 50%; background: radial-gradient(circle, rgb(247 200 92 / 0.28), transparent 62%); animation: loader-pulse 3s ease-in-out infinite; }
+  .symflat .sf-spiral { opacity: 0; transition: opacity 0.6s var(--ease-soft); filter: brightness(2.6) saturate(1.7) drop-shadow(0 0 12px rgb(255 200 80 / 0.95)); mix-blend-mode: screen; }
+  .symflat[data-active="0"] .sf-spiral[data-i="0"], .symflat[data-active="1"] .sf-spiral[data-i="1"], .symflat[data-active="2"] .sf-spiral[data-i="2"] { opacity: 1; }
+  /* pulsanti vivi: riflesso che passa, alone che respira, e un piccolo "tocco" quando si preme */
+  .btn-m-primary { animation: btn-m-breathe 2.6s ease-in-out infinite; }
+  .btn-m-primary.btn-blink { animation: btn-blink 1.5s ease-in-out infinite; }
+  .btn-m-shine { opacity: 1 !important; animation: shine 3.4s var(--ease-out-expo) infinite !important; }
+  .btn-m-secondary { animation: btn-m-edge 3.2s ease-in-out infinite; }
+  .btn-m-primary:active, .btn-m-secondary:active { transform: scale(0.97); }
+  /* le card si "premono" al tocco */
+  .m-carousel > *:active, .svc-list li:active { transform: scale(0.985); transition: transform 0.15s var(--ease-soft); }
+}
+@keyframes symflat-float { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-6px) rotate(1.5deg); } }
+@keyframes btn-m-breathe { 0%, 100% { filter: brightness(1); box-shadow: var(--shadow-glow-gold); } 50% { filter: brightness(1.1); box-shadow: 0 0 0 1px rgb(255 247 190 / 0.4), 0 0 30px 2px rgb(255 185 27 / 0.55); } }
+@keyframes btn-m-edge { 0%, 100% { border-color: var(--color-line-strong); box-shadow: 0 0 0 0 rgb(247 200 92 / 0); } 50% { border-color: rgb(247 200 92 / 0.7); box-shadow: 0 0 20px -2px rgb(247 200 92 / 0.4); } }
+@media (prefers-reduced-motion: reduce) { .btn-m-primary, .btn-m-secondary, .btn-m-shine, .symflat, .hero-emblem::before, .hero-emblem-ring, .symflat-glow { animation: none !important; } }

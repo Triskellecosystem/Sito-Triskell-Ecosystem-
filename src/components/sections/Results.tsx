@@ -12,7 +12,7 @@ export function Results() {
     <Section id={results.id} labelledBy="results-title">
       <TechBackdrop tone="azure" cursor rich />
       <SectionHeading id="results-title" overline={results.overline} title={results.title} line={results.line} align="center" />
-      <RevealGroup className="m-carousel mt-10 grid gap-5 sm:grid-cols-2 sm:mt-12 xl:grid-cols-4" stagger={0.12} alternate>
+      <RevealGroup className="m-carousel m-auto mt-10 grid gap-5 sm:grid-cols-2 sm:mt-12 xl:grid-cols-4" stagger={0.12} alternate>
         {results.items.slice(0, 4).map((item) => (
           <RevealItem key={item.id} y={34} className="h-full">
             <CaseCard item={item} href={`/agency/portfolio#${item.id}`} />

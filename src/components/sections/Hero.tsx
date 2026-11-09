@@ -1,4 +1,5 @@
 import { site } from "@/content/site";
+import { LogoMark } from "@/components/brand/LogoMark";
 import { Button } from "@/components/ui/Button";
 import { CountUp } from "@/components/motion/CountUp";
 import { HeroBackdrop } from "./HeroBackdrop";
@@ -22,6 +23,12 @@ export function Hero() {
 
       <div className="container-x grid items-center gap-x-8 gap-y-14 lg:grid-cols-12">
         <div className="lg:col-span-7">
+          {/* solo telefono: il logo, piccolo e vivo, al posto della grande scena */}
+          <div aria-hidden="true" className="hero-emblem mb-6 md:hidden">
+            <span className="hero-emblem-ring" />
+            <span className="hero-emblem-ring hero-emblem-ring--b" />
+            <LogoMark size={96} priority sizes="96px" className="relative h-24 w-24 drop-shadow-[0_8px_20px_rgb(0_0_0/0.55)]" />
+          </div>
           <p className="mb-6 inline-flex animate-[fade-in_0.8s_var(--ease-soft)_both] flex-wrap items-center gap-x-3 gap-y-1 text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-2">
             <span aria-hidden="true" className="h-px w-8 bg-gold-400/70" />
             {hero.overline}
