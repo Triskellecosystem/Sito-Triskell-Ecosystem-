@@ -40,7 +40,7 @@ export function RisorseGrid({ items, filters }: { items: Risorsa[]; filters: rea
           const inner = (
             <>
               <div className="relative aspect-[16/9] overflow-hidden border-b border-line">
-                <div className="h-full w-full transition-transform duration-700 ease-out-expo group-hover:scale-[1.05]">
+                <div className="absolute inset-0 transition-transform duration-700 ease-out-expo group-hover:scale-[1.05]">
                   <ResourceCover kind={r.cover} />
                 </div>
               </div>
@@ -49,7 +49,7 @@ export function RisorseGrid({ items, filters }: { items: Risorsa[]; filters: rea
                   <span className="text-gold-400">
                     {r.kind} <span className="text-fg-3">· {r.family}</span>
                   </span>
-                  <span className="text-fg-3">{r.date}</span>
+                  <span className="shrink-0 whitespace-nowrap text-fg-3">{r.date}</span>
                 </p>
                 <h3 className="text-[1.1875rem] font-bold leading-snug tracking-[-0.02em] text-fg group-hover:text-gold-200">{r.title}</h3>
                 <p className="text-small text-fg-2">{r.text}</p>

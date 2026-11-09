@@ -30,7 +30,7 @@ export function ContactLinks() {
       <SectionHeading id="seguici-title" overline={f.overline} title={f.title} line={f.line} align="center" />
 
       {/* In evidenza: quante persone ci seguono già (sottile, su una riga) */}
-      <Reveal y={18} blur={0} className="mx-auto mt-8 max-w-4xl">
+      <Reveal y={18} blur={0} className="mx-auto mt-8 max-w-6xl">
         <div className="proof-card relative overflow-hidden rounded-2xl border border-gold-300/50 bg-[linear-gradient(135deg,#2b2410,#0a1626_55%,#0b2a46)] px-5 py-4 text-center">
           <p className="relative flex flex-wrap items-baseline justify-center gap-x-3 gap-y-0.5 font-display font-bold leading-none tracking-[-0.03em]">
             <span className="text-[1rem] text-fg-2">{f.proof.lead}</span>
@@ -47,7 +47,7 @@ export function ContactLinks() {
         </div>
       </Reveal>
 
-      <RevealGroup className="mx-auto mt-4 grid max-w-4xl gap-3 md:grid-cols-3" stagger={0.1} alternate>
+      <RevealGroup className="mx-auto mt-4 grid max-w-6xl gap-3 md:grid-cols-3" stagger={0.1} alternate>
         {/* Instagram */}
         <RevealItem y={22}>
           <a href={ig.href} {...ext} className={`${card} border-white/15 bg-[linear-gradient(150deg,#3b1a5f,#6a1b5e_50%,#8f2b5b)] hover:shadow-[0_0_36px_-12px_rgb(214_62_130/0.7)]`}>
@@ -60,11 +60,11 @@ export function ContactLinks() {
                 <p className="text-[0.75rem] text-white/80">{f.instagram.handle}</p>
               </div>
             </div>
-            <div className="relative mt-3 flex h-40 items-center justify-center overflow-hidden" aria-hidden="true">
-              <div className="relative w-[52%] -rotate-3 overflow-hidden rounded-lg border border-white/20 bg-white shadow-[0_12px_28px_-10px_rgb(0_0_0/0.7)]">
-                <Image src="/social/instagram-profile.webp" alt="" width={520} height={500} sizes="9rem" className="h-auto w-full" />
+            <div className="relative mt-4 flex h-72 items-center justify-center overflow-hidden" aria-hidden="true">
+              <div className="relative w-[62%] -rotate-3 overflow-hidden rounded-xl border border-white/20 bg-white shadow-[0_12px_28px_-10px_rgb(0_0_0/0.7)]">
+                <Image src="/social/instagram-profile.webp" alt="" width={520} height={500} sizes="14rem" className="h-auto w-full" />
               </div>
-              <div className="relative -ml-8 w-[30%] rotate-3 overflow-hidden rounded-[1rem] border-[3px] border-[#14101c] bg-black shadow-[0_14px_30px_-10px_rgb(0_0_0/0.8)]">
+              <div className="relative -ml-14 w-[38%] rotate-3 overflow-hidden rounded-[1.25rem] border-4 border-[#14101c] bg-black shadow-[0_14px_30px_-10px_rgb(0_0_0/0.8)]">
                 <LoopVideo className="block aspect-[400/766] w-full object-cover" src="/social/instagram-feed.mp4" poster="/social/instagram-profile.webp" />
               </div>
             </div>
@@ -90,8 +90,8 @@ export function ContactLinks() {
                 <p className="text-[0.75rem] text-fg-2">{f.tiktok.handle}</p>
               </div>
             </div>
-            <div className="relative mt-3 h-40 overflow-hidden rounded-lg border border-white/10 bg-white">
-              <Image src="/social/tiktok-profile.webp" alt="Profilo TikTok di Triskell Ecosystem: 2460 follower e 9916 mi piace" width={520} height={500} sizes="(min-width: 768px) 14rem, 90vw" className="h-auto w-full" />
+            <div className="relative mt-4 h-72 overflow-hidden rounded-xl border border-white/10 bg-white">
+              <Image src="/social/tiktok-profile.webp" alt="Profilo TikTok di Triskell Ecosystem: 2460 follower e 9916 mi piace" width={520} height={500} sizes="(min-width: 768px) 24rem, 90vw" className="h-auto w-full" />
             </div>
             <p className="mt-3 text-[0.8125rem] text-fg-2">
               <strong className="font-display text-[0.9375rem] text-fg">{f.tiktok.stats[0]?.v}</strong> {f.tiktok.stats[0]?.l} · <strong className="font-display text-fg">{f.tiktok.stats[1]?.v}</strong> {f.tiktok.stats[1]?.l}
@@ -119,8 +119,8 @@ export function ContactLinks() {
                 <p className="text-[0.75rem] text-fg-2">{f.youtube.subs}</p>
               </div>
             </div>
-            <div className="relative mt-3 h-40 overflow-hidden rounded-lg border border-white/15 bg-white">
-              <Image src="/social/youtube-channel.webp" alt="Anteprima del canale YouTube Triskell Ecosystem: 1K iscritti e 212 video" width={1400} height={788} sizes="(min-width: 768px) 14rem, 90vw" className="h-auto w-full transition-transform duration-[900ms] ease-out-expo group-hover/c:scale-[1.04]" />
+            <div className="relative mt-4 h-72 overflow-hidden rounded-xl border border-white/15 bg-white">
+              <Image src="/social/youtube-channel.webp" alt="Anteprima del canale YouTube Triskell Ecosystem: 1K iscritti e 212 video" fill sizes="(min-width: 768px) 24rem, 90vw" className="object-cover object-left-top transition-transform duration-[900ms] ease-out-expo group-hover/c:scale-[1.04]" />
             </div>
             <p className="mt-3 text-[0.8125rem] text-fg-2">{f.youtube.text}</p>
             <span className={`${cta} text-gold-200`}>
@@ -132,7 +132,7 @@ export function ContactLinks() {
       </RevealGroup>
 
       {/* WhatsApp ed email: due righe sottili */}
-      <RevealGroup className="mx-auto mt-3 grid max-w-4xl gap-3 sm:grid-cols-2" stagger={0.1} alternate>
+      <RevealGroup className="mx-auto mt-3 grid max-w-6xl gap-3 sm:grid-cols-2" stagger={0.1} alternate>
         <RevealItem y={18}>
           <a href={wa.href} {...ext} className="group/wa flex items-center gap-3 rounded-2xl border border-[#25d366]/35 bg-[linear-gradient(150deg,#06301f,#0a1626_70%)] px-4 py-3 transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-[#25d366] hover:shadow-[0_0_30px_-14px_rgb(37_211_102/0.6)]">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#25d366] text-[#06301f]">
