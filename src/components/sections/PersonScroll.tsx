@@ -132,11 +132,6 @@ export function PersonScroll({ person, index }: { person: Person; index: number 
       const py = (c.v - 0.5) * fh;
       // camera: il punto inquadrato va al centro, si orbita attorno a lui, poi dolly (translateZ) verso lo spettatore
       w.style.transform = `translateZ(${c.tz.toFixed(1)}px) rotateY(${(c.ry + mx * 3).toFixed(2)}deg) rotateX(${(c.rx - my * 2).toFixed(2)}deg) translate3d(${(-px).toFixed(1)}px, ${(-py).toFixed(1)}px, 0)`;
-      // camminata: mentre la camera si avvicina (e quando si ritrae) la figura "avanza" con un passo ritmico, in sincronia con lo scroll
-      const walk = smooth(0.12, 0.2, t) * (1 - smooth(0.44, 0.48, t)) + smooth(0.58, 0.61, t) * (1 - smooth(0.66, 0.69, t));
-      const ph = Math.sin(t * Math.PI * 2 * 15);
-      const fh2 = sj.offsetHeight;
-      sj.style.transform = `translate3d(0, ${(-Math.abs(ph) * fh2 * 0.011 * walk).toFixed(2)}px, 0) rotate(${(ph * 0.9 * walk).toFixed(2)}deg)`;
       w.style.setProperty("--sc", c.scene.toFixed(3));
       w.style.setProperty("--tz", c.tz.toFixed(1));
       w.style.setProperty("--t", t.toFixed(4));

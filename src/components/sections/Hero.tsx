@@ -52,7 +52,13 @@ export function Hero() {
             </span>
           </h1>
 
-          <p className="mt-7 max-w-xl animate-[fade-in_0.8s_0.45s_var(--ease-soft)_both] text-lead text-fg-2">{hero.subtitle}</p>
+          <p className="mt-7 max-w-xl animate-[fade-in_0.8s_0.45s_var(--ease-soft)_both] text-lead text-fg-2">
+            {hero.subtitleLines.map((l) => (
+              <span key={l} className="block [text-wrap:balance]">
+                {l}
+              </span>
+            ))}
+          </p>
 
           <div className="mt-9 flex animate-[fade-in_0.8s_0.55s_var(--ease-soft)_both] flex-wrap items-center gap-4">
             <Button href={hero.primaryCta.href} size="lg" icon="arrow-right">

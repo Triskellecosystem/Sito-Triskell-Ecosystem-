@@ -24,7 +24,7 @@ const SECTORS = [
   { from: 201, span: 119 },
 ] as const;
 const CORE = { cx: "50.5%", cy: "48.5%", r: "14%" } as const;
-const ICONS: IconName[] = ["cpu", "users", "sparkles"];
+const ICONS: IconName[] = ["brain", "handshake", "flame"];
 const smooth = (a: number, b: number, x: number) => {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
@@ -39,10 +39,11 @@ const smooth = (a: number, b: number, x: number) => {
 export function SymbolSection() {
   const { symbol } = site;
   const [spiral, setSpiral] = useState(0);
-  const [live, setLive] = useState(false);
+  const lock = useRef(-1);
   const trackRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
 
+  const pick = (i: number) => setSpiral(i);
   const items = symbol.spirals.map((sp) => ({ name: sp.name, tag: symbol.layersLabel, text: sp.text }));
   const active = spiral;
 
@@ -64,6 +65,12 @@ export function SymbolSection() {
       // si scompone scendendo, resta aperto per un tratto, poi si RICOMPONE prima della fine
       const e = smooth(0.06, 0.38, p) * (1 - smooth(0.68, 0.94, p));
       scene.style.setProperty("--e", e.toFixed(3));
+      // evidenziazione legata allo scroll: Mente → Corpo → Anima ben prima di lasciare la sezione
+      const idx = p < 0.2 ? 0 : p < 0.42 ? 1 : 2;
+      if (idx !== lock.current) {
+        lock.current = idx;
+        setSpiral(idx);
+      }
     };
     const onScroll = () => {
       if (near && !raf) raf = requestAnimationFrame(update);
@@ -71,7 +78,6 @@ export function SymbolSection() {
     const io = new IntersectionObserver(
       ([entry]) => {
         near = !!entry?.isIntersecting;
-        setLive(near);
         if (near) onScroll();
       },
       { rootMargin: "20% 0px" },
@@ -87,14 +93,6 @@ export function SymbolSection() {
       window.removeEventListener("resize", onScroll);
     };
   }, []);
-
-  // le tre spirali si illuminano a turno finché siamo nella fase "spirali"
-  useEffect(() => {
-    if (!live) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = window.setInterval(() => setSpiral((s) => (s + 1) % 3), 1900);
-    return () => window.clearInterval(t);
-  }, [live]);
 
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.pointerType !== "mouse") return;
@@ -181,8 +179,10 @@ export function SymbolSection() {
                 <li
                   key={it.name}
                   data-active={active === i ? "" : undefined}
+                  onPointerEnter={(e) => e.pointerType === "mouse" && pick(i)}
+                  onClick={() => pick(i)}
                   className={cn(
-                    "sym-item relative mb-2 flex items-start gap-3 rounded-2xl border bg-night/60 p-3 backdrop-blur-sm sm:mb-3 sm:gap-5 sm:p-5",
+                    "sym-item relative mb-2 cursor-pointer flex items-start gap-3 rounded-2xl border bg-night/60 p-3 backdrop-blur-sm sm:mb-3 sm:gap-5 sm:p-5",
                     active === i ? "border-gold-300/70 shadow-[0_0_40px_-12px_rgb(247_200_92/0.55)]" : "border-line",
                   )}
                 >

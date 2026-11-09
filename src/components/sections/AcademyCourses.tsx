@@ -14,7 +14,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 export function AcademyCourses() {
   const c = site.academyPage.courses;
   return (
-    <Section id="corsi" labelledBy="corsi-title">
+    <Section id="corsi" labelledBy="corsi-title" className="pt-[clamp(1.5rem,3vw,2.5rem)]">
       <TechBackdrop tone="azure" cursor rich />
       <SectionHeading id="corsi-title" overline={c.overline} title={c.title} line={c.line} align="center" />
 

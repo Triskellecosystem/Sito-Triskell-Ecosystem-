@@ -218,13 +218,13 @@ export const site = {
     overline: "Migliora il tuo business con Triskell Ecosystem",
     titleLines: ["Più clienti.", "Più guadagni."],
     titleAccent: "Più automatizzi, più fai crescere il tuo business.",
-    subtitle: "Marketing, AI e automazioni su misura: lo facciamo noi, o ti insegniamo come.",
+    subtitleLines: ["Marketing, AI e automazioni su misura.", "Li facciamo noi per te, o ti insegniamo come fare."],
     primaryCta: { label: "Scopri Agency", href: "/agency" },
     secondaryCta: { label: "Scopri Academy", href: "/academy" },
     keyNumbers: [
       { value: 20, suffix: "+", label: "Progetti per clienti" },
       { value: 100, prefix: "+", suffix: "K", label: "Lead generati" },
-      { value: 3, suffix: " anni", label: "Con i clienti più fedeli" },
+      { value: 10, suffix: " anni", label: "Di esperienza" },
     ] satisfies Metric[],
     symbolAlt: "Simbolo Triskell: tre spirali oro in un medaglione blu notte",
   },
@@ -242,8 +242,11 @@ export const site = {
   ecosystem: {
     overline: "L'ecosistema",
     title: "Cos'è [Triskell Ecosystem]?",
-    description:
-      "Triskell Ecosystem è un ecosistema che unisce marketing, intelligenza artificiale, automazioni e formazione. Ti aiutiamo a trovare più clienti, a far lavorare meglio la tua azienda e a crescere: puoi delegarci tutto, imparare a farlo da solo, oppure unire le due strade.", // TODO: conferma copy
+    descriptionLines: [
+      "Triskell Ecosystem è un ecosistema che unisce marketing, intelligenza artificiale, automazioni e formazione, per far crescere le aziende in modo concreto.",
+      "Ti aiutiamo a trovare più clienti, a far lavorare meglio la tua azienda e a crescere, con strumenti, strategie e persone che lavorano al tuo fianco.",
+      "Puoi delegarci tutto, imparare a farlo da solo, oppure unire le due strade e scegliere, passo dopo passo, quello che serve davvero al tuo business.",
+    ], // TODO: conferma copy
     sectorsLabel: "I nostri settori",
     sectors: [
       { label: "Marketing", icon: "megaphone" },
@@ -259,15 +262,14 @@ export const site = {
       text: "Parti dall'Agency per i risultati subito, impara con l'Academy per crescere in autonomia.",
     },
     agency: {
-      badge: "Il nostro cuore",
-      question: "Vuoi delegare tutto a noi?",
+      question: "Vuoi delegare\ntutto a noi?",
       name: "Agency",
       line: "Ci pensiamo noi, dalla strategia ai risultati.",
       points: ["Gestione social media", "Meta Ads e Google Ads", "Siti web", "CRM", "Applicazioni e automazioni su misura"],
       cta: { label: "Scopri Agency", href: "/agency" },
     },
     academy: {
-      question: "Vuoi imparare in prima persona o far imparare i tuoi dipendenti?",
+      question: "Vuoi imparare in prima persona\no far imparare i tuoi dipendenti?",
       name: "Academy",
       line: "Diventi autonomo su vendite, marketing e AI.",
       points: ["93 lezioni pratiche, 7 corsi gratuiti", "Per te, in prima persona", "Per i tuoi dipendenti"],
@@ -278,7 +280,6 @@ export const site = {
   paths: {
     overline: "Cosa ottieni",
     title: "Quello che vuoi davvero: [risultati]",
-    line: "Meno punti, più effetto: ecco cosa cambia per te.",
     agency: {
       name: "Agency",
       tagline: "Ti accompagniamo lungo tutto il funnel",
@@ -437,6 +438,10 @@ export const site = {
         { value: 93, label: "Lezioni disponibili" },
         { value: 7, label: "Corsi gratuiti" },
       ] satisfies Metric[],
+      player: {
+        label: "Lezione video · Tomaso spiega",
+        caption: "Video dal canale YouTube di Tomaso: le lezioni della piattaforma sono riservate agli iscritti.",
+      },
       free: "Gratuito",
       open: "Inizia il corso",
       items: [
@@ -466,22 +471,14 @@ export const site = {
           { id: "1egPRg9ocqs", title: "Come creare siti web perfetti con Lovable" },
           { id: "gmYb7YF8ulc", title: "Impara il 97% di Claude Cowork in 29 minuti" },
           { id: "MWjuzZ2y5s0", title: "Opus 5 è fenomenale: guarda cosa ho costruito" },
-          { id: "2rq3UkuTO98", title: "A che livello di Claude sei? Scoprilo qui" },
-          { id: "PW82OYD98Qg", title: "Ho smesso di installare Skill su Claude: ora le creo in 10 minuti" },
+          { id: "70o10Yl4xK0", title: "Tutorial completo su Codex: cosa puoi farci" },
+          { id: "GSCZiD1LJsI", title: "Claude monta i tuoi video da solo? Il test" },
         ],
       },
       cta: { label: "Entra nell'Academy", href: "https://triskellacademy.com/" },
       quote: "L'AI ti permette di donare al mondo ogni idea che prima avresti messo nel cassetto.",
       quoteBy: "Tomaso Forno, Founder",
     },
-    /** Anteprima di una lezione: dati INVENTATI a scopo dimostrativo. */
-    demo: {
-      note: "Esempio dimostrativo",
-      lesson: "Corsi gratuiti · Triskell Academy",
-      modules: ["Processi di vendita", "Marketing", "Intelligenza artificiale", "Automazioni"],
-      progress: "Percorso completato",
-      badge: "Ora sei autonomo",
-    }, // TODO: dato reale
   },
   sitiWeb: {
     overline: "Agency · Siti web",
@@ -571,9 +568,9 @@ export const site = {
     ],
     layersLabel: "Le tre spirali",
     pillars: [
-      { from: "Mente", to: "Digitale", text: "Strumenti, dati e AI al servizio del business.", icon: "cpu" },
-      { from: "Corpo", to: "Umano", text: "Persone, relazioni e creatività al centro.", icon: "users" },
-      { from: "Anima", to: "Futuro", text: "Visione e innovazione per crescere nel tempo.", icon: "sparkles" },
+      { from: "Mente", to: "Digitale", text: "Strumenti, dati e AI al servizio del business.", icon: "brain" },
+      { from: "Corpo", to: "Umano", text: "Persone, relazioni e creatività al centro.", icon: "handshake" },
+      { from: "Anima", to: "Futuro", text: "Visione e innovazione per crescere nel tempo.", icon: "flame" },
     ] satisfies Pillar[],
   },
 
@@ -595,8 +592,8 @@ export const site = {
       ] satisfies Array<{ title: string; text: string; icon: IconName; points: string[] }>,
     }, // TODO: conferma copy
     intro: {
+      overline: "Chi siamo",
       title: "Il team principale",
-      text: "Due fondatori, due competenze: Tomaso guida marketing, advertising e AI; William progetta e costruisce i siti. Scorri per conoscerli da vicino.",
       hint: "Scorri: prima Tomaso, poi William",
       labels: [
         { name: "Tomaso Forno", role: "Founder · Marketing e AI", tone: "azure", side: "left" },
@@ -623,7 +620,7 @@ export const site = {
           { at: 0.67, u: 0.5, v: 0.5, tz: 120, ry: 0, rx: 0, scene: 0 },
           { at: 0.78, u: 0.5, v: 0.5, tz: 60, ry: 4, rx: 0, scene: 1 },
           { at: 0.88, u: 0.5, v: 0.5, tz: 110, ry: -4, rx: 0, scene: 1 },
-          { at: 1.0, u: 0.5, v: 0.5, tz: 70, ry: 0, rx: 0, scene: 1 },
+          { at: 1.0, u: 0.5, v: 0.5, tz: 0, ry: 0, rx: 0, scene: 1 },
         ],
         phases: [
           { id: "intro", from: 0.0, to: 0.19, kicker: "Founder", title: "Tomaso Forno", text: "Fondatore di Triskell Ecosystem. Aiuta professionisti e aziende a crescere unendo advertising, intelligenza artificiale e strategia di business online.", tags: ["Advertising", "Intelligenza artificiale", "Business online"] },
@@ -664,7 +661,7 @@ export const site = {
           { at: 0.67, u: 0.5, v: 0.5, tz: 120, ry: 0, rx: 0, scene: 0 },
           { at: 0.78, u: 0.5, v: 0.5, tz: 60, ry: -4, rx: 0, scene: 1 },
           { at: 0.88, u: 0.5, v: 0.5, tz: 110, ry: 4, rx: 0, scene: 1 },
-          { at: 1.0, u: 0.5, v: 0.5, tz: 70, ry: 0, rx: 0, scene: 1 },
+          { at: 1.0, u: 0.5, v: 0.5, tz: 0, ry: 0, rx: 0, scene: 1 },
         ],
         phases: [
           { id: "intro", from: 0.0, to: 0.19, kicker: "Web Designer & Creative Developer", title: "William Argintieri", text: "Mi occupo dello sviluppo web di Triskell Ecosystem, trasformando idee e progetti in esperienze digitali su misura. Seguo ogni fase, dal primo confronto con il cliente fino alla pubblicazione online." },

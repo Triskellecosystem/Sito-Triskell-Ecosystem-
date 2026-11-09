@@ -97,9 +97,9 @@ function ImpactColumn({ path, tone }: { path: Path; tone: "gold" | "azure" }) {
 export function Paths() {
   const { paths } = site;
   return (
-    <Section id="percorsi" labelledBy="paths-title">
+    <Section id="percorsi" labelledBy="paths-title" className="pt-[clamp(1.5rem,3vw,2.5rem)]">
       <TechBackdrop tone="mixed" rich />
-      <SectionHeading id="paths-title" overline={paths.overline} title={paths.title} line={paths.line} align="center" />
+      <SectionHeading id="paths-title" overline={paths.overline} title={paths.title} align="center" oneLine />
       <RevealGroup className="mx-auto mt-10 grid max-w-5xl gap-5 sm:mt-14 lg:grid-cols-2 lg:gap-8" stagger={0.14} alternate="far">
         <RevealItem y={0}>
           <ImpactColumn path={paths.agency} tone="gold" />

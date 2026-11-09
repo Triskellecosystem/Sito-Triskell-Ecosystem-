@@ -3,6 +3,7 @@ import { Ecosystem } from "@/components/sections/Ecosystem";
 import { Hero } from "@/components/sections/Hero";
 import { Paths } from "@/components/sections/Paths";
 import { Results } from "@/components/sections/Results";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 import { SymbolSection } from "@/components/sections/SymbolSection";
 import { site } from "@/content/site";
 
@@ -12,6 +13,7 @@ export default function HomePage() {
     <>
       <Hero />
       <Ecosystem />
+      <SectionDivider />
       <Paths />
       <CtaBand content={site.cta.home} />
       <Results />

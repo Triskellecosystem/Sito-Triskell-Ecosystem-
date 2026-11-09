@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { AcademyCourses } from "@/components/sections/AcademyCourses";
-import { CoursePlayerMock } from "@/components/sections/CoursePlayerMock";
+import { LessonPlayer } from "@/components/sections/LessonPlayer";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { PageHero } from "@/components/sections/PageHero";
 import { ZigZagSteps } from "@/components/sections/ZigZagSteps";
 import { Button } from "@/components/ui/Button";
 import { TechBackdrop } from "@/components/ui/TechBackdrop";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function AcademyPage() {
   const { academyPage: p, paths, cta } = site;
   return (
     <>
-      <PageHero overline={p.overline} title={p.title} line={p.line} crumbs={[{ label: "Academy" }]} aside={<CoursePlayerMock />}>
+      <PageHero overline={p.overline} title={p.title} line={p.line} crumbs={[{ label: "Academy" }]} aside={<LessonPlayer />}>
         <Button href={cta.href} size="lg" icon="calendar" iconPosition="start" pulse>
           {cta.button}
         </Button>
@@ -36,6 +37,7 @@ export default function AcademyPage() {
         </div>
       </Section>
 
+      <SectionDivider />
       <AcademyCourses />
       <CtaBand content={cta.academy} />
     </>

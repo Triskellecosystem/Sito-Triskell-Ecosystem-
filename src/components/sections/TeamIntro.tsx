@@ -86,16 +86,19 @@ export function TeamIntro() {
   }, []);
 
   return (
-    <Section id="team" labelledBy="team-title" className="py-0">
+    <Section id="team" labelledBy="team-title" className="py-0 pt-[calc(var(--header-h)+0.5rem)]">
       <TechBackdrop tone="mixed" rich cursor />
       <div ref={track} className="ti-track">
         <div className="ti-sticky">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 id="team-title" className="font-display text-[clamp(1.5rem,1.1rem+1.8vw,2.5rem)] font-bold tracking-[-0.035em] text-fg">
+          <header className="mx-auto max-w-2xl pb-4 text-center sm:pb-8">
+            <p className="mb-3 inline-flex items-center gap-3 text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-gold-400">
+              <span aria-hidden="true" className="h-px w-8 bg-gold-400/70" />
+              {t.overline}
+            </p>
+            <h1 id="team-title" className="font-display text-[clamp(2rem,1.4rem+2.6vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-fg">
               {t.title}
-            </h2>
-            <p className="mt-2 hidden text-[1rem] leading-snug text-fg-2 [text-wrap:balance] sm:block">{t.text}</p>
-          </div>
+            </h1>
+          </header>
 
           <div className="ti-wrap">
             <span ref={beam} aria-hidden="true" className="ti-beam" />

@@ -18,12 +18,11 @@ interface BranchProps {
   points: string[];
   cta: { label: string; href: string };
   icon: IconName;
-  badge?: string;
   tone: "gold" | "azure";
 }
 
 /** Un ramo (compatto e delicato): domanda → nome del ramo → una riga → 3 punti → pulsante. Stessa struttura per entrambi. */
-function Branch({ question, name, line, points, cta, icon, badge, tone }: BranchProps) {
+function Branch({ question, name, line, points, cta, icon, tone }: BranchProps) {
   const gold = tone === "gold";
   return (
     <BeamCard tone={tone} className="h-full">
@@ -38,16 +37,7 @@ function Branch({ question, name, line, points, cta, icon, badge, tone }: Branch
       >
         <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,#000,transparent_80%)]" />
         <div className="relative z-[2] flex h-full flex-col">
-          <div className="flex min-h-6 items-center">
-            {badge && (
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-400/40 bg-gold-300/10 px-2.5 py-0.5 text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-gold-300">
-                <Icon name="sparkles" className="h-3 w-3" />
-                {badge}
-              </span>
-            )}
-          </div>
-
-          <p className="mt-3 font-display text-[clamp(1.125rem,1rem+0.55vw,1.4375rem)] font-semibold leading-snug tracking-tight text-fg lg:min-h-[5.5rem]">{question}</p>
+          <p className="whitespace-pre-line font-display text-[clamp(1.0625rem,0.95rem+0.4vw,1.25rem)] font-semibold leading-snug tracking-tight text-fg [text-wrap:balance] lg:min-h-[3.25rem]">{question}</p>
 
           <div aria-hidden="true" className={cn("my-4 flex items-center gap-3", gold ? "text-gold-300" : "text-azure-300")}>
             <span className="h-px flex-1 bg-gradient-to-r from-current to-transparent opacity-50" />
@@ -117,14 +107,20 @@ export function Ecosystem() {
   const [m, ai, auto, form] = e.sectors;
 
   return (
-    <Section id="ecosistema" labelledBy="eco-title" className="pt-[clamp(1.5rem,3vw,3rem)]">
+    <Section id="ecosistema" labelledBy="eco-title" className="pt-[clamp(1.5rem,3vw,3rem)] pb-[clamp(1.5rem,3vw,2.5rem)]">
       {/* qui niente quadrati: solo l'effetto al mouse, per non appesantire la sezione */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <DigitalCursor />
       </div>
       <SectionHeading id="eco-title" overline={e.overline} title={e.title} align="center" />
       <Reveal delay={0.15} blur={4} y={14}>
-        <p className="mx-auto mt-6 max-w-2xl text-balance text-center text-[clamp(1.0625rem,0.98rem+0.45vw,1.3125rem)] leading-relaxed text-fg-2">{e.description}</p>
+        <div className="mx-auto mt-6 max-w-3xl space-y-3 text-center text-[clamp(1.0625rem,0.98rem+0.45vw,1.25rem)] leading-relaxed text-fg-2">
+          {e.descriptionLines.map((l) => (
+            <p key={l} className="text-balance">
+              {l}
+            </p>
+          ))}
+        </div>
       </Reveal>
 
       {/* ---- COSTELLAZIONE: i settori arrivano da sinistra e da destra, in ordine, verso il logo ---- */}

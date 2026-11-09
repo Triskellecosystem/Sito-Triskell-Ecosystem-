@@ -3,7 +3,7 @@ import { CtaBand } from "@/components/sections/CtaBand";
 import { HowWeWork } from "@/components/sections/HowWeWork";
 import { PersonScroll } from "@/components/sections/PersonScroll";
 import { TeamIntro } from "@/components/sections/TeamIntro";
-import { PageHero } from "@/components/sections/PageHero";
+import { ContactLinks } from "@/components/sections/ContactLinks";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -16,13 +16,13 @@ export default function AboutPage() {
   const { about } = site;
   return (
     <>
-      <PageHero overline={about.overline} title={about.title} line={about.line} crumbs={[{ label: "Chi siamo" }]} />
       <TeamIntro />
       {about.people.map((p, i) => (
         <PersonScroll key={p.id} person={p} index={i} />
       ))}
       <HowWeWork />
       <CtaBand content={site.cta.generic} />
+      <ContactLinks />
     </>
   );
 }
