@@ -113,25 +113,49 @@ export interface Pillar {
   icon: IconName;
 }
 
-export interface PersonCard {
+/** Una fase della presentazione: finestra di scroll (0-1) e contenuti. */
+export interface PersonPhase {
+  id: string;
+  /** Inizio e fine della fase lungo lo scroll del blocco (0-1). */
+  from: number;
+  to: number;
   kicker: string;
   title: string;
   text: string;
-  stats?: Array<{ value: string; label: string }>;
   tags?: string[];
+  stats?: Array<{ value: string; label: string }>;
+  /** Blocchi sintetici (es. competenze), mostrati a griglia. */
+  blocks?: Array<{ title: string; text: string }>;
+  /** Mostra il titolo come citazione. */
+  quote?: boolean;
+}
+
+/** Un punto della camera lungo lo scroll: punto inquadrato sulla foto (u,v), dolly (tz, px), rotazione orbitale e foto della scena. */
+export interface CameraKey {
+  at: number;
+  u: number;
+  v: number;
+  tz: number;
+  ry: number;
+  rx: number;
+  /** 0 = figura ritagliata, 1 = foto della scena (scrivania). */
+  scene: number;
 }
 
 export interface Person {
   id: string;
   name: string;
   short: string;
+  role: string;
   tone: "azure" | "red";
-  image: string;
-  desk: string;
-  /** Punti d'interesse sulla foto (frazioni 0-1) per i primi piani. */
-  face: { u: number; v: number };
-  watch: { u: number; v: number };
-  cards: PersonCard[];
+  /** Da che lato sta la figura su desktop. */
+  layout: "left" | "right";
+  /** Foto isolata dallo sfondo (PNG/WebP con alpha), proporzioni 2:3. */
+  cutout: string;
+  /** Seconda fotografia (scena), usata come nuova prospettiva. */
+  scene: string;
+  camera: CameraKey[];
+  phases: PersonPhase[];
 }
 
 export interface Faq {
@@ -585,32 +609,84 @@ export const site = {
         id: "tomaso",
         name: "Tomaso Forno",
         short: "Tomaso",
+        role: "Founder · Marketing e AI",
         tone: "azure",
-        image: "/team/tomaso.webp",
-        desk: "/team/tomaso-desk.webp",
-        face: { u: 0.46, v: 0.135 },
-        watch: { u: 0.66, v: 0.49 },
-        cards: [
-          { kicker: "Founder", title: "Fondatore di Triskell Ecosystem", text: "Ha creato l'ecosistema che unisce marketing, intelligenza artificiale, automazioni e formazione." },
-          { kicker: "Esperienza", title: "Da più di 10 anni nel settore", text: "Partito dentro le agenzie, oggi guida il suo progetto con un metodo basato su funnel, dati e automazioni.", stats: [{ value: "10+", label: "anni di marketing" }] },
-          { kicker: "Competenze", title: "Esperto in advertising e AI", text: "Campagne che portano contatti veri, sistemi che li seguono da soli.", tags: ["Meta Ads", "Google Ads", "Intelligenza artificiale", "Funnel"] },
-          { kicker: "Risultati", title: "Clienti seguiti e lead generati", text: "«L'AI ti permette di donare al mondo ogni idea che prima avresti messo nel cassetto.»", stats: [{ value: "50+", label: "clienti seguiti" }, { value: "100K+", label: "lead generati" }] },
+        layout: "left",
+        cutout: "/team/tomaso-cut.webp",
+        scene: "/team/tomaso-desk.webp",
+        camera: [
+          { at: 0.0, u: 0.5, v: 0.5, tz: 0, ry: -12, rx: 0, scene: 0 },
+          { at: 0.17, u: 0.5, v: 0.5, tz: 60, ry: -6, rx: 0, scene: 0 },
+          { at: 0.34, u: 0.48, v: 0.3, tz: 420, ry: 9, rx: 1, scene: 0 },
+          { at: 0.46, u: 0.47, v: 0.21, tz: 700, ry: 11, rx: 2, scene: 0 },
+          { at: 0.6, u: 0.47, v: 0.2, tz: 760, ry: -5, rx: 2, scene: 0 },
+          { at: 0.67, u: 0.5, v: 0.5, tz: 120, ry: 0, rx: 0, scene: 0 },
+          { at: 0.78, u: 0.5, v: 0.5, tz: 60, ry: 4, rx: 0, scene: 1 },
+          { at: 0.88, u: 0.5, v: 0.5, tz: 100, ry: -4, rx: 0, scene: 1 },
+          { at: 0.94, u: 0.5, v: 0.5, tz: 0, ry: 6, rx: 0, scene: 0 },
+          { at: 1.0, u: 0.5, v: 0.5, tz: -40, ry: 10, rx: 0, scene: 0 },
+        ],
+        phases: [
+          { id: "intro", from: 0.0, to: 0.19, kicker: "Founder", title: "Tomaso Forno", text: "Fondatore di Triskell Ecosystem. Aiuta professionisti e aziende a crescere unendo advertising, intelligenza artificiale e strategia di business online.", tags: ["Advertising", "Intelligenza artificiale", "Business online"] },
+          { id: "percorso", from: 0.22, to: 0.43, kicker: "Il percorso", title: "Da più di 10 anni nel settore", text: "Partito dentro le agenzie, ha costruito un metodo basato su funnel, dati e automazioni. Oggi guida il suo progetto.", stats: [{ value: "10+", label: "anni di marketing" }] },
+          {
+            id: "competenze",
+            from: 0.46,
+            to: 0.65,
+            kicker: "Competenze",
+            title: "Esperto in advertising e AI",
+            text: "Quello che sa fare, in quattro blocchi.",
+            blocks: [
+              { title: "Advertising", text: "Meta Ads e Google Ads: campagne che portano contatti veri." },
+              { title: "Intelligenza artificiale", text: "Strumenti, prompt e automazioni per il business." },
+              { title: "Funnel e CRM", text: "Dal contatto al cliente, seguito da sistemi che lavorano da soli." },
+              { title: "Formazione", text: "Academy: corsi pratici e video sul canale YouTube." },
+            ],
+          },
+          { id: "triskell", from: 0.69, to: 0.89, kicker: "In Triskell", title: "Strategia, clienti e metodo", text: "Segue la strategia dei clienti e coordina Agency e Academy.", stats: [{ value: "50+", label: "clienti seguiti" }, { value: "100K+", label: "lead generati" }] },
+          { id: "chiusura", from: 0.92, to: 9, kicker: "Il suo contributo", title: "«L'AI ti permette di donare al mondo ogni idea che prima avresti messo nel cassetto.»", text: "In Triskell Ecosystem porta visione, metodo e crescita.", quote: true },
         ],
       },
       {
         id: "william",
         name: "William Argintieri",
         short: "William",
+        role: "Web designer · Fondatore di LyamFlow",
         tone: "red",
-        image: "/team/william.webp",
-        desk: "/team/william-desk.webp",
-        face: { u: 0.5, v: 0.11 },
-        watch: { u: 0.66, v: 0.485 },
-        cards: [
-          { kicker: "Web design", title: "Si occupa dei nostri siti", text: "Web designer e fondatore di LyamFlow: progetta siti su misura per ristoranti, attività locali, brand e aziende." },
-          { kicker: "Metodo", title: "Dal primo colloquio alla pubblicazione", text: "Segue ogni progetto in prima persona, senza intermediari.", stats: [{ value: "9", label: "siti online" }] },
-          { kicker: "Competenze", title: "Design, sviluppo e animazioni", text: "Siti veloci, curati e pensati per far contattare.", tags: ["Web design", "Sviluppo", "Animazioni", "LyamFlow"] },
-          { kicker: "LyamFlow", title: "Ha costruito LyamFlow", text: "Il software con il sito web incluso. «Non costruiamo solo siti web. Costruiamo esperienze digitali.»", tags: ["LyamFlow", "Sito incluso", "Esperienze digitali"] },
+        layout: "right",
+        cutout: "/team/william-cut.webp",
+        scene: "/team/william-desk.webp",
+        camera: [
+          { at: 0.0, u: 0.5, v: 0.42, tz: 260, ry: 12, rx: 0, scene: 0 },
+          { at: 0.17, u: 0.5, v: 0.5, tz: 40, ry: 6, rx: 0, scene: 0 },
+          { at: 0.34, u: 0.52, v: 0.3, tz: 420, ry: -9, rx: 1, scene: 0 },
+          { at: 0.46, u: 0.52, v: 0.2, tz: 700, ry: -11, rx: 2, scene: 0 },
+          { at: 0.6, u: 0.52, v: 0.19, tz: 760, ry: 5, rx: 2, scene: 0 },
+          { at: 0.67, u: 0.5, v: 0.5, tz: 120, ry: 0, rx: 0, scene: 0 },
+          { at: 0.78, u: 0.5, v: 0.5, tz: 60, ry: -4, rx: 0, scene: 1 },
+          { at: 0.88, u: 0.5, v: 0.5, tz: 100, ry: 4, rx: 0, scene: 1 },
+          { at: 0.94, u: 0.5, v: 0.5, tz: 0, ry: -6, rx: 0, scene: 0 },
+          { at: 1.0, u: 0.5, v: 0.5, tz: -40, ry: -10, rx: 0, scene: 0 },
+        ],
+        phases: [
+          { id: "intro", from: 0.0, to: 0.19, kicker: "Web design", title: "William Argintieri", text: "Web designer e fondatore di LyamFlow. Si occupa dei siti di Triskell Ecosystem, dal primo colloquio alla pubblicazione.", tags: ["Web design", "Sviluppo", "Animazioni"] },
+          { id: "percorso", from: 0.22, to: 0.43, kicker: "Il metodo", title: "Dal primo colloquio alla pubblicazione", text: "Progetta siti su misura per ristoranti, attività locali, brand e aziende, senza intermediari.", stats: [{ value: "9", label: "siti online" }] },
+          {
+            id: "competenze",
+            from: 0.46,
+            to: 0.65,
+            kicker: "Competenze",
+            title: "Design, sviluppo e animazioni",
+            text: "Quello che sa fare, in quattro blocchi.",
+            blocks: [
+              { title: "Web design", text: "Siti su misura, curati e riconoscibili." },
+              { title: "Sviluppo", text: "Codice pulito, SEO tecnica e prestazioni." },
+              { title: "Animazioni", text: "Movimento e interazioni che raccontano il brand." },
+              { title: "LyamFlow", text: "Il software con il sito web incluso." },
+            ],
+          },
+          { id: "triskell", from: 0.69, to: 0.89, kicker: "In Triskell", title: "Tutta la parte web", text: "Siti, landing page e strumenti digitali per Agency e Academy." },
+          { id: "chiusura", from: 0.92, to: 9, kicker: "Il suo contributo", title: "«Non costruiamo solo siti web. Costruiamo esperienze digitali.»", text: "In Triskell Ecosystem trasforma le idee in esperienze digitali.", quote: true },
         ],
       },
     ] satisfies Person[], // TODO: conferma testi e numeri (da foto/bio fornite)

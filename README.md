@@ -49,7 +49,7 @@ Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti; il pulsante è g
 - **Portatile 3D** (`LaptopShowcase`): coperchio che si apre, galleria con tutti i siti, cursore che apre Sfizi Partenopei e lo fa scorrere; tutto CSS in unità `cqw`.
 - **Corsi Academy** (`AcademyCourses`): i 7 corsi gratuiti veri di https://triskellacademy.com con copertine in `public/academy`.
 - **Scroll legato al movimento** (`ScrollSlide`): i blocchi del funnel arrivano da fuori schermo mentre scorri.
-- **Team a tutto schermo** (`PersonStage`): ogni persona ha un riquadro 3D legato allo scroll; la camera passa dal primo piano, alla figura intera, ai dettagli, alla foto al computer, mentre le schede informative gli girano attorno (azzurro per Tomaso, rosso per William). Foto in `public/team`.
+- **Team cinematografico** (`PersonScroll`, configurato in `site.about.people`): ritaglio vero dello sfondo (alpha, `public/team/*-cut.webp`, fatto con BiRefNet + decontaminazione dei bordi), camera 3D legata allo scroll (dolly, orbita ±12°, parallasse tra livelli), passaggio alla seconda foto, testi per fase. Telefono, reduced motion e dispositivi poco potenti: sequenza semplice senza pin. Per vere rotazioni servono più foto o un modello 3D.
 - **Libro 3D** (`Book3D`): cuboide CSS trascinabile in ogni direzione, con inerzia.
 - **Sfondi tech** (`TechBackdrop rich`): griglia di quadrati con celle che si accendono e punti luce.
 - **Pulsanti**: restano sul loro asse (nessun effetto magnetico); feedback solo con luce in hover e al click.
