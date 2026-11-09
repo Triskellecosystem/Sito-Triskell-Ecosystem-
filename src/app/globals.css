@@ -794,12 +794,13 @@ li:hover > .slide-x .svc-card { animation-play-state: paused; }
 .ps[data-layout="right"] .ps-anchor { left: 70%; }
 .ps-world { --fh: min(calc(100svh - var(--header-h) - 3rem), 56rem); --fw: calc(var(--fh) * 2 / 3); --sc: 0; --t: 0; position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; will-change: transform; }
 .ps-world > * { position: absolute; left: 0; top: 0; translate: -50% -50%; }
-.ps-subject { width: var(--fw); height: var(--fh); transform: translateZ(0); transform-style: flat; }
+.ps-subject { width: var(--fw); height: var(--fh); transform: translateZ(0); transform-style: flat; will-change: transform; }
 .ps-cut { position: absolute; inset: 0; opacity: clamp(0, calc(1 - (var(--sc) - 0.55) * 4), 1); filter: drop-shadow(0 24px 40px rgb(0 0 0 / 0.55)); }
 .ps-sheen { position: absolute; inset: 0; mask-size: 100% 100%; -webkit-mask-size: 100% 100%; mask-repeat: no-repeat; -webkit-mask-repeat: no-repeat; mix-blend-mode: soft-light; background: linear-gradient(105deg, transparent calc(var(--t) * 400% - 150%), rgb(255 235 190 / 0.22) calc(var(--t) * 400% - 120%), transparent calc(var(--t) * 400% - 60%)); background-size: 100% 100%; }
 .ps-shadow { position: absolute; left: 50%; bottom: -2%; width: 78%; height: 7%; translate: -50% 0; border-radius: 50%; background: radial-gradient(ellipse, rgb(0 0 0 / 0.65), transparent 70%); filter: blur(6px); }
-.ps-scene { position: absolute; inset: 0; overflow: hidden; border-radius: 1.5rem; opacity: clamp(0, calc(var(--sc) * 5), 1); clip-path: circle(calc(var(--sc) * 95%) at 50% 26%); box-shadow: 0 0 0 1px color-mix(in srgb, var(--tc) 55%, transparent), 0 0 60px -10px var(--tg); }
-.ps-name { transform: translateZ(-230px) scale(1.14); margin: 0; font-family: var(--font-display, inherit); font-weight: 800; font-size: clamp(7rem, 17vw, 17rem); line-height: 1; letter-spacing: -0.04em; text-transform: uppercase; color: transparent; -webkit-text-stroke: 2px color-mix(in srgb, var(--tc) 32%, transparent); opacity: 0.6; white-space: nowrap; pointer-events: none; user-select: none; top: -8%; }
+.ps-scene { position: absolute; left: 50%; top: 50%; width: calc(var(--fh) * 0.88); height: calc(var(--fh) * 0.962); translate: -50% -50%; overflow: hidden; border-radius: 1.5rem; opacity: clamp(0, calc(var(--sc) * 5), 1); clip-path: circle(calc(var(--sc) * 95%) at 50% 30%); box-shadow: 0 0 0 1px color-mix(in srgb, var(--tc) 55%, transparent), 0 0 60px -10px var(--tg); }
+.ps-name { transform: translate3d(var(--ns, -5vw), 0, -230px); margin: 0; font-family: var(--font-display, inherit); font-weight: 800; font-size: clamp(4rem, 9vw, 10rem); line-height: 1; letter-spacing: -0.035em; text-transform: uppercase; color: transparent; -webkit-text-stroke: 2px color-mix(in srgb, var(--tc) 34%, transparent); opacity: clamp(0, calc(0.62 - var(--tz, 0) / 900), 0.62); white-space: nowrap; pointer-events: none; user-select: none; top: -8%; }
+.ps[data-layout="right"] .ps-name { --ns: 5vw; }
 .ps-ground { width: calc(var(--fw) * 1.9); height: calc(var(--fw) * 0.5); top: 50%; transform: translateY(calc(var(--fh) * 0.47)) translateZ(-20px); border-radius: 50%; background: radial-gradient(ellipse, color-mix(in srgb, var(--tc) 45%, transparent), rgb(247 200 92 / 0.12) 45%, transparent 70%); filter: blur(14px); opacity: 0.8; }
 .ps-ring { border-radius: 50%; border: 2px dashed color-mix(in srgb, var(--tc) 50%, transparent); pointer-events: none; }
 .ps-ring--a { width: calc(var(--fw) * 1.7); height: calc(var(--fw) * 1.7); transform: translateZ(-120px) rotateX(74deg); animation: ps-spin 26s linear infinite; }
@@ -824,3 +825,22 @@ li:hover > .slide-x .svc-card { animation-play-state: paused; }
 @keyframes team-kenburns { from { transform: scale(1); } to { transform: scale(1.06); } }
 .team-kenburns { animation: team-kenburns 14s ease-in-out infinite alternate; transform-origin: 50% 40%; }
 @media (prefers-reduced-motion: reduce) { .team-kenburns { animation: none; } }
+
+/* Apertura Chi siamo: la foto dei due compare come uno schermo che si accende (scroll-driven, con fallback statico) */
+.ti-track { height: auto; }
+.ti-sticky { display: grid; gap: 1.25rem; padding-block: clamp(1.5rem, 3vw, 2.5rem); }
+.ti-wrap { position: relative; margin-inline: auto; width: min(64rem, 94vw); aspect-ratio: 16 / 9; }
+.ti-frame { position: absolute; inset: 0; overflow: hidden; border-radius: 1.5rem; border: 1px solid var(--color-line-strong); box-shadow: 0 40px 90px -30px rgb(0 0 0 / 0.9), 0 0 70px -20px rgb(247 200 92 / 0.35); }
+.ti-beam { position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; background: linear-gradient(90deg, transparent, var(--color-gold-200), transparent); box-shadow: 0 0 22px 4px rgb(247 200 92 / 0.8); opacity: 0; z-index: 2; pointer-events: none; transform-origin: 50% 50%; }
+.ti-sweep { position: absolute; top: 0; bottom: 0; left: 0; width: 28%; background: linear-gradient(90deg, transparent, rgb(255 240 200 / 0.28), transparent); opacity: 0; pointer-events: none; mix-blend-mode: screen; }
+.ti-labels { position: absolute; inset: auto 0 0 0; display: flex; justify-content: space-between; padding: 0.75rem; gap: 1rem; }
+@media (min-width: 640px) { .ti-labels { padding: 1.5rem; } }
+/* il layout "appiccicato" è deciso solo dal CSS (niente cambio dopo l'idratazione: nessun layout shift) */
+@media (prefers-reduced-motion: no-preference) {
+  .ti-track { height: 260vh; }
+  .ti-track .ti-sticky { position: sticky; top: calc(var(--header-h) + 0.25rem); min-height: calc(100svh - var(--header-h) - 0.5rem); align-content: center; padding-block: 0.5rem; }
+  .ti-track .ti-wrap { width: min(64rem, 94vw, calc((100svh - var(--header-h) - 12rem) * 16 / 9)); }
+  .ti-track .ti-frame { clip-path: inset(50% 49%); }
+  .ti-track .ti-label { opacity: 0; }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 639px) { .ti-track { height: 200vh; } .ti-track .ti-wrap { width: 94vw; } }

@@ -152,7 +152,7 @@ export interface Person {
   layout: "left" | "right";
   /** Foto isolata dallo sfondo (PNG/WebP con alpha), proporzioni 2:3. */
   cutout: string;
-  /** Seconda fotografia (scena), usata come nuova prospettiva. */
+  /** Primo piano finale (fotografia al computer), usato come ultima inquadratura. */
   scene: string;
   camera: CameraKey[];
   phases: PersonPhase[];
@@ -600,7 +600,7 @@ export const site = {
       hint: "Scorri: prima Tomaso, poi William",
       labels: [
         { name: "Tomaso Forno", role: "Founder · Marketing e AI", tone: "azure", side: "left" },
-        { name: "William Argintieri", role: "Web designer · Siti web", tone: "red", side: "right" },
+        { name: "William Argintieri", role: "Web Designer & Creative Developer", tone: "red", side: "right" },
       ],
     },
     /** Le due persone: ogni scheda compare mentre si "gira attorno" alla figura scorrendo. Foto in /public/team. */
@@ -613,7 +613,7 @@ export const site = {
         tone: "azure",
         layout: "left",
         cutout: "/team/tomaso-cut.webp",
-        scene: "/team/tomaso-desk.webp",
+        scene: "/team/tomaso-close.webp",
         camera: [
           { at: 0.0, u: 0.5, v: 0.5, tz: 0, ry: -12, rx: 0, scene: 0 },
           { at: 0.17, u: 0.5, v: 0.5, tz: 60, ry: -6, rx: 0, scene: 0 },
@@ -622,9 +622,8 @@ export const site = {
           { at: 0.6, u: 0.47, v: 0.2, tz: 760, ry: -5, rx: 2, scene: 0 },
           { at: 0.67, u: 0.5, v: 0.5, tz: 120, ry: 0, rx: 0, scene: 0 },
           { at: 0.78, u: 0.5, v: 0.5, tz: 60, ry: 4, rx: 0, scene: 1 },
-          { at: 0.88, u: 0.5, v: 0.5, tz: 100, ry: -4, rx: 0, scene: 1 },
-          { at: 0.94, u: 0.5, v: 0.5, tz: 0, ry: 6, rx: 0, scene: 0 },
-          { at: 1.0, u: 0.5, v: 0.5, tz: -40, ry: 10, rx: 0, scene: 0 },
+          { at: 0.88, u: 0.5, v: 0.5, tz: 110, ry: -4, rx: 0, scene: 1 },
+          { at: 1.0, u: 0.5, v: 0.5, tz: 70, ry: 0, rx: 0, scene: 1 },
         ],
         phases: [
           { id: "intro", from: 0.0, to: 0.19, kicker: "Founder", title: "Tomaso Forno", text: "Fondatore di Triskell Ecosystem. Aiuta professionisti e aziende a crescere unendo advertising, intelligenza artificiale e strategia di business online.", tags: ["Advertising", "Intelligenza artificiale", "Business online"] },
@@ -651,11 +650,11 @@ export const site = {
         id: "william",
         name: "William Argintieri",
         short: "William",
-        role: "Web designer · Fondatore di LyamFlow",
+        role: "Web Designer & Creative Developer",
         tone: "red",
         layout: "right",
         cutout: "/team/william-cut.webp",
-        scene: "/team/william-desk.webp",
+        scene: "/team/william-close.webp",
         camera: [
           { at: 0.0, u: 0.5, v: 0.42, tz: 260, ry: 12, rx: 0, scene: 0 },
           { at: 0.17, u: 0.5, v: 0.5, tz: 40, ry: 6, rx: 0, scene: 0 },
@@ -664,29 +663,28 @@ export const site = {
           { at: 0.6, u: 0.52, v: 0.19, tz: 760, ry: 5, rx: 2, scene: 0 },
           { at: 0.67, u: 0.5, v: 0.5, tz: 120, ry: 0, rx: 0, scene: 0 },
           { at: 0.78, u: 0.5, v: 0.5, tz: 60, ry: -4, rx: 0, scene: 1 },
-          { at: 0.88, u: 0.5, v: 0.5, tz: 100, ry: 4, rx: 0, scene: 1 },
-          { at: 0.94, u: 0.5, v: 0.5, tz: 0, ry: -6, rx: 0, scene: 0 },
-          { at: 1.0, u: 0.5, v: 0.5, tz: -40, ry: -10, rx: 0, scene: 0 },
+          { at: 0.88, u: 0.5, v: 0.5, tz: 110, ry: 4, rx: 0, scene: 1 },
+          { at: 1.0, u: 0.5, v: 0.5, tz: 70, ry: 0, rx: 0, scene: 1 },
         ],
         phases: [
-          { id: "intro", from: 0.0, to: 0.19, kicker: "Web design", title: "William Argintieri", text: "Web designer e fondatore di LyamFlow. Si occupa dei siti di Triskell Ecosystem, dal primo colloquio alla pubblicazione.", tags: ["Web design", "Sviluppo", "Animazioni"] },
-          { id: "percorso", from: 0.22, to: 0.43, kicker: "Il metodo", title: "Dal primo colloquio alla pubblicazione", text: "Progetta siti su misura per ristoranti, attività locali, brand e aziende, senza intermediari.", stats: [{ value: "9", label: "siti online" }] },
+          { id: "intro", from: 0.0, to: 0.19, kicker: "Web Designer & Creative Developer", title: "William Argintieri", text: "Mi occupo dello sviluppo web di Triskell Ecosystem, trasformando idee e progetti in esperienze digitali su misura. Seguo ogni fase, dal primo confronto con il cliente fino alla pubblicazione online." },
+          { id: "metodo", from: 0.22, to: 0.43, kicker: "Il metodo", title: "Dal concept all'esperienza digitale", text: "Il mio metodo unisce design, sviluppo e attenzione ai dettagli. Ogni progetto nasce dall'ascolto, prende forma attraverso la creatività e diventa un'esperienza digitale funzionale, intuitiva e riconoscibile." },
           {
             id: "competenze",
             from: 0.46,
             to: 0.65,
-            kicker: "Competenze",
-            title: "Design, sviluppo e animazioni",
-            text: "Quello che sa fare, in quattro blocchi.",
+            kicker: "Quello che so fare",
+            title: "Le mie competenze",
+            text: "",
             blocks: [
-              { title: "Web design", text: "Siti su misura, curati e riconoscibili." },
-              { title: "Sviluppo", text: "Codice pulito, SEO tecnica e prestazioni." },
-              { title: "Animazioni", text: "Movimento e interazioni che raccontano il brand." },
-              { title: "LyamFlow", text: "Il software con il sito web incluso." },
+              { title: "Web Design", text: "Siti su misura, curati in ogni dettaglio e riconoscibili." },
+              { title: "Sviluppo Web", text: "Codice pulito, SEO tecnica e prestazioni ottimizzate." },
+              { title: "Animazioni & Interazioni", text: "Movimento ed effetti interattivi che raccontano il brand." },
+              { title: "Esperienza Utente", text: "Navigazione intuitiva e percorsi progettati per convertire." },
             ],
           },
-          { id: "triskell", from: 0.69, to: 0.89, kicker: "In Triskell", title: "Tutta la parte web", text: "Siti, landing page e strumenti digitali per Agency e Academy." },
-          { id: "chiusura", from: 0.92, to: 9, kicker: "Il suo contributo", title: "«Non costruiamo solo siti web. Costruiamo esperienze digitali.»", text: "In Triskell Ecosystem trasforma le idee in esperienze digitali.", quote: true },
+          { id: "triskell", from: 0.69, to: 0.89, kicker: "In Triskell Ecosystem", title: "Tutta la parte web, dall'idea alla realtà.", text: "Mi occupo della progettazione e dello sviluppo di siti web, landing page e strumenti digitali che valorizzano l'identità dei brand e trasformano la presenza online in opportunità concrete." },
+          { id: "chiusura", from: 0.92, to: 9, kicker: "La mia filosofia", title: "«Non costruiamo solo siti web. Costruiamo esperienze digitali.»", text: "In Triskell Ecosystem trasformo le idee in esperienze digitali.", quote: true },
         ],
       },
     ] satisfies Person[], // TODO: conferma testi e numeri (da foto/bio fornite)

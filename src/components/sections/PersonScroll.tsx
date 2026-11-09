@@ -42,7 +42,7 @@ function PhaseContent({ ph, tone, big }: { ph: PersonPhase; tone: Person["tone"]
       >
         {ph.title}
       </h3>
-      <p className="mt-4 max-w-md text-[1.0625rem] leading-relaxed text-fg-2">{ph.text}</p>
+      {ph.text && <p className="mt-4 max-w-md text-[1.0625rem] leading-relaxed text-fg-2">{ph.text}</p>}
       {ph.stats && (
         <dl className="mt-6 flex gap-8">
           {ph.stats.map((st) => (
@@ -64,9 +64,9 @@ function PhaseContent({ ph, tone, big }: { ph: PersonPhase; tone: Person["tone"]
       )}
       {ph.blocks && (
         <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-          {ph.blocks.map((b) => (
+          {ph.blocks.map((b, bi) => (
             <li key={b.title} className={cn("rounded-2xl border p-4 backdrop-blur-sm", tone === "azure" ? "border-azure-300/35 bg-azure-400/[0.07]" : "border-ember-300/35 bg-ember-400/[0.07]")}>
-              <p className="font-display text-[1.0625rem] font-semibold tracking-tight text-fg">{b.title}</p>
+              <p className="font-display text-[1.0625rem] font-semibold tracking-tight text-fg"><span className={cn("mr-2 text-[0.8125rem]", accent)}>{String(bi + 1).padStart(2, "0")}</span>{b.title}</p>
               <p className="mt-1 text-[0.875rem] leading-snug text-fg-2">{b.text}</p>
             </li>
           ))}
@@ -132,7 +132,13 @@ export function PersonScroll({ person, index }: { person: Person; index: number 
       const py = (c.v - 0.5) * fh;
       // camera: il punto inquadrato va al centro, si orbita attorno a lui, poi dolly (translateZ) verso lo spettatore
       w.style.transform = `translateZ(${c.tz.toFixed(1)}px) rotateY(${(c.ry + mx * 3).toFixed(2)}deg) rotateX(${(c.rx - my * 2).toFixed(2)}deg) translate3d(${(-px).toFixed(1)}px, ${(-py).toFixed(1)}px, 0)`;
+      // camminata: mentre la camera si avvicina (e quando si ritrae) la figura "avanza" con un passo ritmico, in sincronia con lo scroll
+      const walk = smooth(0.12, 0.2, t) * (1 - smooth(0.44, 0.48, t)) + smooth(0.58, 0.61, t) * (1 - smooth(0.66, 0.69, t));
+      const ph = Math.sin(t * Math.PI * 2 * 15);
+      const fh2 = sj.offsetHeight;
+      sj.style.transform = `translate3d(0, ${(-Math.abs(ph) * fh2 * 0.011 * walk).toFixed(2)}px, 0) rotate(${(ph * 0.9 * walk).toFixed(2)}deg)`;
       w.style.setProperty("--sc", c.scene.toFixed(3));
+      w.style.setProperty("--tz", c.tz.toFixed(1));
       w.style.setProperty("--t", t.toFixed(4));
       let act = 0;
       let best = -1;
@@ -285,14 +291,15 @@ export function PersonScroll({ person, index }: { person: Person; index: number 
                 <Image src={person.cutout} alt="" aria-hidden="true" fill sizes="90vw" className="object-cover" style={{ objectPosition: `${person.camera[3] ? person.camera[3].u * 100 : 50}% 4%`, transform: "scale(2.1)", transformOrigin: "50% 8%" }} />
               </div>
             )}
-            {i === 3 && (
-              <div className="ps-m-card relative mb-5 aspect-[4/5] overflow-hidden rounded-3xl">
-                <Image src={person.scene} alt={`${person.name} al lavoro`} fill sizes="90vw" className="object-cover" />
-              </div>
-            )}
             <PhaseContent ph={ph} tone={tone} big={i === 0} />
           </Reveal>
         ))}
+        {/* ultima immagine: il primo piano al computer */}
+        <Reveal y={22} blur={0} className="mx-auto mt-8 max-w-sm">
+          <div className="ps-m-card relative aspect-[1199/1312] overflow-hidden rounded-3xl">
+            <Image src={person.scene} alt={`${person.name} al computer, in primo piano`} fill sizes="90vw" className="object-cover" />
+          </div>
+        </Reveal>
       </div>
     </section>
   );
