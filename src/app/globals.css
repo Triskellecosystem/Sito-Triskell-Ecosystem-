@@ -1045,9 +1045,6 @@ html[data-no-loader] .loader { display: none; }
   .m-carousel > [data-reveal-item] { --reveal-y: 0px !important; }
   .m-carousel { align-items: stretch; }
   .m-carousel > * > * { height: 100%; }
-  /* più vita: le card oscillano piano */
-  .m-carousel > *:nth-child(odd) > *, .svc-list li:nth-child(odd) .svc-card { animation: m-bob 6s ease-in-out infinite; }
-  .m-carousel > *:nth-child(even) > *, .svc-list li:nth-child(even) .svc-card { animation: m-bob 7s ease-in-out -3s infinite; }
   .impact-dot { animation: m-pulse 3.4s ease-in-out infinite; }
   /* Chi siamo: gli anelli ovali passano DIETRO la persona (prima la attraversavano) */
   .ps-ring--a { transform: translateZ(-300px) rotateX(74deg); }
@@ -1059,4 +1056,14 @@ html[data-no-loader] .loader { display: none; }
 @keyframes hm-aurora { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(14vw, 8vh, 0) scale(1.18); } }
 @keyframes m-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
 @keyframes m-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgb(247 200 92 / 0); } 50% { box-shadow: 0 0 18px 1px rgb(247 200 92 / 0.45); } }
-@media (prefers-reduced-motion: reduce) { .hero-m-sq, .hero-m-aurora, .impact-dot, .m-carousel > * > *, .svc-card { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .hero-m-sq, .hero-m-aurora, .impact-dot { animation: none !important; } }
+
+@media (max-width: 767px) {
+  /* libretto in hero: libro piccolo a sinistra, scritte a destra sulla stessa riga (non più tutto in colonna centrata) */
+  .risorse-book .book-stage { --bw: 7.25rem; --bh: 10.9rem; --bd: 1.3rem; }
+  .risorse-book [role="img"] { padding: 1.25rem 1rem; }
+  .risorse-book [role="img"] + p, .risorse-book p.mt-6 { display: none; }
+  /* card dei caroselli: stessa altezza, stesso piano, nessun movimento sfalsato */
+  .m-carousel > *, .m-carousel > * > * { transform: none; translate: none; }
+  .m-carousel > * { height: auto; align-self: stretch; }
+}
