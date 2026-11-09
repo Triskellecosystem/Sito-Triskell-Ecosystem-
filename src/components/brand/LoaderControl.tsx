@@ -16,7 +16,8 @@ export function LoaderControl() {
       try {
         sessionStorage.setItem("tk-loaded", "1");
       } catch {}
-      window.setTimeout(() => el.remove(), 900);
+      // niente el.remove(): il nodo è gestito da React, toglierlo a mano rompe la navigazione tra le pagine. Lo nascondiamo e basta.
+      window.setTimeout(() => (el.style.display = "none"), 900);
     };
     const wait = () => window.setTimeout(done, Math.max(0, MIN_MS - performance.now()));
     let t = 0;
