@@ -2,6 +2,8 @@ import Image from "next/image";
 import { site } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { SocialIcon } from "@/components/ui/SocialIcon";
+import { CourseCover } from "@/components/ui/CourseCover";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { TechBackdrop } from "@/components/ui/TechBackdrop";
 import { CountUp } from "@/components/motion/CountUp";
@@ -40,15 +42,8 @@ export function AcademyCourses() {
               rel="noopener noreferrer"
               className="group/c relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-[linear-gradient(170deg,var(--color-surface-2),var(--color-night-raised))] transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-azure-300/70 hover:shadow-[0_0_44px_-12px_rgb(42_144_195/0.55)]"
             >
-              <div className="relative aspect-video overflow-hidden bg-night">
-                <Image
-                  src={it.cover}
-                  alt={`Copertina del corso: ${it.title}`}
-                  fill
-                  sizes="(min-width: 1024px) 26rem, (min-width: 640px) 45vw, 92vw"
-                  className="object-cover transition-transform duration-[900ms] ease-out-expo group-hover/c:scale-[1.05]"
-                />
-                <span className="absolute left-3 top-3 rounded-full bg-gold-300 px-2.5 py-0.5 text-[0.6875rem] font-bold uppercase tracking-wider text-night">{c.free}</span>
+              <div className="relative">
+                <CourseCover title={it.title} tag={it.tag} icon={it.icon} tone={it.tone} free={c.free} className="transition-transform duration-[900ms] ease-out-expo group-hover/c:scale-[1.03]" />
                 <span aria-hidden="true" className="absolute inset-0 grid place-items-center bg-night/30 opacity-0 transition-opacity duration-[var(--dur-base)] group-hover/c:opacity-100">
                   <span className="grid h-14 w-14 place-items-center rounded-full bg-gold-300 text-night shadow-glow-gold">
                     <Icon name="play" className="h-6 w-6" />
@@ -72,32 +67,36 @@ export function AcademyCourses() {
       {/* YouTube: le copertine dei nostri video */}
       <div className="mt-16 sm:mt-20">
         <SectionHeading id="yt-title" overline="YouTube" title={c.youtube.title} line={c.youtube.line} align="center" />
-        <RevealGroup className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08} alternate>
-          {c.youtube.videos.map((v) => (
+        <RevealGroup className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-3 lg:grid-cols-4" stagger={0.06} alternate>
+          {c.youtube.videos.slice(0, 8).map((v) => (
             <RevealItem key={v.id} y={26} className="h-full">
               <a
                 href={`https://www.youtube.com/watch?v=${v.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group/y block overflow-hidden rounded-card border border-line bg-surface transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-gold-300/70 hover:shadow-[0_0_40px_-12px_rgb(247_200_92/0.5)]"
+                className="group/y block overflow-hidden rounded-2xl border border-line bg-surface transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-gold-300/70 hover:shadow-[0_0_40px_-12px_rgb(247_200_92/0.5)]"
               >
                 <div className="relative aspect-video overflow-hidden bg-night">
-                  <Image src={`/youtube/${v.id}.jpg`} alt={`Video: ${v.title}`} fill sizes="(min-width: 1024px) 26rem, (min-width: 640px) 45vw, 92vw" className="object-cover transition-transform duration-[900ms] ease-out-expo group-hover/y:scale-[1.05]" />
+                  <Image src={`/youtube/${v.id}.jpg`} alt={`Video: ${v.title}`} fill sizes="(min-width: 1024px) 15rem, 46vw" className="object-cover transition-transform duration-[900ms] ease-out-expo group-hover/y:scale-[1.05]" />
                   <span aria-hidden="true" className="absolute inset-0 grid place-items-center bg-night/25 opacity-0 transition-opacity duration-[var(--dur-base)] group-hover/y:opacity-100">
-                    <span className="grid h-14 w-14 place-items-center rounded-full bg-gold-300 text-night shadow-glow-gold">
-                      <Icon name="play" className="h-6 w-6" />
+                    <span className="grid h-10 w-10 place-items-center rounded-full bg-gold-300 text-night shadow-glow-gold">
+                      <Icon name="play" className="h-4 w-4" />
                     </span>
                   </span>
                 </div>
-                <p className="p-4 font-display text-[1rem] font-semibold leading-snug tracking-tight text-fg">{v.title}</p>
+                <p className="p-3 font-display text-[0.8125rem] font-semibold leading-snug tracking-tight text-fg">{v.title}</p>
               </a>
             </RevealItem>
           ))}
         </RevealGroup>
-        <Reveal y={14} blur={0} className="mt-8 flex justify-center">
-          <Button href={c.youtube.channel.href} target="_blank" rel="noopener noreferrer" size="md" variant="secondary" icon="arrow-up-right">
+        <Reveal y={14} blur={0} className="mt-9 flex justify-center">
+          <a href={c.youtube.channel.href} target="_blank" rel="noopener noreferrer" className="yt-sub group/s inline-flex items-center gap-3 rounded-full border-2 bg-night/70 py-3 pl-3 pr-8 font-display text-[1.25rem] font-bold text-fg backdrop-blur-sm sm:text-[1.5rem]">
+            <span className="grid h-12 w-12 place-items-center rounded-full bg-[#e5252a] text-white shadow-[0_0_24px_rgb(229_37_42/0.6)] sm:h-14 sm:w-14">
+              <SocialIcon id="youtube" className="h-6 w-6 sm:h-7 sm:w-7" />
+            </span>
             {c.youtube.channel.label}
-          </Button>
+            <Icon name="arrow-up-right" className="h-5 w-5 text-gold-300 transition-transform duration-[var(--dur-base)] group-hover/s:-translate-y-0.5 group-hover/s:translate-x-0.5" />
+          </a>
         </Reveal>
       </div>
 
@@ -105,7 +104,7 @@ export function AcademyCourses() {
       <Reveal y={26} blur={0} className="mt-16 sm:mt-20">
         <div className="relative overflow-hidden rounded-card border border-gold-400/40 bg-[linear-gradient(160deg,var(--color-cobalt-600),var(--color-night-raised))] p-6 sm:p-8">
           <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 opacity-30 [mask-image:linear-gradient(to_right,#000,transparent_80%)]" />
-          <div className="relative grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:items-center">
+          <div className="relative grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center">
             <div>
               <h3 className="font-display text-[clamp(1.5rem,1.2rem+1.2vw,2.125rem)] font-bold tracking-[-0.03em] text-fg">{c.includes.title}</h3>
               <ul className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -123,7 +122,7 @@ export function AcademyCourses() {
               </ul>
             </div>
             <div className="flex flex-col items-start gap-5 lg:items-center lg:text-center">
-              <blockquote className="border-l-2 border-gold-300/60 pl-4 text-[0.9375rem] italic leading-snug text-fg-2 lg:border-l-0 lg:pl-0">
+              <blockquote className="max-w-sm border-l-2 border-gold-300/60 pl-4 text-[1rem] italic leading-snug text-fg-2 [text-wrap:balance] lg:border-l-0 lg:pl-0">
                 “{c.quote}”
                 <footer className="mt-1.5 text-[0.75rem] not-italic text-fg-3">{c.quoteBy}</footer>
               </blockquote>

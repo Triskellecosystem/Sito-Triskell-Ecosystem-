@@ -24,7 +24,7 @@ export default function AcademyPage() {
         <Button href={cta.href} size="lg" icon="calendar" iconPosition="start" pulse>
           {cta.button}
         </Button>
-        <Button href="#corsi" variant="secondary" size="lg" icon="arrow-right">
+        <Button href={p.courses.cta.href} target="_blank" rel="noopener noreferrer" variant="secondary" size="lg" icon="arrow-up-right">
           Guarda i corsi
         </Button>
       </PageHero>

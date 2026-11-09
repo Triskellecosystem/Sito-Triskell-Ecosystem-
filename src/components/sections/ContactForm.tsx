@@ -220,7 +220,12 @@ export function ContactForm() {
           >
             <Icon name="check" className={cn("h-3.5 w-3.5 transition-opacity", values.consent ? "opacity-100" : "opacity-0")} strokeWidth={3} />
           </span>
-          <span>{form.consent}</span>
+          <span>
+            {form.consent}{" "}
+            <a href="/privacy" target="_blank" rel="noopener" className="text-gold-300 underline underline-offset-4" onClick={(e) => e.stopPropagation()}>
+              (leggi l&apos;informativa)
+            </a>
+          </span>
         </label>
         <p id="cf-consent-error" role={errors.consent ? "alert" : undefined} className={cn("overflow-hidden text-small text-gold-200 transition-[max-height,opacity,margin] duration-[var(--dur-base)]", errors.consent ? "mt-2 max-h-8 opacity-100" : "max-h-0 opacity-0")}>
           {msg("consent")}

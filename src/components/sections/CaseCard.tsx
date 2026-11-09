@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { site, type CaseStudy } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { BeamCard } from "@/components/ui/BeamCard";
@@ -7,9 +11,13 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { CountUp } from "@/components/motion/CountUp";
 
+const CaseModal = dynamic(() => import("./CaseModal").then((m) => m.CaseModal), { ssr: false });
+
 /** Case study: copertina con icona e tag, due numeri grandi, una riga di sintesi. */
-export function CaseCard({ item, href, priority = false }: { item: CaseStudy; href?: string; priority?: boolean }) {
+export function CaseCard({ item, priority = false }: { item: CaseStudy; href?: string; priority?: boolean }) {
+  const [open, setOpen] = useState(false);
   return (
+    <>
     <article id={item.id} className="group/case relative flex h-full scroll-mt-28 flex-col overflow-hidden rounded-card border border-line bg-[linear-gradient(170deg,var(--color-surface-2),var(--color-night-raised))] transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-gold-300/60 hover:shadow-[0_0_40px_-12px_rgb(247_200_92/0.45)]">
       <div className="relative h-44 overflow-hidden bg-night">
         <Image
@@ -44,14 +52,14 @@ export function CaseCard({ item, href, priority = false }: { item: CaseStudy; hr
 
         <p className="mt-4 flex-1 text-[0.9375rem] leading-snug text-fg-2">{item.text}</p>
 
-        {href && (
-          <Link href={href} className="mt-5 inline-flex items-center gap-2 text-small font-semibold text-fg transition-colors hover:text-gold-200">
-            {site.portfolio.open}
-            <Icon name="arrow-right" className="h-4 w-4" />
-          </Link>
-        )}
+        <button type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" className="case-open mt-5 inline-flex w-fit items-center gap-2 text-small font-semibold text-gold-300 transition-colors hover:text-gold-100">
+          {site.portfolio.open}
+          <Icon name="arrow-right" className="h-4 w-4" />
+        </button>
       </div>
     </article>
+    {open && <CaseModal item={item} onClose={() => setOpen(false)} />}
+    </>
   );
 }
 

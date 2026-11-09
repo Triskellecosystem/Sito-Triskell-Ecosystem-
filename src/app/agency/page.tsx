@@ -21,7 +21,7 @@ export default function AgencyPage() {
   const { agencyPage: p, paths, cta } = site;
   return (
     <>
-      <PageHero overline={p.overline} title={p.title} line={p.line} crumbs={[{ label: "Agency" }]} aside={<SocialMock />} alignTop>
+      <PageHero overline={p.overline} title={p.title} line={p.line} crumbs={[{ label: "Agency" }]} aside={<SocialMock />} alignTop pulseGold>
         <Button href={cta.href} size="lg" icon="calendar" iconPosition="start" pulse>
           Prenota una call gratuita
         </Button>

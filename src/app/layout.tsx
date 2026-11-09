@@ -7,6 +7,7 @@ import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { RevealRoot } from "@/components/motion/RevealRoot";
 import { Header } from "@/components/sections/Header";
 import { Footer } from "@/components/sections/Footer";
+import { Assistant } from "@/components/assistant/Assistant";
 import "./globals.css";
 
 const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap", weight: ["500", "600", "700", "800"] });
@@ -71,6 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <main id="main" className="overflow-x-clip">{children}</main>
           <Footer />
+          <Assistant />
         </Providers>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
       </body>

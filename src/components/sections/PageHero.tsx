@@ -19,13 +19,15 @@ interface PageHeroProps {
   asideClassName?: string;
   /** Con un visual alto (es. il telefono) il titolo resta in alto invece di scendere al centro. */
   alignTop?: boolean;
+  /** La parte in [oro] del titolo si ingrandisce e si illumina piano, in loop. */
+  pulseGold?: boolean;
 }
 
 /**
  * Intestazione delle pagine interne: breadcrumb, overline, titolo (parti in [oro]) e una riga.
  * Il titolo usa solo un'animazione a fuoco (blur + traslazione, mai opacità) per restare candidato LCP.
  */
-export function PageHero({ overline, title, line, crumbs = [], children, aside, asideClassName, alignTop }: PageHeroProps) {
+export function PageHero({ overline, title, line, crumbs = [], children, aside, asideClassName, alignTop, pulseGold }: PageHeroProps) {
   return (
     <section className="relative isolate overflow-hidden pb-[clamp(2.5rem,5vw,4.5rem)] pt-[calc(var(--header-h)+clamp(2rem,5vh,4rem))]">
       <div aria-hidden="true" className="bg-grid absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,#000,transparent_90%)]" />
@@ -62,9 +64,9 @@ export function PageHero({ overline, title, line, crumbs = [], children, aside, 
           {overline}
         </p>
         <h1 className="max-w-3xl animate-[line-up_1s_var(--ease-out-expo)_backwards] text-[clamp(2.25rem,1.3rem+3.6vw,4.25rem)] leading-[1.04] tracking-[-0.035em] text-fg">
-          <GoldText text={title} />
+          <GoldText text={title} pulse={pulseGold} />
         </h1>
-        <p className="mt-6 max-w-xl animate-[fade-in_0.9s_0.3s_var(--ease-soft)_both] text-lead text-fg-2">{line}</p>
+        <p className="mt-6 max-w-xl animate-[fade-in_0.9s_0.3s_var(--ease-soft)_both] whitespace-pre-line text-lead text-fg-2 [text-wrap:balance]">{line}</p>
         {children && <div className="mt-8 flex animate-[fade-in_0.9s_0.4s_var(--ease-soft)_both] flex-wrap items-center gap-4">{children}</div>}
         </div>
         {aside && <div className={`relative lg:col-span-5 ${asideClassName ?? ""}`}>{aside}</div>}

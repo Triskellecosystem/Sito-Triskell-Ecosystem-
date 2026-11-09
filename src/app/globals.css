@@ -623,7 +623,7 @@ html.menu-open { overflow: hidden; }
 .lp-pad { position: absolute; left: 50%; bottom: 7%; width: 24%; height: 24%; translate: -50% 0; border-radius: 1cqw; background: #14263a; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14); }
 
 /* --- lo schermo: una galleria con tutti i siti; il cursore ne apre uno e lo fa scorrere --- */
-.lp-view { --base: 2.4s; position: absolute; inset: 0; container-type: inline-size; overflow: hidden; background: var(--color-night-deep); }
+.lp-view { --base: 1.4s; position: absolute; inset: 0; container-type: inline-size; overflow: hidden; background: var(--color-night-deep); }
 .lp-bar { position: absolute; left: 0; right: 0; top: 0; height: 4.6cqw; z-index: 6; display: flex; align-items: center; gap: 0.9cqw; padding: 0 1.6cqw; background: #0b1624; border-bottom: 1px solid rgb(255 255 255 / 0.1); }
 .lp-bar i { width: 1.1cqw; height: 1.1cqw; border-radius: 50%; background: rgb(255 255 255 / 0.25); }
 .lp-bar i:first-child { background: var(--color-gold-300); }
@@ -652,15 +652,15 @@ html.menu-open { overflow: hidden; }
 @keyframes lp-url-a { 0%, 43.5% { opacity: 1; } 44.5%, 87% { opacity: 0; } 88%, 100% { opacity: 1; } }
 @keyframes lp-url-b { 0%, 43.5% { opacity: 0; } 44.5%, 87% { opacity: 1; } 88%, 100% { opacity: 0; } }
 @keyframes lp-pop { 0% { opacity: 0; transform: translate3d(0, 3cqw, 0) scale(0.96); } 1.8%, 100% { opacity: 1; transform: none; } }
-.lp[data-revealed] .lp-gal { animation: lp-gal 26s ease-in-out infinite; animation-delay: var(--base); }
-.lp[data-revealed] .lp-open { animation: lp-open 26s ease-in-out infinite; animation-delay: var(--base); }
-.lp[data-revealed] .lp-tall { animation: lp-tall 26s ease-in-out infinite; animation-delay: var(--base); }
-.lp[data-revealed] .lp-hot { animation: lp-hot 26s ease-in-out infinite; animation-delay: var(--base); }
-.lp[data-revealed] .lp-url-a { animation: lp-url-a 26s linear infinite; animation-delay: var(--base); }
-.lp[data-revealed] .lp-url-b { animation: lp-url-b 26s linear infinite; animation-delay: var(--base); }
-.lp[data-revealed] .lp-pop { animation: lp-pop 26s linear infinite backwards; animation-delay: calc(var(--base) + var(--d) * 1s); }
-.lp[data-revealed] .lp-cursor { animation: lp-cursor 26s ease-in-out infinite; animation-delay: var(--base); }
-.lp[data-revealed] .lp-click { animation: lp-clickfx 26s linear infinite; animation-delay: var(--base); }
+.lp[data-revealed] .lp-gal { animation: lp-gal 16s ease-in-out infinite; animation-delay: var(--base); }
+.lp[data-revealed] .lp-open { animation: lp-open 16s ease-in-out infinite; animation-delay: var(--base); }
+.lp[data-revealed] .lp-tall { animation: lp-tall 16s ease-in-out infinite; animation-delay: var(--base); }
+.lp[data-revealed] .lp-hot { animation: lp-hot 16s ease-in-out infinite; animation-delay: var(--base); }
+.lp[data-revealed] .lp-url-a { animation: lp-url-a 16s linear infinite; animation-delay: var(--base); }
+.lp[data-revealed] .lp-url-b { animation: lp-url-b 16s linear infinite; animation-delay: var(--base); }
+.lp[data-revealed] .lp-pop { animation: lp-pop 16s linear infinite backwards; animation-delay: calc(var(--base) + var(--d) * 1s); }
+.lp[data-revealed] .lp-cursor { animation: lp-cursor 16s ease-in-out infinite; animation-delay: var(--base); }
+.lp[data-revealed] .lp-click { animation: lp-clickfx 16s linear infinite; animation-delay: var(--base); }
 @keyframes lp-cursor {
   0% { translate: 86cqw 52cqw; }
   5% { translate: 30cqw 38cqw; }
@@ -848,3 +848,39 @@ li:hover > .slide-x .svc-card { animation-play-state: paused; }
 @keyframes divider-pulse { from { transform: translateX(-100%); } to { transform: translateX(400%); } }
 .divider-pulse { animation: divider-pulse 5.5s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .divider-pulse { animation: none; opacity: 0; } }
+
+/* "più clienti": si ingrandisce e si illumina molto lentamente, senza esagerare */
+@keyframes gold-breathe { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.045); filter: brightness(1.18) drop-shadow(0 0 0.28em rgb(255 200 70 / 0.5)); } }
+.gold-breathe { display: inline-block; transform-origin: 40% 60%; animation: gold-breathe 4.8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .gold-breathe { animation: none; } }
+
+/* Lettore video: l'iframe è più alto del riquadro, così titolo e barre del lettore restano fuori vista */
+.vp-crop { position: absolute; left: 0; width: 100%; top: -17%; height: 134%; border: 0; pointer-events: none; }
+
+/* "Iscriviti al canale": bordo che lampeggia piano */
+@keyframes yt-sub { 0%, 100% { border-color: rgb(229 37 42 / 0.55); box-shadow: 0 0 0 0 rgb(229 37 42 / 0); } 50% { border-color: rgb(255 120 110 / 1); box-shadow: 0 0 32px 2px rgb(229 37 42 / 0.45); } }
+.yt-sub { animation: yt-sub 2.2s ease-in-out infinite; transition: transform var(--dur-base) var(--ease-out-expo); }
+.yt-sub:hover { animation: none; border-color: #ff7a70; box-shadow: 0 0 40px 4px rgb(229 37 42 / 0.55); }
+@media (prefers-reduced-motion: reduce) { .yt-sub { animation: none; border-color: rgb(229 37 42 / 0.8); } }
+
+/* La scheda del caso è tutta cliccabile (il pulsante si estende sull'intera card) */
+.case-open::after { content: ""; position: absolute; inset: 0; z-index: 3; cursor: pointer; }
+
+.case-dialog::backdrop { background: rgb(1 8 16 / 0.82); backdrop-filter: blur(6px); }
+.case-dialog[open] { animation: case-in 0.35s var(--ease-out-expo); }
+@keyframes case-in { from { opacity: 0; transform: translate3d(0, 24px, 0) scale(0.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .case-dialog[open] { animation: none; } }
+
+/* Triskiello (assistente): fluttua, sbatte le palpebre, l'antenna pulsa */
+@keyframes triski-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -5px; } }
+@keyframes triski-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+@keyframes triski-bulb { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+@keyframes triski-talk { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.7); } }
+.triski { animation: triski-float 4.5s ease-in-out infinite; overflow: visible; }
+.triski-eyes { transform-box: fill-box; transform-origin: 50% 50%; animation: triski-blink 5s infinite; }
+.triski-bulb { animation: triski-bulb 1.8s ease-in-out infinite; }
+.triski--talk .triski-mouth { transform-box: fill-box; transform-origin: 50% 0; animation: triski-talk 0.35s ease-in-out infinite; }
+@keyframes triski-bubble { from { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.92); } to { opacity: 1; transform: none; } }
+.triski-bubble { animation: triski-bubble 0.5s var(--ease-out-expo) both; }
+@keyframes triski-dot { 0%, 80%, 100% { opacity: 0.25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) { .triski, .triski-eyes, .triski-bulb, .triski--talk .triski-mouth, .triski-bubble { animation: none; } }

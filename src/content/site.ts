@@ -180,7 +180,9 @@ export const site = {
     description:
       "Triskell Ecosystem aiuta le aziende a crescere con marketing, intelligenza artificiale, video AI e automazioni. Agency e Academy.",
     url: "https://triskell-ecosystem.vercel.app", // TODO: dominio definitivo
-    email: "info@triskellecosystem.com", // TODO: dato reale
+    email: "triskel.ecosystem@gmail.com",
+    vat: "IT02759140995",
+    owner: "Tomaso Forno",
     phone: "+39 348 430 1500",
     whatsapp: "https://wa.me/393484301500",
     locale: "it_IT",
@@ -222,7 +224,7 @@ export const site = {
     primaryCta: { label: "Scopri Agency", href: "/agency" },
     secondaryCta: { label: "Scopri Academy", href: "/academy" },
     keyNumbers: [
-      { value: 20, suffix: "+", label: "Progetti per clienti" },
+      { value: 70, suffix: "+", label: "Progetti per clienti" },
       { value: 100, prefix: "+", suffix: "K", label: "Lead generati" },
       { value: 10, suffix: " anni", label: "Di esperienza" },
     ] satisfies Metric[],
@@ -242,11 +244,8 @@ export const site = {
   ecosystem: {
     overline: "L'ecosistema",
     title: "Cos'è [Triskell Ecosystem]?",
-    descriptionLines: [
-      "Triskell Ecosystem è un ecosistema che unisce marketing, intelligenza artificiale, automazioni e formazione, per far crescere le aziende in modo concreto.",
-      "Ti aiutiamo a trovare più clienti, a far lavorare meglio la tua azienda e a crescere, con strumenti, strategie e persone che lavorano al tuo fianco.",
-      "Puoi delegarci tutto, imparare a farlo da solo, oppure unire le due strade e scegliere, passo dopo passo, quello che serve davvero al tuo business.",
-    ], // TODO: conferma copy
+    description:
+      "Triskell Ecosystem unisce marketing, intelligenza artificiale, automazioni e formazione. Ti aiutiamo a trovare più clienti, a far lavorare meglio la tua azienda e a crescere: puoi delegarci tutto, imparare da solo, o unire le due strade.", // TODO: conferma copy
     sectorsLabel: "I nostri settori",
     sectors: [
       { label: "Marketing", icon: "megaphone" },
@@ -440,18 +439,18 @@ export const site = {
       ] satisfies Metric[],
       player: {
         label: "Lezione video · Tomaso spiega",
-        caption: "Video dal canale YouTube di Tomaso: le lezioni della piattaforma sono riservate agli iscritti.",
+        caption: "Video dal canale di Tomaso. Scorri le copertine per scegliere un altro video.",
       },
       free: "Gratuito",
       open: "Inizia il corso",
       items: [
-        { id: "advertising-ai", title: "Advertising Online nell'era dell'AI", text: "Come l'AI sta cambiando l'advertising: nuove opportunità, strumenti concreti e un metodo per restare un passo avanti." },
-        { id: "ai-toolkit", title: "AI Toolkit per la Produttività", text: "Gli strumenti di intelligenza artificiale che fanno la differenza nel lavoro di ogni giorno, con tutorial pronti da applicare." },
-        { id: "vibe-coding", title: "Vibe Coding e AI per Siti & App", text: "Dalle idee a siti e app reali con l'AI come copilota, anche senza saper programmare." },
-        { id: "claude-da-zero-a-pro", title: "Claude da Zero a Pro", text: "Il percorso completo su Claude: impostarlo da zero, il metodo per smettere di cercare il prompt perfetto, Cowork per il lavoro quotidiano." },
-        { id: "chatgpt-e-codex", title: "ChatGPT e Codex al lavoro", text: "Cosa è diventato ChatGPT oltre la chat: le app integrate e Codex, l'agente che lavora sul tuo computer." },
-        { id: "ai-news", title: "AI News della Settimana", text: "Le novità dell'intelligenza artificiale: cosa è uscito, perché conta e cosa cambia nella pratica." },
-      ].map((c) => ({ ...c, cover: `/academy/${c.id}.webp`, href: "https://triskellacademy.com/" })),
+        { id: "advertising-ai", title: "Advertising Online nell'era dell'AI", text: "Come l'AI sta cambiando l'advertising: nuove opportunità, strumenti concreti e un metodo per restare un passo avanti.", tag: "Advertising · AI", icon: "megaphone", tone: "gold" , href: "https://triskellacademy.com/" },
+        { id: "ai-toolkit", title: "AI Toolkit per la Produttività", text: "Gli strumenti di intelligenza artificiale che fanno la differenza nel lavoro di ogni giorno, con tutorial pronti da applicare.", tag: "Produttività · AI", icon: "zap", tone: "azure" , href: "https://triskellacademy.com/" },
+        { id: "vibe-coding", title: "Vibe Coding e AI per Siti & App", text: "Dalle idee a siti e app reali con l'AI come copilota, anche senza saper programmare.", tag: "No-code · AI", icon: "code", tone: "cobalt" , href: "https://triskellacademy.com/" },
+        { id: "claude-da-zero-a-pro", title: "Claude da Zero a Pro", text: "Il percorso completo su Claude: impostarlo da zero, il metodo per smettere di cercare il prompt perfetto, Cowork per il lavoro quotidiano.", tag: "AI · Produttività", icon: "sparkles", tone: "gold" , href: "https://triskellacademy.com/" },
+        { id: "chatgpt-e-codex", title: "ChatGPT e Codex al lavoro", text: "Cosa è diventato ChatGPT oltre la chat: le app integrate e Codex, l'agente che lavora sul tuo computer.", tag: "OpenAI · Codex", icon: "bot", tone: "azure" , href: "https://triskellacademy.com/" },
+        { id: "ai-news", title: "AI News della Settimana", text: "Le novità dell'intelligenza artificiale: cosa è uscito, perché conta e cosa cambia nella pratica.", tag: "News · AI", icon: "globe", tone: "cobalt" , href: "https://triskellacademy.com/" },
+      ] satisfies Array<{ id: string; title: string; text: string; tag: string; icon: IconName; tone: "gold" | "azure" | "cobalt"; href: string }>,
       includes: {
         title: "Cosa troverai nell'Academy",
         items: [
@@ -465,7 +464,7 @@ export const site = {
         title: "Dal nostro canale [YouTube]",
         line: "Tutorial e novità sull'AI, spiegati semplici. Ogni settimana un nuovo video.",
         watch: "Guarda su YouTube",
-        channel: { label: "Iscriviti al canale", href: "https://youtube.com/@triskellecosystem" },
+        channel: { label: "Iscriviti al canale", href: "https://youtube.com/@triskellecosystem?sub_confirmation=1" },
         videos: [
           { id: "xjLGnkFWolw", title: "Impara il 97% del Vibe Coding in 18 minuti" },
           { id: "1egPRg9ocqs", title: "Come creare siti web perfetti con Lovable" },
@@ -473,6 +472,12 @@ export const site = {
           { id: "MWjuzZ2y5s0", title: "Opus 5 è fenomenale: guarda cosa ho costruito" },
           { id: "70o10Yl4xK0", title: "Tutorial completo su Codex: cosa puoi farci" },
           { id: "GSCZiD1LJsI", title: "Claude monta i tuoi video da solo? Il test" },
+          { id: "2n4JylSuDdc", title: "ChatGPT 5.6: tutte le novità" },
+          { id: "OmEnBZjSZVs", title: "Codex lavora al posto tuo su Google Chrome" },
+          { id: "hh2tMP5_YeU", title: "ChatGPT Work cambia come usi ChatGPT" },
+          { id: "mNM39otkGOc", title: "Claude Code: i nuovi Workflows" },
+          { id: "trZ5xbc5CGw", title: "Claude Code /goal: imparalo in 15 minuti" },
+          { id: "ue7p4lB_1pc", title: "Come imparerei a usare Claude da zero nel 2026" },
         ],
       },
       cta: { label: "Entra nell'Academy", href: "https://triskellacademy.com/" },
@@ -483,7 +488,7 @@ export const site = {
   sitiWeb: {
     overline: "Agency · Siti web",
     title: "Ecco i siti web che [creiamo]",
-    line: "Veloci, curati e pensati per far contattare: clicca su un sito per visitarlo.",
+    line: "Veloci, curati e pensati per far contattare:\nclicca su un sito per visitarlo.",
     visit: "Apri il sito",
     visitDemo: "Vuoi un sito così?",
     featured: ["sfizi", "mani", "chiodo"],
@@ -509,7 +514,7 @@ export const site = {
       overline: "Il prossimo case study",
       title: "Il prossimo potrebbe essere il tuo.",
       stats: [
-        { value: 20, suffix: "+", label: "Progetti clienti" },
+        { value: 70, suffix: "+", label: "Progetti clienti" },
         { value: 100, prefix: "+", suffix: "K", label: "Lead generati" },
       ] satisfies Metric[],
       primary: { label: "Vedi tutti i progetti", href: "/agency/portfolio" },
@@ -639,7 +644,7 @@ export const site = {
               { title: "Formazione", text: "Academy: corsi pratici e video sul canale YouTube." },
             ],
           },
-          { id: "triskell", from: 0.69, to: 0.89, kicker: "In Triskell", title: "Strategia, clienti e metodo", text: "Segue la strategia dei clienti e coordina Agency e Academy.", stats: [{ value: "50+", label: "clienti seguiti" }, { value: "100K+", label: "lead generati" }] },
+          { id: "triskell", from: 0.69, to: 0.89, kicker: "In Triskell", title: "Strategia, clienti e metodo", text: "Segue la strategia dei clienti e coordina Agency e Academy.", stats: [{ value: "50+", label: "clienti seguiti" }, { value: "100K+", label: "lead generati" }, { value: "+5M€", label: "budget ADV gestito" }] },
           { id: "chiusura", from: 0.92, to: 9, kicker: "Il suo contributo", title: "«L'AI ti permette di donare al mondo ogni idea che prima avresti messo nel cassetto.»", text: "In Triskell Ecosystem porta visione, metodo e crescita.", quote: true },
         ],
       },
@@ -846,19 +851,27 @@ export const site = {
       {
         title: "Legale",
         links: [
-          { label: "Privacy Policy", href: "#" }, // TODO: pagina legale
-          { label: "Cookie Policy", href: "#" }, // TODO: pagina legale
-          { label: "Termini di servizio", href: "#" }, // TODO: pagina legale
+          { label: "Privacy Policy", href: "/privacy" },
+          { label: "Cookie Policy", href: "/cookie" },
         ],
       },
     ] satisfies Array<{ title: string; links: NavLink[] }>,
     socialTitle: "Seguici",
+    follow: {
+      overline: "Seguici",
+      title: "Resta con [noi]",
+      line: "Video, novità sull'AI e idee per far crescere il tuo business. Scegli dove seguirci.",
+      youtube: { title: "Il nostro canale YouTube", text: "Tutorial e novità sull'AI, spiegati semplici.", cta: "Iscriviti al canale" },
+      instagram: { title: "Instagram", text: "Idee, risultati e dietro le quinte.", cta: "Seguici su Instagram" },
+      whatsapp: { title: "WhatsApp", text: "Scrivici: ti rispondiamo noi.", cta: "Scrivici ora" },
+      email: { title: "Email", cta: "Scrivici una mail" },
+    },
     social: [
       { id: "instagram", label: "Instagram", href: "https://www.instagram.com/triskell_ecosystem" },
       { id: "youtube", label: "YouTube", href: "https://youtube.com/@triskellecosystem" },
       { id: "whatsapp", label: "WhatsApp", href: "https://wa.me/393484301500" },
     ] satisfies Social[],
-    legal: "P.IVA 00000000000", // TODO: dato reale (P.IVA / ragione sociale)
+    legal: "Triskell Ecosystem è il nome commerciale del progetto di Tomaso Forno · P.IVA IT02759140995", // TODO: ragione sociale, sede e dati REA, se applicabili
     rights: "Tutti i diritti riservati.",
   },
 

@@ -56,7 +56,12 @@ export function Footer() {
           <p>
             © {year} {site.brand.name}. {footer.rights}
           </p>
-          <p>{footer.legal}</p>
+          <p className="sm:text-right">
+            {footer.legal} ·{" "}
+            <a className="underline-offset-4 hover:text-gold-300 hover:underline" href={`mailto:${site.brand.email}`}>
+              {site.brand.email}
+            </a>
+          </p>
         </div>
       </div>
     </footer>
