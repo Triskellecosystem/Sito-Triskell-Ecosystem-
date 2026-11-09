@@ -20,7 +20,7 @@ npm run todos      # elenco dei segnaposto da sostituire (--strict per fallire s
 | Portfolio | `/agency/portfolio` | Progetti e risultati |
 | Academy | `/academy` | Anteprima del corso, percorso a zig-zag, tutorial video |
 | Chi siamo | `/chi-siamo` | Tomaso e William, con percorso professionale ad espansione |
-| Libretto Vibe Coding | `/vibe-coding` | Il libro in 6 idee, percorso a passi, domande veloci (nel menu "Altro") |
+| Risorse gratuite | `/risorse` | Archivio con copertine illustrate, libro Vibe Coding in evidenza e sezione `#vibe-coding` (nel menu "Altro"); `/vibe-coding` rimanda qui |
 | Contatti | `/contatti` | Form "Prenota ora" + FAQ |
 
 Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti; il pulsante è grande e lampeggiante. Testo e titolo si cambiano in `site.cta`.

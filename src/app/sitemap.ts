@@ -12,7 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/agency/portfolio", 0.7],
     ["/chi-siamo", 0.7],
     ["/contatti", 0.8],
-    ["/vibe-coding", 0.6],
     ["/blog", 0.7],
     ["/risorse", 0.6],
     ["/privacy", 0.2],

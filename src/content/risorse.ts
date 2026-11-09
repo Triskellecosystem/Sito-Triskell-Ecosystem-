@@ -3,6 +3,8 @@
  * Le guide visuali sono pagine interattive che restano sul sito originale: il pulsante le apre in una nuova scheda.
  * Il libretto sul Vibe Coding ha invece la sua pagina qui.
  */
+import type { CoverKind } from "@/components/ui/ResourceCover";
+
 export interface Risorsa {
   title: string;
   text: string;
@@ -12,9 +14,10 @@ export interface Risorsa {
   cta: string;
   href: string;
   external?: boolean;
-  /** Etichetta in alto nell'anteprima, come sull'originale. */
+  /** Famiglia (ChatGPT, Claude…) mostrata come etichetta sopra il titolo. */
   family: string;
-  topic: string;
+  /** Copertina illustrata (senza testo). */
+  cover: CoverKind;
 }
 
 const O = "https://www.triskellecosystem.com";
@@ -33,9 +36,9 @@ export const risorse = {
       date: "set 2026",
       tags: ["Vibe Coding", "Lovable", "PDF gratuito"],
       cta: "Scarica l'estratto",
-      href: "/vibe-coding",
+      href: "/risorse#vibe-coding",
       family: "Vibe Coding",
-      topic: "Libretto · PDF gratuito",
+      cover: "vibe",
     },
     {
       title: "I 5 codici di ChatGPT che ti crei tu",
@@ -47,7 +50,7 @@ export const risorse = {
       href: `${O}/risorse/5-codici-chatgpt`,
       external: true,
       family: "ChatGPT",
-      topic: "5 codici · Istruzioni",
+      cover: "codes",
     },
     {
       title: "GPT-5.6 e ChatGPT Work: la guida completa",
@@ -59,7 +62,7 @@ export const risorse = {
       href: `${O}/risorse/gpt-5-6-chatgpt-work`,
       external: true,
       family: "ChatGPT",
-      topic: "GPT-5.6 · ChatGPT Work",
+      cover: "gpt56",
     },
     {
       title: "GPT-5.5: la nuova era dell'AI agentica",
@@ -71,7 +74,7 @@ export const risorse = {
       href: `${O}/risorse/gpt-5-5-nuova-era-agentica`,
       external: true,
       family: "ChatGPT",
-      topic: "GPT-5.5 · Agentic AI",
+      cover: "gpt55",
     },
     {
       title: "Workflow Cowork — Video pt.1",
@@ -83,7 +86,7 @@ export const risorse = {
       href: `${O}/risorse/workflow-cowork-video`,
       external: true,
       family: "Claude",
-      topic: "Cowork · Workflow",
+      cover: "cowork",
     },
     {
       title: "Artefatti vs Progetti",
@@ -95,7 +98,7 @@ export const risorse = {
       href: `${O}/risorse/artifatti-vs-progetti`,
       external: true,
       family: "Claude",
-      topic: "Artifacts · Projects",
+      cover: "artifacts",
     },
     {
       title: "Da 1 a 1.000.000 — Video folla sulla spiaggia",
@@ -107,7 +110,7 @@ export const risorse = {
       href: `${O}/tutorial/folla-spiaggia`,
       external: true,
       family: "Google Veo",
-      topic: "Veo 3 · Tutorial",
+      cover: "crowd",
     },
     {
       title: "Flussi Dinamici di Claude Code",
@@ -119,7 +122,7 @@ export const risorse = {
       href: `${O}/flussi-dinamici-claude-code.html`,
       external: true,
       family: "Claude Code",
-      topic: "Dynamic Workflows",
+      cover: "flows",
     },
     {
       title: "Smetti di 'parlare' con l'AI. Inizia a programmarla.",
@@ -131,7 +134,7 @@ export const risorse = {
       href: `${O}/risorse/guida-skills-ai`,
       external: true,
       family: "Anthropic",
-      topic: "Skills · AI Systems",
+      cover: "skills",
     },
     {
       title: "Fable 5 & Mythos 5",
@@ -143,7 +146,7 @@ export const risorse = {
       href: `${O}/risorse/fable5_mythos5_triskell.html`,
       external: true,
       family: "Anthropic",
-      topic: "Fable 5 · Mythos 5",
+      cover: "fable",
     },
   ] satisfies Risorsa[],
 };

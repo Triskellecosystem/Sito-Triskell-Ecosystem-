@@ -279,7 +279,7 @@ export const site = {
 
   paths: {
     overline: "Cosa ottieni",
-    title: "Quello che vuoi davvero: [risultati]",
+    title: "QUELLO CHE VUOI DAVVERO: [RISULTATI]",
     agency: {
       name: "Agency",
       tagline: "Ti accompagniamo lungo tutto il funnel",
@@ -598,7 +598,7 @@ export const site = {
     }, // TODO: conferma copy
     intro: {
       overline: "Chi siamo",
-      title: "Il team principale",
+      title: "Il nostro team",
       hint: "Scorri: prima Tomaso, poi William",
       labels: [
         { name: "Tomaso Forno", role: "Founder · Marketing e AI", tone: "azure", side: "left" },
@@ -692,7 +692,7 @@ export const site = {
     ] satisfies Person[], // TODO: conferma testi e numeri (da foto/bio fornite)
   },
   vibeCoding: {
-    overline: "Altro · Risorsa gratuita · PDF di 10 pagine",
+    overline: "Libretto · Risorsa gratuita · PDF di 10 pagine",
     title: "Il libretto sul [Vibe Coding]",
     line: "Come si costruiscono siti e app descrivendo all'intelligenza artificiale cosa vuoi ottenere.",
     coverAlt: "Libro «Vibe Coding» in 3D",

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { Icon } from "@/components/ui/Icon";
+import { ResourceCover } from "@/components/ui/ResourceCover";
 import type { Risorsa } from "@/content/risorse";
 
 /** Filtro per tipo + card delle risorse. */
@@ -38,17 +39,16 @@ export function RisorseGrid({ items, filters }: { items: Risorsa[]; filters: rea
         {list.map((r) => {
           const inner = (
             <>
-              <div className="relative flex aspect-[16/9] flex-col justify-between overflow-hidden border-b border-line bg-[radial-gradient(120%_120%_at_0%_0%,rgb(212_169_59/0.18),transparent_55%),linear-gradient(135deg,#06182b,#0a2440)] p-5">
-                <span aria-hidden="true" className="bg-grid absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,#000,transparent_90%)]" />
-                <span className="relative w-fit rounded-full border border-gold-400/50 px-3 py-1 text-overline font-semibold uppercase text-gold-300 tracking-[var(--text-overline--letter-spacing)]">{r.family}</span>
-                <span className="relative">
-                  <span className="block text-overline font-semibold uppercase text-fg-3 tracking-[var(--text-overline--letter-spacing)]">Triskell Field Guide</span>
-                  <span className="mt-1 block font-display text-[1.125rem] font-semibold tracking-tight text-fg">{r.topic}</span>
-                </span>
+              <div className="relative aspect-[16/9] overflow-hidden border-b border-line">
+                <div className="h-full w-full transition-transform duration-700 ease-out-expo group-hover:scale-[1.05]">
+                  <ResourceCover kind={r.cover} />
+                </div>
               </div>
               <div className="flex flex-1 flex-col gap-3 p-6">
                 <p className="flex items-center justify-between text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)]">
-                  <span className="text-gold-400">{r.kind}</span>
+                  <span className="text-gold-400">
+                    {r.kind} <span className="text-fg-3">· {r.family}</span>
+                  </span>
                   <span className="text-fg-3">{r.date}</span>
                 </p>
                 <h3 className="text-[1.1875rem] font-bold leading-snug tracking-[-0.02em] text-fg group-hover:text-gold-200">{r.title}</h3>

@@ -607,28 +607,28 @@ html.menu-open { overflow: hidden; }
 .lp-lid { position: absolute; inset: 0; transform-origin: 50% 100%; transform-style: preserve-3d; transform: rotateX(-89deg); }
 .lp[data-revealed] .lp-lid { transform: rotateX(5deg); transition: transform 2.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s; }
 .lp-back, .lp-screen { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 1.8cqw 1.8cqw 0.6cqw 0.6cqw; }
-.lp-back { transform: rotateY(180deg); display: grid; place-items: center; background: linear-gradient(145deg, #9aa7b5, #6d7a89 45%, #4b5663); box-shadow: inset 0 0 0 0.3cqw rgb(255 255 255 / 0.18), inset 0 0 6cqw rgb(0 0 0 / 0.25); }
+.lp-back { transform: rotateY(180deg); display: grid; place-items: center; background: linear-gradient(145deg, #2d3743, #19212b 50%, #10161d); box-shadow: inset 0 0 0 0.3cqw rgb(255 255 255 / 0.1), inset 0 0 6cqw rgb(0 0 0 / 0.35); }
 /* cornice in alluminio + bordo nero spesso come un portatile vero */
-.lp-screen { background: #07090d; padding: 2.4cqw 2.4cqw 3.3cqw; box-shadow: 0 0 0 0.45cqw #b4bfcb, 0 0 0 0.7cqw #5e6a77, inset 0 0 0 0.25cqw #222a34, 0 3cqw 8cqw rgb(0 0 0 / 0.65); }
+.lp-screen { background: #07090d; padding: 2.4cqw 2.4cqw 3.3cqw; box-shadow: 0 0 0 0.45cqw #3a4553, 0 0 0 0.7cqw #151b23, inset 0 0 0 0.25cqw #222a34, 0 3cqw 8cqw rgb(0 0 0 / 0.65); }
 .lp-frame { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 0.5cqw; background: var(--color-night); box-shadow: 0 0 0 0.2cqw #000; }
 .lp-frame::after { content: ""; position: absolute; inset: 0; z-index: 10; pointer-events: none; background: linear-gradient(115deg, rgb(255 255 255 / 0.1) 0, transparent 30%, transparent 62%, rgb(255 255 255 / 0.05) 100%); }
 .lp-cam { position: absolute; left: 50%; top: 0.95cqw; width: 0.7cqw; height: 0.7cqw; translate: -50% 0; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #4a6a8a, #101a26 60%); box-shadow: 0 0 0 0.15cqw #000; }
 .lp-base {
   position: absolute; left: -3%; width: 106%; top: 100%; height: 47cqw; transform-origin: 50% 0; transform: rotateX(90deg);
-  border-radius: 0.5cqw 0.5cqw 3.4cqw 3.4cqw; background: linear-gradient(180deg, #7f8b99, #b6c1cd 9%, #a2adb9 50%, #8793a1);
-  box-shadow: inset 0 0 0 0.25cqw rgb(255 255 255 / 0.35), inset 0 -0.6cqw 1.2cqw rgb(0 0 0 / 0.25), 0 4cqw 7cqw rgb(0 0 0 / 0.6);
+  border-radius: 0.5cqw 0.5cqw 3.4cqw 3.4cqw; background: linear-gradient(180deg, #1c242d, #3a4552 9%, #2b343f 50%, #1d252e);
+  box-shadow: inset 0 0 0 0.25cqw rgb(255 255 255 / 0.14), inset 0 -0.6cqw 1.2cqw rgb(0 0 0 / 0.4), 0 4cqw 7cqw rgb(0 0 0 / 0.6);
 }
 /* cerniera */
-.lp-base::before { content: ""; position: absolute; left: 7%; right: 7%; top: 0; height: 1.3cqw; background: linear-gradient(180deg, #2a323c, #6b7683 45%, #232a33); border-radius: 0 0 0.8cqw 0.8cqw; }
+.lp-base::before { content: ""; position: absolute; left: 7%; right: 7%; top: 0; height: 1.3cqw; background: linear-gradient(180deg, #0c1117, #2e3742 45%, #0f141a); border-radius: 0 0 0.8cqw 0.8cqw; }
 /* incavo frontale per aprire il coperchio */
-.lp-base::after { content: ""; position: absolute; left: 50%; bottom: 0; width: 15%; height: 1.1cqw; translate: -50% 0; background: linear-gradient(180deg, #6f7b89, #8793a1); border-radius: 0 0 1.2cqw 1.2cqw; }
+.lp-base::after { content: ""; position: absolute; left: 50%; bottom: 0; width: 15%; height: 1.1cqw; translate: -50% 0; background: linear-gradient(180deg, #121920, #232c36); border-radius: 0 0 1.2cqw 1.2cqw; }
 .lp-keys {
   position: absolute; inset: 6% 7% 36%; border-radius: 0.8cqw; background:
-    repeating-linear-gradient(90deg, transparent 0 4.4cqw, #0a0e13 4.4cqw 4.9cqw),
-    repeating-linear-gradient(0deg, transparent 0 3.3cqw, #0a0e13 3.3cqw 3.8cqw), #232d38;
-  box-shadow: inset 0 0 0 0.45cqw #0a0e13, 0 0 0 0.25cqw rgb(0 0 0 / 0.35);
+    repeating-linear-gradient(90deg, transparent 0 4.4cqw, #06090d 4.4cqw 4.9cqw),
+    repeating-linear-gradient(0deg, transparent 0 3.3cqw, #06090d 3.3cqw 3.8cqw), #161d26;
+  box-shadow: inset 0 0 0 0.45cqw #06090d, 0 0 0 0.25cqw rgb(0 0 0 / 0.5);
 }
-.lp-pad { position: absolute; left: 50%; bottom: 8%; width: 30%; height: 22%; translate: -50% 0; border-radius: 1cqw; background: linear-gradient(180deg, #a9b4c0, #98a4b1); box-shadow: inset 0 0 0 0.2cqw rgb(0 0 0 / 0.28), inset 0 0.2cqw 0 rgb(255 255 255 / 0.45); }
+.lp-pad { position: absolute; left: 50%; bottom: 8%; width: 30%; height: 22%; translate: -50% 0; border-radius: 1cqw; background: linear-gradient(180deg, #2b3541, #222b35); box-shadow: inset 0 0 0 0.2cqw rgb(0 0 0 / 0.4), inset 0 0.2cqw 0 rgb(255 255 255 / 0.12); }
 
 /* --- lo schermo: una galleria con tutti i siti; il cursore ne apre uno e lo fa scorrere --- */
 .lp-view { --base: 1.4s; position: absolute; inset: 0; container-type: inline-size; overflow: hidden; background: var(--color-night-deep); }

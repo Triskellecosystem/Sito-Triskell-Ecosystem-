@@ -121,8 +121,8 @@ export function Ecosystem() {
       </Reveal>
 
       {/* ---- COSTELLAZIONE: i settori arrivano da sinistra e da destra, in ordine, verso il logo ---- */}
-      <div className="mt-12 sm:mt-16">
-        <p className="mb-8 text-center text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-3">{e.sectorsLabel}</p>
+      <div className="mt-1 sm:mt-2">
+        <p className="mb-14 text-center text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-3">{e.sectorsLabel}</p>
         <div className="mx-auto grid max-w-4xl items-center gap-y-8 lg:grid-cols-[1fr_auto_1fr] lg:gap-x-10">
           <ul className="order-2 flex flex-wrap justify-center gap-3 lg:order-1 lg:grid lg:grid-cols-1 lg:justify-items-end lg:gap-9">
             {m && <Sector {...m} align="left" k={0} />}

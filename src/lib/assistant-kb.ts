@@ -23,7 +23,7 @@ CHI SIAMO. Triskell Ecosystem unisce marketing, intelligenza artificiale, automa
 
 DUE STRADE. 1) Agency: ci pensiamo noi a far crescere la tua attività. Servizi: ${services}. 2) Academy (triskellacademy.com): imparare in prima persona o far imparare i dipendenti; corsi gratuiti su AI, marketing, vibe coding, Claude, ChatGPT e Codex. Si possono anche combinare.
 
-PAGINE DEL SITO (usa link in formato [testo](/percorso)): [Agency](/agency), [Academy](/academy), [Siti web](/agency/siti-web), [Portfolio e casi clienti](/agency/portfolio), [Chi siamo](/chi-siamo), [Risorse gratuite](/risorse), [Libretto Vibe Coding](/vibe-coding), [Blog](/blog), [Prenota una call](/contatti), [Privacy](/privacy), [Cookie](/cookie).
+PAGINE DEL SITO (usa link in formato [testo](/percorso)): [Agency](/agency), [Academy](/academy), [Siti web](/agency/siti-web), [Portfolio e casi clienti](/agency/portfolio), [Chi siamo](/chi-siamo), [Risorse gratuite](/risorse), [Libretto Vibe Coding](/risorse#vibe-coding), [Blog](/blog), [Prenota una call](/contatti), [Privacy](/privacy), [Cookie](/cookie).
 
 CONTATTI. Email ${mail}; WhatsApp ${phone}; Instagram @triskell_ecosystem; YouTube @triskellecosystem. La prima call è gratuita (30 minuti, senza impegno).
 
@@ -47,8 +47,8 @@ const RULES: Rule[] = [
   { re: /(prenot|call|consulenz|appuntament|parlare|chiamat)/i, answer: `Puoi prenotare una [call gratuita](/contatti): 30 minuti, senza impegno. Se preferisci, scrivici su WhatsApp al ${phone} o a ${mail}.` },
   { re: /(contatt|whatsapp|telefon|numero|email|mail|instagram|youtube|social|seguirv)/i, answer: `Ecco come trovarci: WhatsApp ${phone}, email ${mail}, Instagram @triskell_ecosystem, YouTube @triskellecosystem. Tutti i recapiti sono anche in fondo a [Chi siamo](/chi-siamo).` },
   { re: /(blog|articol|risors|guide gratuit)/i, answer: "Nel [Blog](/blog) trovi approfondimenti su AI, business e innovazione; nelle [Risorse gratuite](/risorse) tutorial, prompt, workflow e guide rapide dietro i nostri video." },
-  { re: /(vibe|libr|guida|pdf|ebook|app senza programmare|codice)/i, answer: "Il [Libretto Vibe Coding](/vibe-coding) è una guida in PDF di oltre 10 capitoli per costruire siti e app con l'AI senza saper programmare: puoi anche leggere un estratto gratuito." },
-  { re: /(tomaso|tommaso|founder|fondatore|team|chi siamo)/i, answer: "Il team principale è formato da Tomaso Forno (marketing, advertising e AI, da più di 10 anni nel settore) e William Argintieri (web design e sviluppo). Li conosci meglio in [Chi siamo](/chi-siamo)." },
+  { re: /(vibe|libr|guida|pdf|ebook|app senza programmare|codice)/i, answer: "Il [Libretto Vibe Coding](/risorse#vibe-coding) è una guida in PDF di oltre 10 capitoli per costruire siti e app con l'AI senza saper programmare: puoi anche leggere un estratto gratuito." },
+  { re: /(tomaso|tommaso|founder|fondatore|team|chi siamo)/i, answer: "Il nostro team è formato da Tomaso Forno (marketing, advertising e AI, da più di 10 anni nel settore) e William Argintieri (web design e sviluppo). Li conosci meglio in [Chi siamo](/chi-siamo)." },
   { re: /(privacy|dati personali|cookie|gdpr)/i, answer: "Trovi tutto nella [Privacy Policy](/privacy) e nella [Cookie Policy](/cookie). Se hai una richiesta sui tuoi dati scrivici a " + mail + "." },
   { re: /(grazie|perfetto|ottimo|ok\b)/i, answer: "Di niente! Se ti serve altro sono qui. Quando vuoi, puoi [prenotare una call gratuita](/contatti)." },
 ];

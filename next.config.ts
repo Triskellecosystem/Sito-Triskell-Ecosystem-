@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
   },
   // L'anteprima in cloud accede al dev server da un host diverso da localhost.
   allowedDevOrigins: ["*.claude.ai", "*.claude.com", "*.anthropic.com", "*.claudeusercontent.com"],
+  async redirects() {
+    // il libretto sul Vibe Coding vive dentro la pagina Risorse gratuite
+    return [{ source: "/vibe-coding", destination: "/risorse#vibe-coding", permanent: true }];
+  },
   experimental: { optimizePackageImports: ["lucide-react", "motion"] },
 };
 
