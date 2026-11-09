@@ -1025,3 +1025,38 @@ html[data-no-loader] .loader { display: none; }
   .ps-phase li p:last-child { display: none; }
   .ps-phase li { padding: 0.55rem 0.75rem !important; }
 }
+
+/* ==========================================================================
+   Telefono (< 768px): sfondo tech della home, card allineate, anelli dietro le persone, libro con alone dietro
+   ========================================================================== */
+@media (max-width: 767px) {
+  /* via il fascio a strisce e le lastre: restano la sfumatura azzurra e il pavimento a quadri, ora in movimento */
+  .hero-beam { display: none; }
+  .hero-horizon { opacity: 0.85; }
+  .hero-m { position: absolute; inset: 0; overflow: hidden; }
+  .hero-m-aurora { position: absolute; width: 22rem; height: 22rem; border-radius: 50%; filter: blur(40px); opacity: 0.55; }
+  .hero-m-aurora--a { left: -35%; top: 6%; background: radial-gradient(circle, rgb(42 144 195 / 0.45), transparent 65%); animation: hm-aurora 16s ease-in-out infinite alternate; }
+  .hero-m-aurora--b { right: -40%; top: 38%; background: radial-gradient(circle, rgb(247 200 92 / 0.22), transparent 65%); animation: hm-aurora 20s ease-in-out -7s infinite alternate-reverse; }
+  .hero-m-sq { position: absolute; border: 1px solid rgb(120 190 235 / 0.4); border-radius: 22%; background: linear-gradient(140deg, rgb(42 144 195 / 0.14), transparent 70%); animation: hm-float 9s ease-in-out infinite; }
+  .hero-m-sq:nth-child(3n + 1) { border-color: rgb(247 200 92 / 0.38); background: linear-gradient(140deg, rgb(247 200 92 / 0.1), transparent 70%); }
+  /* il pavimento a quadri scorre anche sul telefono */
+  .hero-floor-grid.hero-anim { animation: floor-scroll 6s linear infinite !important; }
+  /* le card dei caroselli sono sempre alla stessa altezza e sullo stesso piano */
+  .m-carousel > [data-reveal-item] { --reveal-y: 0px !important; }
+  .m-carousel { align-items: stretch; }
+  .m-carousel > * > * { height: 100%; }
+  /* più vita: le card oscillano piano */
+  .m-carousel > *:nth-child(odd) > *, .svc-list li:nth-child(odd) .svc-card { animation: m-bob 6s ease-in-out infinite; }
+  .m-carousel > *:nth-child(even) > *, .svc-list li:nth-child(even) .svc-card { animation: m-bob 7s ease-in-out -3s infinite; }
+  .impact-dot { animation: m-pulse 3.4s ease-in-out infinite; }
+  /* Chi siamo: gli anelli ovali passano DIETRO la persona (prima la attraversavano) */
+  .ps-ring--a { transform: translateZ(-300px) rotateX(74deg); }
+  .ps-ring--b { transform: translateZ(-400px) rotateX(74deg); }
+  /* libretto: l'alone azzurro sta dietro, non sopra le scritte */
+  .vibe-glow { opacity: 0.55; }
+}
+@keyframes hm-float { 0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.55; } 50% { transform: translate3d(10px, -22px, 0) rotate(24deg); opacity: 1; } }
+@keyframes hm-aurora { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(14vw, 8vh, 0) scale(1.18); } }
+@keyframes m-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
+@keyframes m-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgb(247 200 92 / 0); } 50% { box-shadow: 0 0 18px 1px rgb(247 200 92 / 0.45); } }
+@media (prefers-reduced-motion: reduce) { .hero-m-sq, .hero-m-aurora, .impact-dot, .m-carousel > * > *, .svc-card { animation: none !important; } }

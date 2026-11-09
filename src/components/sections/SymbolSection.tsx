@@ -123,7 +123,7 @@ export function SymbolSection() {
   };
 
   return (
-    <Section id={symbol.id} labelledBy="symbol-title" className="pb-0">
+    <Section id={symbol.id} labelledBy="symbol-title" className="pb-0 max-md:hidden">
       <TechBackdrop tone="mixed" rich />
       <SectionHeading id="symbol-title" overline={symbol.overline} title={symbol.title} line={symbol.line} align="center" />
 

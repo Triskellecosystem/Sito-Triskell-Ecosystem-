@@ -20,9 +20,9 @@ export function ContactLinks() {
   const tt = footer.social.find((s) => s.id === "tiktok")!;
   const wa = footer.social.find((s) => s.id === "whatsapp")!;
   const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
-  const card = "group/c relative flex h-full flex-col overflow-hidden rounded-2xl border p-4 transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo";
-  const head = "flex items-center gap-2.5";
-  const cta = "mt-3 inline-flex w-fit items-center gap-1.5 text-[0.8125rem] font-semibold";
+  const card = "group/c relative flex h-full flex-col overflow-hidden rounded-2xl border p-4 max-md:items-center max-md:p-3 max-md:text-center transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo";
+  const head = "flex items-center gap-2.5 max-md:flex-col max-md:gap-1.5";
+  const cta = "mt-3 inline-flex w-fit items-center gap-1.5 text-[0.8125rem] font-semibold max-md:mt-2 max-md:text-[0.75rem]";
 
   return (
     <Section id="seguici" labelledBy="seguici-title" className="pt-[clamp(2rem,4vw,3.5rem)]">
@@ -47,7 +47,7 @@ export function ContactLinks() {
         </div>
       </Reveal>
 
-      <RevealGroup className="m-carousel mx-auto mt-4 grid max-w-6xl gap-3 md:grid-cols-3" stagger={0.1} alternate>
+      <RevealGroup className="mx-auto mt-4 grid max-w-6xl gap-3 max-md:grid-cols-3 max-md:gap-2 md:grid-cols-3" stagger={0.1} alternate>
         {/* Instagram */}
         <RevealItem y={22}>
           <a href={ig.href} {...ext} className={`${card} border-white/15 bg-[linear-gradient(150deg,#3b1a5f,#6a1b5e_50%,#8f2b5b)] hover:shadow-[0_0_36px_-12px_rgb(214_62_130/0.7)]`}>
@@ -56,11 +56,11 @@ export function ContactLinks() {
                 <SocialIcon id="instagram" className="h-[1.125rem] w-[1.125rem]" />
               </span>
               <div className="leading-tight">
-                <p className="font-display text-[1rem] font-bold text-white">{f.instagram.title}</p>
-                <p className="text-[0.75rem] text-white/80">{f.instagram.handle}</p>
+                <p className="font-display text-[1rem] font-bold text-white max-md:text-[0.875rem]">{f.instagram.title}</p>
+                <p className="text-[0.75rem] text-white/80 max-md:hidden">{f.instagram.handle}</p>
               </div>
             </div>
-            <div className="relative mt-4 flex h-72 max-md:h-44 items-center justify-center overflow-hidden" aria-hidden="true">
+            <div className="relative mt-4 flex h-72 max-md:hidden items-center justify-center overflow-hidden" aria-hidden="true">
               <div className="relative w-[62%] -rotate-3 overflow-hidden rounded-xl border border-white/20 bg-white shadow-[0_12px_28px_-10px_rgb(0_0_0/0.7)]">
                 <Image src="/social/instagram-profile.webp" alt="" width={520} height={500} sizes="14rem" className="h-auto w-full" />
               </div>
@@ -68,10 +68,11 @@ export function ContactLinks() {
                 <LoopVideo className="block aspect-[400/766] w-full object-cover" src="/social/instagram-feed.mp4" poster="/social/instagram-profile.webp" />
               </div>
             </div>
-            <p className="mt-3 text-[0.8125rem] text-white/85">
+            <p className="mt-3 text-[0.8125rem] text-white/85 max-md:hidden">
               <strong className="font-display text-[0.9375rem] text-white">{f.instagram.stats[0]?.v}</strong> {f.instagram.stats[0]?.l} · {f.instagram.stats[1]?.v} {f.instagram.stats[1]?.l}
             </p>
-            <span className={`${cta} text-white`}>
+            <p className="mt-2 font-display text-[1.375rem] font-bold leading-none text-white md:hidden">15,6K<span className="mt-1 block text-[0.6875rem] font-medium text-white/80">follower</span></p>
+            <span className={`${cta} text-white max-md:hidden`}>
               {f.instagram.cta}
               <Icon name="arrow-up-right" className="h-3.5 w-3.5" />
             </span>
@@ -86,21 +87,22 @@ export function ContactLinks() {
                 <SocialIcon id="tiktok" className="h-[1.125rem] w-[1.125rem]" />
               </span>
               <div className="leading-tight">
-                <p className="font-display text-[1rem] font-bold text-fg">{f.tiktok.title}</p>
-                <p className="text-[0.75rem] text-fg-2">{f.tiktok.handle}</p>
+                <p className="font-display text-[1rem] font-bold text-fg max-md:text-[0.875rem]">{f.tiktok.title}</p>
+                <p className="text-[0.75rem] text-fg-2 max-md:hidden">{f.tiktok.handle}</p>
               </div>
             </div>
-            <div className="relative mt-4 h-72 max-md:h-44 overflow-hidden rounded-xl border border-white/10 bg-white">
+            <div className="relative mt-4 h-72 max-md:hidden overflow-hidden rounded-xl border border-white/10 bg-white">
               <Image src="/social/tiktok-profile.webp" alt="Profilo TikTok di Triskell Ecosystem: 2460 follower e 9916 mi piace" width={520} height={500} sizes="(min-width: 768px) 24rem, 90vw" className="h-auto w-full" />
             </div>
-            <p className="mt-3 text-[0.8125rem] text-fg-2">
+            <p className="mt-3 text-[0.8125rem] text-fg-2 max-md:hidden">
               <strong className="font-display text-[0.9375rem] text-fg">{f.tiktok.stats[0]?.v}</strong> {f.tiktok.stats[0]?.l} · <strong className="font-display text-fg">{f.tiktok.stats[1]?.v}</strong> {f.tiktok.stats[1]?.l}
             </p>
-            <p className="mt-0.5 inline-flex items-center gap-1.5 text-[0.75rem] text-fg-3">
+            <p className="mt-0.5 inline-flex items-center gap-1.5 text-[0.75rem] text-fg-3 max-md:hidden">
               <Icon name="play" className="h-3 w-3 text-[#fe2c55]" fill="currentColor" />
               {f.tiktok.top}
             </p>
-            <span className={`${cta} text-[#ff6b87]`}>
+            <p className="mt-2 font-display text-[1.375rem] font-bold leading-none text-fg md:hidden">2.460<span className="mt-1 block text-[0.6875rem] font-medium text-fg-2">follower</span></p>
+            <span className={`${cta} text-[#ff6b87] max-md:hidden`}>
               {f.tiktok.cta}
               <Icon name="arrow-up-right" className="h-3.5 w-3.5" />
             </span>
@@ -115,15 +117,16 @@ export function ContactLinks() {
                 <SocialIcon id="youtube" className="h-[1.125rem] w-[1.125rem]" />
               </span>
               <div className="leading-tight">
-                <p className="font-display text-[1rem] font-bold text-fg">YouTube</p>
-                <p className="text-[0.75rem] text-fg-2">{f.youtube.subs}</p>
+                <p className="font-display text-[1rem] font-bold text-fg max-md:text-[0.875rem]">YouTube</p>
+                <p className="text-[0.75rem] text-fg-2 max-md:hidden">{f.youtube.subs}</p>
               </div>
             </div>
-            <div className="relative mt-4 h-72 max-md:h-44 overflow-hidden rounded-xl border border-white/15 bg-white">
+            <div className="relative mt-4 h-72 max-md:hidden overflow-hidden rounded-xl border border-white/15 bg-white">
               <Image src="/social/youtube-channel.webp" alt="Anteprima del canale YouTube Triskell Ecosystem: 1K iscritti e 212 video" fill sizes="(min-width: 768px) 24rem, 90vw" className="object-cover object-left-top transition-transform duration-[900ms] ease-out-expo group-hover/c:scale-[1.04]" />
             </div>
-            <p className="mt-3 text-[0.8125rem] text-fg-2">{f.youtube.text}</p>
-            <span className={`${cta} text-gold-200`}>
+            <p className="mt-3 text-[0.8125rem] text-fg-2 max-md:hidden">{f.youtube.text}</p>
+            <p className="mt-2 font-display text-[1.375rem] font-bold leading-none text-fg md:hidden">1K<span className="mt-1 block text-[0.6875rem] font-medium text-fg-2">iscritti</span></p>
+            <span className={`${cta} text-gold-200 max-md:hidden`}>
               {f.youtube.cta}
               <Icon name="arrow-up-right" className="h-3.5 w-3.5" />
             </span>

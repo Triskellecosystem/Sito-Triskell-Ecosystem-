@@ -16,7 +16,7 @@ export function VibeGuide() {
     <Section id="guida" labelledBy="guida-title">
       <TechBackdrop tone="azure" cursor />
       <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
-        <Reveal from="far-left" blur={0} className="lg:col-span-5">
+        <Reveal from="far-left" blur={0} className="max-md:relative max-md:z-0 lg:col-span-5">
           <div className="relative mx-auto w-fit">
             <Book3D cover="/brand/vibe-cover.webp" alt={site.vibeCoding.coverAlt} title="Vibe Coding" hint={site.vibeCoding.dragHint} />
             <span className="pointer-events-none absolute right-2 top-2 z-10 grid h-[4.5rem] w-[4.5rem] rotate-6 place-items-center rounded-full bg-[image:var(--gradient-gold-btn)] font-display text-[1.375rem] font-bold text-night shadow-glow-gold">
@@ -26,7 +26,7 @@ export function VibeGuide() {
           </div>
         </Reveal>
 
-        <div className="lg:col-span-7">
+        <div className="max-md:relative max-md:z-10 lg:col-span-7">
           <SectionHeading id="guida-title" overline={g.overline} title={g.title} line={g.text} />
           <Reveal delay={0.2} y={20} blur={0}>
             <ul className="mt-7 space-y-3.5">

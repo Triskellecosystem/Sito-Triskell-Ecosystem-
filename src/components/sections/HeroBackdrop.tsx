@@ -72,6 +72,17 @@ export function HeroBackdrop() {
         <div className="hero-anim hero-sheet-inner" />
       </div>
 
+      {/* solo telefono: riquadri tech che fluttuano e aurora che si sposta (al posto del fascio a strisce) */}
+      <div className="hero-m md:hidden">
+        <span className="hero-m-aurora hero-m-aurora--a" />
+        <span className="hero-m-aurora hero-m-aurora--b" />
+        {[
+          [8, 12, 34, 0], [78, 8, 22, 1], [88, 34, 40, 2], [16, 38, 18, 3], [62, 46, 28, 4], [4, 62, 30, 5], [48, 70, 20, 6], [84, 74, 34, 7], [30, 86, 24, 8], [68, 90, 18, 9],
+        ].map(([x, y, s, i]) => (
+          <span key={i} className="hero-m-sq" style={{ left: `${x}%`, top: `${y}%`, width: `${s}px`, height: `${s}px`, animationDelay: `${-(i ?? 0) * 1.3}s`, animationDuration: `${7 + ((i ?? 0) % 4) * 2}s` }} />
+        ))}
+      </div>
+
       {/* punti luce e linee al passaggio del mouse */}
       <DigitalCursor />
     </div>
