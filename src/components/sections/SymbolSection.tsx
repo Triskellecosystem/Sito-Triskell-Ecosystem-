@@ -117,7 +117,7 @@ export function SymbolSection() {
       <div ref={trackRef} className="sym-track mt-4">
         <div className="sym sym-sticky" data-active={active}>
           <div className="grid w-full items-center gap-4 lg:grid-cols-12 lg:gap-12">
-            <div className="lg:col-span-6">
+            <div className="max-md:hidden lg:col-span-6">
               <div ref={sceneRef} className="sym3d" onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
                 <div className="relative mx-auto w-full max-w-[34rem]" role="img" aria-label={site.hero.symbolAlt}>
                   <div className="relative mx-auto aspect-square w-[min(72vw,15rem)] sm:w-[min(100%,22rem)]">
@@ -194,7 +194,7 @@ export function SymbolSection() {
                       <span className={active === i ? "text-gold" : undefined}>{it.name}</span>
                       <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-fg-3 sm:text-[0.75rem]">{it.tag}</span>
                     </h3>
-                    <p className={cn("mt-1.5 text-[0.9375rem] leading-snug text-fg-2 sm:mt-2 sm:text-[1rem]", active !== i && "max-lg:hidden")}>{it.text}</p>
+                    <p className={cn("mt-1.5 text-[0.9375rem] leading-snug text-fg-2 sm:mt-2 sm:text-[1rem]", active !== i && "max-lg:hidden max-md:block")}>{it.text}</p>
                   </div>
                 </li>
               ))}

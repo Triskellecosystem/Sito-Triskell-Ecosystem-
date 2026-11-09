@@ -47,7 +47,7 @@ export function ContactLinks() {
         </div>
       </Reveal>
 
-      <RevealGroup className="mx-auto mt-4 grid max-w-6xl gap-3 md:grid-cols-3" stagger={0.1} alternate>
+      <RevealGroup className="m-carousel mx-auto mt-4 grid max-w-6xl gap-3 md:grid-cols-3" stagger={0.1} alternate>
         {/* Instagram */}
         <RevealItem y={22}>
           <a href={ig.href} {...ext} className={`${card} border-white/15 bg-[linear-gradient(150deg,#3b1a5f,#6a1b5e_50%,#8f2b5b)] hover:shadow-[0_0_36px_-12px_rgb(214_62_130/0.7)]`}>
@@ -60,7 +60,7 @@ export function ContactLinks() {
                 <p className="text-[0.75rem] text-white/80">{f.instagram.handle}</p>
               </div>
             </div>
-            <div className="relative mt-4 flex h-72 items-center justify-center overflow-hidden" aria-hidden="true">
+            <div className="relative mt-4 flex h-72 max-md:h-44 items-center justify-center overflow-hidden" aria-hidden="true">
               <div className="relative w-[62%] -rotate-3 overflow-hidden rounded-xl border border-white/20 bg-white shadow-[0_12px_28px_-10px_rgb(0_0_0/0.7)]">
                 <Image src="/social/instagram-profile.webp" alt="" width={520} height={500} sizes="14rem" className="h-auto w-full" />
               </div>
@@ -90,7 +90,7 @@ export function ContactLinks() {
                 <p className="text-[0.75rem] text-fg-2">{f.tiktok.handle}</p>
               </div>
             </div>
-            <div className="relative mt-4 h-72 overflow-hidden rounded-xl border border-white/10 bg-white">
+            <div className="relative mt-4 h-72 max-md:h-44 overflow-hidden rounded-xl border border-white/10 bg-white">
               <Image src="/social/tiktok-profile.webp" alt="Profilo TikTok di Triskell Ecosystem: 2460 follower e 9916 mi piace" width={520} height={500} sizes="(min-width: 768px) 24rem, 90vw" className="h-auto w-full" />
             </div>
             <p className="mt-3 text-[0.8125rem] text-fg-2">
@@ -119,7 +119,7 @@ export function ContactLinks() {
                 <p className="text-[0.75rem] text-fg-2">{f.youtube.subs}</p>
               </div>
             </div>
-            <div className="relative mt-4 h-72 overflow-hidden rounded-xl border border-white/15 bg-white">
+            <div className="relative mt-4 h-72 max-md:h-44 overflow-hidden rounded-xl border border-white/15 bg-white">
               <Image src="/social/youtube-channel.webp" alt="Anteprima del canale YouTube Triskell Ecosystem: 1K iscritti e 212 video" fill sizes="(min-width: 768px) 24rem, 90vw" className="object-cover object-left-top transition-transform duration-[900ms] ease-out-expo group-hover/c:scale-[1.04]" />
             </div>
             <p className="mt-3 text-[0.8125rem] text-fg-2">{f.youtube.text}</p>

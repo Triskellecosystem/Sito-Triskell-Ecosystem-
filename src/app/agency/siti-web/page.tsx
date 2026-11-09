@@ -24,7 +24,7 @@ export default function WebsitesPage() {
         <h2 id="siti-title" className="sr-only">
           {p.title.replace(/[[\]]/g, "")}
         </h2>
-        <RevealGroup className="grid gap-5 md:grid-cols-2 lg:grid-cols-3" stagger={0.08} alternate>
+        <RevealGroup className="grid gap-5 max-md:grid-cols-2 max-md:gap-3 md:grid-cols-2 lg:grid-cols-3" stagger={0.08} alternate>
           {p.items.map((item, i) => (
             <RevealItem key={item.id} y={28} className="h-full">
               <SiteCard item={item} priority={i < 3} />

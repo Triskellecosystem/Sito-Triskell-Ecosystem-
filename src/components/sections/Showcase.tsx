@@ -48,7 +48,7 @@ export function Showcase() {
       <div className="relative mt-10">
         {/* SITI WEB */}
         <div id="panel-sites" role="tabpanel" aria-labelledby="tab-sites" hidden={tab !== "sites"} className="animate-[tab-in_0.6s_var(--ease-out-expo)_backwards]">
-          <ul className="grid gap-5 md:grid-cols-3 [&>li]:h-full">
+          <ul className="m-carousel grid gap-5 md:grid-cols-3 [&>li]:h-full">
             {site.sitiWeb.featured.flatMap((id) => site.sitiWeb.items.filter((i) => i.id === id)).map((item) => (
               <li key={item.id}>
                 <Tilt max={5} className="h-full">
@@ -66,7 +66,7 @@ export function Showcase() {
 
         {/* PORTFOLIO */}
         <div id="panel-portfolio" role="tabpanel" aria-labelledby="tab-portfolio" hidden={tab !== "portfolio"} className="animate-[tab-in_0.6s_var(--ease-out-expo)_backwards]">
-          <ul className="grid gap-5 md:grid-cols-3 [&>li]:h-full">
+          <ul className="m-carousel grid gap-5 md:grid-cols-3 [&>li]:h-full">
             {site.results.items.slice(0, 3).map((item) => (
               <li key={item.id}>
                 <Tilt max={5} className="h-full">

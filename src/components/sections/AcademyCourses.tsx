@@ -32,7 +32,7 @@ export function AcademyCourses() {
         </dl>
       </Reveal>
 
-      <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08} alternate="far">
+      <RevealGroup className="m-carousel mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08} alternate="far">
         {c.items.map((it) => (
           <RevealItem key={it.id} y={28} className="h-full">
             <a
@@ -58,7 +58,7 @@ export function AcademyCourses() {
               </div>
               <div className="flex flex-1 flex-col p-5">
                 <h3 className="font-display text-[1.1875rem] font-semibold leading-tight tracking-tight text-fg">{it.title}</h3>
-                <p className="mt-2 flex-1 text-[0.9375rem] leading-snug text-fg-2">{it.text}</p>
+                <p className="mt-2 flex-1 text-[0.9375rem] leading-snug text-fg-2 max-md:line-clamp-3">{it.text}</p>
                 <span className="mt-4 inline-flex items-center gap-2 text-small font-semibold text-gold-300 transition-colors group-hover/c:text-gold-100">
                   {c.open}
                   <Icon name="arrow-up-right" className="h-4 w-4" />
@@ -74,8 +74,8 @@ export function AcademyCourses() {
       <div className="mt-16 sm:mt-20">
         <SectionHeading id="yt-title" overline="YouTube" title={c.youtube.title} line={c.youtube.line} align="center" />
         <RevealGroup className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-3 lg:grid-cols-4" stagger={0.06} alternate>
-          {c.youtube.videos.slice(0, 8).map((v) => (
-            <RevealItem key={v.id} y={26} className="h-full">
+          {c.youtube.videos.slice(0, 8).map((v, vi) => (
+            <RevealItem key={v.id} y={26} className={vi >= 4 ? "h-full max-md:hidden" : "h-full"}>
               <a
                 href={`https://www.youtube.com/watch?v=${v.id}`}
                 target="_blank"

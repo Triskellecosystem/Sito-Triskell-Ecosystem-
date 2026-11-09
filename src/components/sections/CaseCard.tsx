@@ -19,7 +19,7 @@ export function CaseCard({ item, priority = false }: { item: CaseStudy; href?: s
   return (
     <>
     <article id={item.id} className="group/case relative flex h-full scroll-mt-28 flex-col overflow-hidden rounded-card border border-line bg-[linear-gradient(170deg,var(--color-surface-2),var(--color-night-raised))] transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-gold-300/60 hover:shadow-[0_0_40px_-12px_rgb(247_200_92/0.45)]">
-      <div className="relative h-44 overflow-hidden bg-night">
+      <div className="relative h-44 overflow-hidden bg-night max-md:h-32">
         <Image
           src={item.image}
           alt={`${item.client}: immagine del progetto`}
@@ -35,13 +35,13 @@ export function CaseCard({ item, priority = false }: { item: CaseStudy; href?: s
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-5 max-md:p-4">
         <p className="text-[0.75rem] font-medium text-fg-2">
           {item.sector} · {item.place}
         </p>
         <h3 className="mt-1 font-display text-[1.25rem] font-semibold leading-tight tracking-tight text-fg">{item.client}</h3>
 
-        <dl className="mt-4 grid grid-cols-2 gap-3 border-y border-line py-4">
+        <dl className="mt-4 grid grid-cols-2 gap-3 border-y border-line py-4 max-md:mt-3 max-md:py-3">
           {item.stats.map((st) => (
             <div key={st.label}>
               <dd className="order-1 font-display text-[1.5rem] font-bold leading-none tracking-[-0.03em] text-azure-300">{st.value}</dd>
@@ -50,9 +50,9 @@ export function CaseCard({ item, priority = false }: { item: CaseStudy; href?: s
           ))}
         </dl>
 
-        <p className="mt-4 flex-1 text-[0.9375rem] leading-snug text-fg-2">{item.text}</p>
+        <p className="mt-4 flex-1 text-[0.9375rem] leading-snug text-fg-2 max-md:hidden">{item.text}</p>
 
-        <button type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" className="case-open mt-5 max-md:py-2.5 inline-flex w-fit items-center gap-2 text-small font-semibold text-gold-300 transition-colors hover:text-gold-100">
+        <button type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" className="case-open mt-5 max-md:mt-auto max-md:pt-3 max-md:pb-1 inline-flex w-fit items-center gap-2 text-small font-semibold text-gold-300 transition-colors hover:text-gold-100">
           {site.portfolio.open}
           <Icon name="arrow-right" className="h-4 w-4" />
         </button>

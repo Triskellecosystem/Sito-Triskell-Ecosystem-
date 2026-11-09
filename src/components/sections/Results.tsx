@@ -12,14 +12,15 @@ export function Results() {
     <Section id={results.id} labelledBy="results-title">
       <TechBackdrop tone="azure" cursor rich />
       <SectionHeading id="results-title" overline={results.overline} title={results.title} line={results.line} align="center" />
-      <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 sm:mt-12 xl:grid-cols-4" stagger={0.12} alternate>
+      <RevealGroup className="m-carousel mt-10 grid gap-5 sm:grid-cols-2 sm:mt-12 xl:grid-cols-4" stagger={0.12} alternate>
         {results.items.slice(0, 4).map((item) => (
           <RevealItem key={item.id} y={34} className="h-full">
             <CaseCard item={item} href={`/agency/portfolio#${item.id}`} />
           </RevealItem>
         ))}
       </RevealGroup>
-      <Reveal className="mt-9 flex justify-center" y={16} blur={0}>
+      <p className="mt-1 text-center text-small text-fg-3 md:hidden">Scorri per vedere gli altri →</p>
+      <Reveal className="mt-9 flex justify-center max-md:mt-5" y={16} blur={0}>
         <Button href={results.all.href} size="lg" icon="arrow-right" variant="secondary">
           {results.all.label}
         </Button>

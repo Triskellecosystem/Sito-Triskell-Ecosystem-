@@ -128,7 +128,7 @@ export function ScrollMeters({ labels }: { labels: string[] }) {
   }, []);
 
   return (
-    <ul ref={host} className="flex h-full flex-col justify-around gap-4 py-1" aria-label="Competenze che acquisisci">
+    <ul ref={host} className="flex h-full flex-col justify-around gap-4 max-md:gap-3 py-1" aria-label="Competenze che acquisisci">
       {labels.map((m) => (
         <li key={m} data-meter="">
           <div className="flex items-center justify-between text-[1rem] font-semibold tracking-tight text-fg-2">

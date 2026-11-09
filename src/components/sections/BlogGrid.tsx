@@ -28,7 +28,7 @@ export function BlogGrid({ posts, categories }: { posts: BlogCardData[]; categor
 
   return (
     <div>
-      <div role="group" aria-label="Filtra per categoria" className="flex flex-wrap justify-center gap-2.5">
+      <div role="group" aria-label="Filtra per categoria" className="no-scrollbar flex flex-wrap justify-center gap-2.5 max-md:-mx-5 max-md:flex-nowrap max-md:justify-start max-md:overflow-x-auto max-md:px-5 [&>button]:max-md:shrink-0">
         {[{ key: "all", label: "Tutti" }, ...categories].map((c) => (
           <button
             key={c.key}
@@ -68,13 +68,13 @@ export function BlogGrid({ posts, categories }: { posts: BlogCardData[]; categor
         {rest.map((p) => (
           <li key={p.slug}>
             <Link href={`/blog/${p.slug}`} className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-surface/60 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-gold-400/60">
-              <div className="relative aspect-[16/9] overflow-hidden">
+              <div className="relative aspect-[16/9] overflow-hidden max-md:aspect-[2/1]">
                 <Image src={p.cover} alt="" fill sizes="(min-width:1024px) 380px, (min-width:640px) 50vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.05]" />
               </div>
               <div className="flex flex-1 flex-col gap-3 p-6">
                 <p className="text-overline font-semibold uppercase text-gold-400 tracking-[var(--text-overline--letter-spacing)]">{p.categoryLabel}</p>
                 <h3 className="text-[1.1875rem] font-bold leading-snug tracking-[-0.02em] text-fg group-hover:text-gold-200">{p.title}</h3>
-                <p className="line-clamp-3 text-small text-fg-2">{p.excerpt}</p>
+                <p className="line-clamp-3 text-small text-fg-2 max-md:line-clamp-2">{p.excerpt}</p>
                 <div className="mt-auto flex items-center justify-between pt-3 text-small text-fg-3">
                   <span>
                     {p.date} · {p.minutes} min

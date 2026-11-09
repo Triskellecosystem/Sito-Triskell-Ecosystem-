@@ -13,7 +13,7 @@ export function RisorseGrid({ items, filters }: { items: Risorsa[]; filters: rea
   const list = items.filter((i) => f === "Tutti" || i.kind === f);
   return (
     <div>
-      <div role="group" aria-label="Filtra l'archivio" className="flex flex-wrap items-center justify-center gap-2.5">
+      <div role="group" aria-label="Filtra l'archivio" className="no-scrollbar flex flex-wrap items-center justify-center gap-2.5 max-md:-mx-5 max-md:flex-nowrap max-md:justify-start max-md:overflow-x-auto max-md:px-5 [&>button]:max-md:shrink-0">
         {filters.map((k) => {
           const n = k === "Tutti" ? items.length : items.filter((i) => i.kind === k).length;
           return (
@@ -39,7 +39,7 @@ export function RisorseGrid({ items, filters }: { items: Risorsa[]; filters: rea
         {list.map((r) => {
           const inner = (
             <>
-              <div className="relative aspect-[16/9] overflow-hidden border-b border-line">
+              <div className="relative aspect-[16/9] overflow-hidden border-b border-line max-md:aspect-[2/1]">
                 <div className="absolute inset-0 transition-transform duration-700 ease-out-expo group-hover:scale-[1.05]">
                   <ResourceCover kind={r.cover} />
                 </div>
@@ -52,8 +52,8 @@ export function RisorseGrid({ items, filters }: { items: Risorsa[]; filters: rea
                   <span className="shrink-0 whitespace-nowrap text-fg-3">{r.date}</span>
                 </p>
                 <h3 className="text-[1.1875rem] font-bold leading-snug tracking-[-0.02em] text-fg group-hover:text-gold-200">{r.title}</h3>
-                <p className="text-small text-fg-2">{r.text}</p>
-                <ul className="flex flex-wrap gap-1.5">
+                <p className="text-small text-fg-2 max-md:line-clamp-2">{r.text}</p>
+                <ul className="flex flex-wrap gap-1.5 max-md:hidden">
                   {r.tags.map((t) => (
                     <li key={t} className="rounded-full border border-line-strong px-2.5 py-1 text-[0.75rem] text-fg-3">#{t}</li>
                   ))}

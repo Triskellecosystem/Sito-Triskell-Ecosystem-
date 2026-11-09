@@ -950,3 +950,38 @@ html[data-no-loader] .loader { display: none; }
   .loader-bar i { transform: none; }
 }
 @media print { .loader { display: none; } }
+
+/* ==========================================================================
+   Solo telefono (< 768px): niente effetti da computer, tutto in ordine e compatto.
+   Ogni regola qui sotto vale SOLO sotto i 768px: il computer non cambia.
+   ========================================================================== */
+@media (max-width: 767px) {
+  /* righe di card che scorrono di lato (carosello con aggancio) */
+  .m-carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 0.75rem; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); padding-bottom: 0.75rem; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .m-carousel::-webkit-scrollbar { display: none; }
+  .m-carousel > * { flex: 0 0 80%; min-width: 0; scroll-snap-align: center; }
+  .m-carousel > [data-reveal-item] { --reveal-x: 0px !important; --reveal-r: 0deg !important; }
+  /* simbolo: nessuna scena 3D né sezione "appesa" allo scroll */
+  .sym-track { height: auto; }
+  .sym-sticky { position: static; min-height: 0; }
+}
+@media (max-width: 767px) {
+  /* i settori in griglia 2x2 non arrivano da fuori schermo: sono subito visibili */
+  .eco-sectors [data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; }
+}
+@media (max-width: 767px) {
+  /* niente card che arrivano di lato (si vedevano tagliate): sono già al loro posto */
+  .slide-x { transform: none !important; opacity: 1 !important; }
+}
+@media (max-width: 767px) {
+  /* Chi siamo: la foto del team è subito visibile (niente schermata vuota in attesa dello scroll) */
+  .ti-track { height: auto !important; }
+  .ti-track .ti-sticky { position: static !important; min-height: 0 !important; padding-block: 1rem !important; }
+  .ti-track .ti-wrap { width: 94vw !important; }
+  .ti-track .ti-frame { clip-path: none !important; filter: none !important; }
+  .ti-track .ti-frame [data-img] { transform: none !important; }
+  .ti-track .ti-label { opacity: 1 !important; transform: none !important; }
+  .ti-track .ti-beam, .ti-track .ti-sweep { display: none; }
+  /* risorse: il libro un po' più piccolo, così la prima schermata mostra già l'archivio */
+  .book-stage { --bw: 11rem; --bh: 16.5rem; --bd: 1.8rem; }
+}

@@ -55,7 +55,7 @@ function Branch({ question, name, line, points, cta, icon, tone }: BranchProps) 
           </h3>
           <p className="mt-3 max-w-md text-[1.0625rem] leading-snug text-fg-2">{line}</p>
 
-          <ul className="mt-5 space-y-2.5">
+          <ul className="mt-5 space-y-2.5 max-md:hidden">
             {points.map((point) => (
               <li key={point} className="flex items-center gap-3 text-[0.9375rem] text-fg">
                 <span className={cn("grid h-5 w-5 shrink-0 place-items-center rounded-full border", gold ? "border-gold-400/50 bg-gold-300/10 text-gold-300" : "border-azure-400/50 bg-azure-400/10 text-azure-300")}>
@@ -80,15 +80,15 @@ function Branch({ question, name, line, points, cta, icon, tone }: BranchProps) 
 /** Un settore: pillola numerata che arriva da fuori schermo verso il logo, nell'ordine indicato da `k`. */
 function Sector({ label, icon, align, k }: { label: string; icon: IconName; align: "left" | "right"; k: number }) {
   return (
-    <Reveal as="li" from={align === "left" ? "far-left" : "far-right"} blur={0} delay={k * 0.3} className={cn("flex items-center", align === "right" && "lg:flex-row-reverse")}>
+    <Reveal as="li" from={align === "left" ? "far-left" : "far-right"} blur={0} delay={k * 0.3} className={cn("flex items-center", ["max-md:order-1", "max-md:order-2", "max-md:order-3", "max-md:order-4"][k], align === "right" && "lg:flex-row-reverse")}>
       <span
         style={{ "--k": k } as React.CSSProperties}
-        className="eco-bob inline-flex items-center gap-3 rounded-full border border-line-strong bg-surface/85 py-2 pl-2 pr-5 font-display text-[1.0625rem] font-semibold tracking-tight text-fg shadow-card backdrop-blur-sm"
+        className="eco-bob inline-flex items-center gap-3 rounded-full border border-line-strong bg-surface/85 py-2 pl-2 pr-5 max-md:min-w-0 max-md:flex-1 max-md:gap-2 max-md:pr-3 font-display text-[1.0625rem] font-semibold tracking-tight text-fg shadow-card backdrop-blur-sm"
       >
         <span className="grid h-10 w-10 place-items-center rounded-full border border-gold-400/45 bg-gold-300/10 text-gold-300">
           <Icon name={icon} className="h-5 w-5" strokeWidth={1.7} />
         </span>
-        <span className="flex flex-col leading-tight">
+        <span className="flex flex-col leading-tight max-md:text-[0.9375rem]">
           <span className="text-[0.625rem] font-semibold tracking-[0.18em] text-gold-400">{String(k + 1).padStart(2, "0")}</span>
           {label}
         </span>
@@ -121,15 +121,15 @@ export function Ecosystem() {
       </Reveal>
 
       {/* ---- COSTELLAZIONE: i settori arrivano da sinistra e da destra, in ordine, verso il logo ---- */}
-      <div className="mt-1 sm:mt-2 max-md:mt-10">
-        <p className="mb-14 max-md:mb-8 text-center text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-3">{e.sectorsLabel}</p>
-        <div className="mx-auto grid max-w-4xl items-center gap-y-8 lg:grid-cols-[1fr_auto_1fr] lg:gap-x-10">
-          <ul className="order-2 flex flex-wrap justify-center gap-3 lg:order-1 lg:grid lg:grid-cols-1 lg:justify-items-end lg:gap-9">
+      <div className="mt-1 sm:mt-2 max-md:mt-8">
+        <p className="mb-14 max-md:mb-4 text-center text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-fg-3">{e.sectorsLabel}</p>
+        <div className="eco-sectors mx-auto grid max-w-4xl items-center gap-y-8 max-md:grid-cols-2 max-md:gap-3 lg:grid-cols-[1fr_auto_1fr] lg:gap-x-10">
+          <ul className="order-2 flex flex-wrap justify-center gap-3 max-md:contents lg:order-1 lg:grid lg:grid-cols-1 lg:justify-items-end lg:gap-9">
             {m && <Sector {...m} align="left" k={0} />}
             {auto && <Sector {...auto} align="left" k={2} />}
           </ul>
 
-          <Reveal from="scale" y={0} blur={0} delay={0.1} className="relative order-1 mx-auto grid place-items-center lg:order-2">
+          <Reveal from="scale" y={0} blur={0} delay={0.1} className="relative order-1 mx-auto grid place-items-center max-md:hidden lg:order-2">
             <span aria-hidden="true" className="absolute -inset-12 rounded-full bg-[radial-gradient(circle,var(--glow-gold),transparent_62%)] opacity-40" />
             <span aria-hidden="true" className="eco-swing absolute -inset-5 animate-[spin_36s_linear_infinite] rounded-full border border-dashed border-gold-400/40" />
             <span aria-hidden="true" className="absolute -inset-10 animate-[spin_60s_linear_infinite_reverse] rounded-full border border-azure-400/30 [border-top-color:var(--color-azure-300)]" />
@@ -141,7 +141,7 @@ export function Ecosystem() {
             </LogoTilt>
           </Reveal>
 
-          <ul className="order-3 flex flex-wrap justify-center gap-3 lg:grid lg:grid-cols-1 lg:justify-items-start lg:gap-9">
+          <ul className="order-3 flex flex-wrap justify-center gap-3 max-md:contents lg:grid lg:grid-cols-1 lg:justify-items-start lg:gap-9">
             {ai && <Sector {...ai} align="right" k={1} />}
             {form && <Sector {...form} align="right" k={3} />}
           </ul>
