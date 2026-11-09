@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { posts as blogPosts } from "@/lib/blog";
 import { site } from "@/content/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -12,10 +13,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/chi-siamo", 0.7],
     ["/contatti", 0.8],
     ["/vibe-coding", 0.6],
+    ["/blog", 0.7],
+    ["/risorse", 0.6],
     ["/privacy", 0.2],
     ["/cookie", 0.2],
   ];
-  return pages.map(([path, priority]) => ({
+  const posts: Array<[string, number]> = blogPosts.map((p) => [`/blog/${p.slug}`, 0.5]);
+  return [...pages, ...posts].map(([path, priority]) => ({
     url: `${site.brand.url}${path}`,
     lastModified: now,
     changeFrequency: "monthly" as const,

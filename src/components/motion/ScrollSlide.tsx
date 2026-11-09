@@ -98,14 +98,13 @@ export function ScrollFill({ className }: { className?: string }) {
  * Barre che si completano man mano che scorri: la prima parte da "Vendite", ognuna si riempie dopo la precedente
  * e, una volta piena, diventa dorata; alla fine si accende il traguardo. Risalendo si svuotano.
  */
-export function ScrollMeters({ labels, goal }: { labels: string[]; goal: string }) {
+export function ScrollMeters({ labels }: { labels: string[] }) {
   const host = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     const ul = host.current;
     if (!ul) return;
     const rows = Array.from(ul.querySelectorAll<HTMLElement>("[data-meter]"));
-    const goalEl = ul.querySelector<HTMLElement>("[data-goal]");
     const apply = (p: number) => {
       const n = rows.length;
       rows.forEach((row, i) => {
@@ -114,7 +113,6 @@ export function ScrollMeters({ labels, goal }: { labels: string[]; goal: string 
         if (fill) fill.style.transform = `scaleX(${f.toFixed(3)})`;
         row.toggleAttribute("data-done", f >= 0.999);
       });
-      goalEl?.toggleAttribute("data-on", p >= 0.999);
     };
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       apply(1);
@@ -130,28 +128,22 @@ export function ScrollMeters({ labels, goal }: { labels: string[]; goal: string 
   }, []);
 
   return (
-    <ul ref={host} className="space-y-3" aria-label="Dal punto di partenza al traguardo">
+    <ul ref={host} className="flex h-full flex-col justify-around gap-7 py-2" aria-label="Competenze che acquisisci">
       {labels.map((m) => (
         <li key={m} data-meter="">
-          <div className="flex items-center justify-between text-[0.8125rem] font-medium text-fg-2">
+          <div className="flex items-center justify-between text-[clamp(1.0625rem,1rem+0.3vw,1.25rem)] font-semibold tracking-tight text-fg-2">
             <span className="meter-label">{m}</span>
-            <span className="meter-check grid h-4 w-4 place-items-center rounded-full bg-gold-300 text-night">
-              <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <span className="meter-check grid h-6 w-6 place-items-center rounded-full bg-gold-300 text-night">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 12l5 5 9-10" />
               </svg>
             </span>
           </div>
-          <div className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-line">
+          <div className="mt-2.5 h-4 overflow-hidden rounded-full bg-line">
             <span className="meter-fill block h-full origin-left rounded-full" style={{ transform: "scaleX(1)" }} />
           </div>
         </li>
       ))}
-      <li data-goal="" className="meter-goal flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 font-display text-[1rem] font-bold">
-        <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M5 21V4m0 0h11l-2 4 2 4H5" />
-        </svg>
-        {goal}
-      </li>
     </ul>
   );
 }

@@ -37,9 +37,11 @@ export default function AcademyPage() {
         </div>
       </Section>
 
+      {/* il blocco "Vuoi crescere in autonomia?" sta a metà pagina, separato da due linee delicate */}
+      <SectionDivider />
+      <CtaBand content={cta.academy} />
       <SectionDivider />
       <AcademyCourses />
-      <CtaBand content={cta.academy} />
     </>
   );
 }

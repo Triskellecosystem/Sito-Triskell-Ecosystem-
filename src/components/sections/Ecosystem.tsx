@@ -37,7 +37,10 @@ function Branch({ question, name, line, points, cta, icon, tone }: BranchProps) 
       >
         <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,#000,transparent_80%)]" />
         <div className="relative z-[2] flex h-full flex-col">
-          <p className="whitespace-pre-line font-display text-[clamp(1.0625rem,0.95rem+0.4vw,1.25rem)] font-semibold leading-snug tracking-tight text-fg [text-wrap:balance] lg:min-h-[3.25rem]">{question}</p>
+          {/* una riga sola per Agency, due per Academy: la domanda poggia sempre sulla stessa linea, così il resto resta allineato */}
+          <div className="flex lg:min-h-[3.25rem] lg:items-end">
+            <p className="whitespace-pre-line font-display text-[clamp(1.0625rem,0.95rem+0.4vw,1.25rem)] font-semibold leading-snug tracking-tight text-fg [text-wrap:balance]">{question}</p>
+          </div>
 
           <div aria-hidden="true" className={cn("my-4 flex items-center gap-3", gold ? "text-gold-300" : "text-azure-300")}>
             <span className="h-px flex-1 bg-gradient-to-r from-current to-transparent opacity-50" />

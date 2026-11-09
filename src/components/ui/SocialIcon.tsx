@@ -29,6 +29,13 @@ export function SocialIcon({ id, className }: { id: Social["id"]; className?: st
           <path d="M9 8.6c.2 2.7 2.8 5.5 5.7 6.1l1.2-1.3-2-1-1 .7c-.8-.4-1.6-1.2-2-2l.7-1-1-2z" fill="currentColor" stroke="none" />
         </svg>
       );
+    case "tiktok":
+      return (
+        <svg {...common}>
+          <path d="M14 3v11.2a3.7 3.7 0 1 1-3.7-3.7" />
+          <path d="M14 3c.4 2.6 2 4.2 4.6 4.5" />
+        </svg>
+      );
     case "youtube":
       return (
         <svg {...common}>

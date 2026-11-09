@@ -1,0 +1,83 @@
+/* ==========================================================================
+   Articoli del blog (testo importato dal sito originale, anche con blocchi HTML)
+   ========================================================================== */
+@layer components {
+  .prose-blog {
+    color: var(--color-fg-2);
+    font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+  }
+  .prose-blog > * + * { margin-top: 1.25em; }
+  .prose-blog h2 {
+    margin-top: 2.4em;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+    color: var(--color-fg);
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+  .prose-blog h3 {
+    margin-top: 1.9em;
+    font-family: var(--font-display);
+    font-size: clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    font-weight: 650;
+    color: var(--color-gold-200);
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+  .prose-blog h4 { font-weight: 650; color: var(--color-fg); margin-top: 1.5em; }
+  .prose-blog strong { color: var(--color-fg); font-weight: 650; }
+  .prose-blog a { color: var(--color-gold-300); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .prose-blog a:hover { color: var(--color-gold-200); }
+  .prose-blog ul, .prose-blog ol { padding-left: 1.4em; }
+  .prose-blog ul { list-style: disc; }
+  .prose-blog ol { list-style: decimal; }
+  .prose-blog li { padding-left: 0.3em; }
+  .prose-blog li + li { margin-top: 0.45em; }
+  .prose-blog li::marker { color: var(--color-gold-400); }
+  .prose-blog blockquote {
+    border-left: 3px solid var(--color-gold-400);
+    background: rgb(212 169 59 / 0.07);
+    border-radius: 0 var(--radius-lg, 12px) var(--radius-lg, 12px) 0;
+    padding: 1.1em 1.4em;
+    color: var(--color-fg);
+  }
+  .prose-blog blockquote > * + * { margin-top: 0.7em; }
+  .prose-blog blockquote h2, .prose-blog blockquote h3 { margin-top: 0; }
+  .prose-blog hr { border: 0; border-top: 1px solid var(--color-line); margin-block: 2.5em; }
+  .prose-blog img { height: auto; max-width: 100%; border-radius: 1rem; border: 1px solid var(--color-line); }
+  .prose-blog figure { margin-block: 2em; }
+  .prose-blog figcaption { margin-top: 0.7em; text-align: center; font-size: 0.875em; font-style: italic; color: var(--color-fg-3); }
+  .prose-blog iframe { max-width: 100%; border: 0; border-radius: 1rem; }
+  .prose-blog iframe[src*="youtube"] { width: 100%; aspect-ratio: 16 / 9; height: auto; }
+  .prose-blog code { font-size: 0.9em; background: rgb(255 255 255 / 0.07); padding: 0.15em 0.4em; border-radius: 6px; }
+  .prose-blog pre { overflow-x: auto; background: rgb(255 255 255 / 0.05); border: 1px solid var(--color-line); border-radius: 1rem; padding: 1.1em 1.3em; font-size: 0.9em; line-height: 1.6; }
+  .prose-blog pre code { background: none; padding: 0; }
+  .prose-blog .table-wrap, .prose-blog table { display: block; max-width: 100%; overflow-x: auto; }
+  .prose-blog table { border-collapse: collapse; font-size: 0.9375em; line-height: 1.5; }
+  .prose-blog th, .prose-blog td { border: 1px solid var(--color-line); padding: 0.7em 1em; text-align: left; vertical-align: top; min-width: 8rem; }
+  .prose-blog th { background: rgb(255 255 255 / 0.05); color: var(--color-fg); font-weight: 650; }
+}
+
+/* Blocchi HTML già presenti negli articoli (scritti per un fondo chiaro): qui li adattiamo al tema scuro. */
+.prose-blog [class*="not-prose"] { line-height: 1.6; }
+.prose-blog [class*="not-prose"] > * + * { margin-top: 0; }
+.prose-blog [class*="bg-amber-50"], .prose-blog [class*="bg-sky-50"], .prose-blog [class*="bg-rose-50"] { color: var(--color-fg-2); }
+.prose-blog [class*="bg-amber-50"] { background: rgb(212 169 59 / 0.1) !important; }
+.prose-blog [class*="bg-sky-50"] { background: rgb(96 165 250 / 0.1) !important; }
+.prose-blog [class*="bg-rose-50"] { background: rgb(251 113 133 / 0.1) !important; }
+.prose-blog [class*="text-slate-"] { color: var(--color-fg-2) !important; }
+.prose-blog [class*="text-amber-8"], .prose-blog [class*="text-amber-7"] { color: var(--color-gold-200) !important; }
+.prose-blog [class*="text-sky-7"] { color: #7dd3fc !important; }
+.prose-blog [class*="text-rose-7"] { color: #fda4af !important; }
+.prose-blog [class*="from-slate-900"] { border-radius: 1.25rem; }
+.prose-blog [class*="bg-amber-500"][class*="text-slate-9"] { color: #111 !important; }
+.prose-blog a[class*="bg-amber-500"] { color: #111 !important; text-decoration: none; }
+.prose-blog [class*="not-prose"] p { margin: 0; }
+.prose-blog [class*="not-prose"] p + p { margin-top: 0.7em; }
+.prose-blog [class*="not-prose"] h3 { margin-top: 0; color: inherit; }
+.prose-blog [class*="not-prose"] ul { margin-top: 0.6em; }

@@ -48,8 +48,6 @@ export interface Impact {
   /** Barre che si riempiono (nessun dato: solo progressione). */
   meters?: string[];
   /** Etichetta finale: compare, dorata, quando tutte le barre sono complete. */
-  goal?: string;
-  /** Traguardo finale della catena. */
   finale: { icon: IconName; label: string; text: string };
 }
 
@@ -65,6 +63,8 @@ export interface Service {
   icon: IconName;
   title: string;
   text: string;
+  /** Cosa facciamo, in 4 punti brevi: compaiono quando si apre la scheda. */
+  details: string[];
   href?: string;
 }
 
@@ -164,7 +164,7 @@ export interface Faq {
 }
 
 export interface Social {
-  id: "instagram" | "youtube" | "whatsapp";
+  id: "instagram" | "youtube" | "whatsapp" | "tiktok";
   label: string;
   href: string;
 }
@@ -206,7 +206,8 @@ export const site = {
         label: "Altro",
         href: "#",
         children: [
-          { label: "Libretto Vibe Coding", href: "/vibe-coding", hint: "Costruisci siti e app con l'AI" },
+          { label: "Risorse gratuite", href: "/risorse", hint: "Guide, tutorial e il libretto sul Vibe Coding" },
+          { label: "Blog", href: "/blog", hint: "Approfondimenti su AI, business e innovazione" },
         ],
       },
     ] satisfies NavLink[],
@@ -261,7 +262,7 @@ export const site = {
       text: "Parti dall'Agency per i risultati subito, impara con l'Academy per crescere in autonomia.",
     },
     agency: {
-      question: "Vuoi delegare\ntutto a noi?",
+      question: "Vuoi delegare tutto a noi?",
       name: "Agency",
       line: "Ci pensiamo noi, dalla strategia ai risultati.",
       points: ["Gestione social media", "Meta Ads e Google Ads", "Siti web", "CRM", "Applicazioni e automazioni su misura"],
@@ -313,7 +314,6 @@ export const site = {
       ], // TODO: conferma copy
       impact: {
         meters: ["Vendite", "Marketing", "Intelligenza artificiale", "Automazioni"],
-        goal: "Traguardo raggiunto",
         points: [
           { icon: "badge", title: "Autonomia", text: "Gestisci marketing, vendite e AI senza dipendere da nessuno." },
           { icon: "users", title: "Il tuo team al passo", text: "Formi i dipendenti con percorsi pratici, subito applicabili." },
@@ -351,14 +351,14 @@ export const site = {
     servicesTitle: "Ecco i nostri [servizi]",
     servicesLine: "Scegliamo insieme cosa serve davvero al tuo business.",
     services: [
-      { icon: "smartphone", title: "Gestione social media", text: "Contenuti curati e pubblicati con costanza." },
-      { icon: "click", title: "Meta Ads e Google Ads", text: "Campagne che portano contatti e clienti veri." },
-      { icon: "monitor", title: "Siti web", text: "Siti veloci e chiari, pensati per farti contattare." },
-      { icon: "database", title: "CRM personale", text: "Un CRM su misura per gestire contatti e vendite." },
-      { icon: "workflow", title: "Automazioni su misura", text: "Risposte, contatti e report che si gestiscono da soli." },
-      { icon: "code", title: "Applicazioni su misura", text: "Strumenti digitali costruiti sul tuo modo di lavorare." },
-      { icon: "film", title: "Video con l'AI", text: "Video professionali creati con l'intelligenza artificiale." },
-      { icon: "crosshair", title: "Strategia e posizionamento", text: "Un piano chiaro per farti scegliere dal mercato." },
+      { icon: "smartphone", title: "Gestione social media", text: "Contenuti curati e pubblicati con costanza.", details: ["Piano editoriale mensile", "Reel, caroselli e storie curati", "Pubblicazione e community management", "Report mensile con i numeri"] },
+      { icon: "click", title: "Meta Ads e Google Ads", text: "Campagne che portano contatti e clienti veri.", details: ["Strategia e obiettivi di campagna", "Creatività e testi, anche con l'AI", "Test A/B: teniamo ciò che funziona", "Ottimizzazione e report costanti"] },
+      { icon: "monitor", title: "Siti web", text: "Siti veloci e chiari, pensati per farti contattare.", details: ["Design su misura, anche in WordPress", "Veloce e perfetto sul telefono", "Costruito per trasformare i visitatori in contatti", "Form, WhatsApp e tracciamento collegati"] },
+      { icon: "database", title: "CRM personale", text: "Un CRM su misura per gestire contatti e vendite.", details: ["Tutti i contatti in un posto solo", "Pipeline delle vendite chiara", "Follow-up e promemoria automatici", "Collegato a campagne e sito"] },
+      { icon: "workflow", title: "Automazioni su misura", text: "Risposte, contatti e report che si gestiscono da soli.", details: ["Risposta automatica ai nuovi contatti", "Messaggi e promemoria senza fatica", "Report che arrivano da soli", "I tuoi strumenti collegati tra loro"] },
+      { icon: "code", title: "Applicazioni su misura", text: "Strumenti digitali costruiti sul tuo modo di lavorare.", details: ["Partiamo dalla tua esigenza", "Prototipo veloce con l'AI", "Su misura sul tuo modo di lavorare", "Online e seguita nel tempo"] },
+      { icon: "film", title: "Video con l'AI", text: "Video professionali creati con l'intelligenza artificiale.", details: ["Idea e sceneggiatura", "Video e immagini creati con l'AI", "Formati per social e ADV", "Pronti da pubblicare"] },
+      { icon: "crosshair", title: "Strategia e posizionamento", text: "Un piano chiaro per farti scegliere dal mercato.", details: ["Analisi di mercato e concorrenti", "Cosa ti rende diverso", "Offerta e messaggi chiari", "Piano d'azione passo dopo passo"] },
     ] satisfies Service[], // TODO: conferma copy
     call: {
       overline: "Si parte da qui",
@@ -439,18 +439,18 @@ export const site = {
       ] satisfies Metric[],
       player: {
         label: "Lezione video · Tomaso spiega",
-        caption: "Video dal canale di Tomaso. Scorri le copertine per scegliere un altro video.",
+        caption: "Video dal canale di Tomaso. Trascina le copertine col mouse (o usa le frecce) per scegliere un altro video.",
       },
       free: "Gratuito",
       open: "Inizia il corso",
       items: [
-        { id: "advertising-ai", title: "Advertising Online nell'era dell'AI", text: "Come l'AI sta cambiando l'advertising: nuove opportunità, strumenti concreti e un metodo per restare un passo avanti.", tag: "Advertising · AI", icon: "megaphone", tone: "gold" , href: "https://triskellacademy.com/" },
-        { id: "ai-toolkit", title: "AI Toolkit per la Produttività", text: "Gli strumenti di intelligenza artificiale che fanno la differenza nel lavoro di ogni giorno, con tutorial pronti da applicare.", tag: "Produttività · AI", icon: "zap", tone: "azure" , href: "https://triskellacademy.com/" },
-        { id: "vibe-coding", title: "Vibe Coding e AI per Siti & App", text: "Dalle idee a siti e app reali con l'AI come copilota, anche senza saper programmare.", tag: "No-code · AI", icon: "code", tone: "cobalt" , href: "https://triskellacademy.com/" },
-        { id: "claude-da-zero-a-pro", title: "Claude da Zero a Pro", text: "Il percorso completo su Claude: impostarlo da zero, il metodo per smettere di cercare il prompt perfetto, Cowork per il lavoro quotidiano.", tag: "AI · Produttività", icon: "sparkles", tone: "gold" , href: "https://triskellacademy.com/" },
-        { id: "chatgpt-e-codex", title: "ChatGPT e Codex al lavoro", text: "Cosa è diventato ChatGPT oltre la chat: le app integrate e Codex, l'agente che lavora sul tuo computer.", tag: "OpenAI · Codex", icon: "bot", tone: "azure" , href: "https://triskellacademy.com/" },
-        { id: "ai-news", title: "AI News della Settimana", text: "Le novità dell'intelligenza artificiale: cosa è uscito, perché conta e cosa cambia nella pratica.", tag: "News · AI", icon: "globe", tone: "cobalt" , href: "https://triskellacademy.com/" },
-      ] satisfies Array<{ id: string; title: string; text: string; tag: string; icon: IconName; tone: "gold" | "azure" | "cobalt"; href: string }>,
+        { id: "advertising-ai", title: "Advertising Online nell'era dell'AI", text: "Come l'AI sta cambiando l'advertising: nuove opportunità, strumenti concreti e un metodo per restare un passo avanti.", href: "https://triskellacademy.com/" },
+        { id: "ai-toolkit", title: "AI Toolkit per la Produttività", text: "Gli strumenti di intelligenza artificiale che fanno la differenza nel lavoro di ogni giorno, con tutorial pronti da applicare.", href: "https://triskellacademy.com/" },
+        { id: "vibe-coding", title: "Vibe Coding e AI per Siti & App", text: "Dalle idee a siti e app reali con l'AI come copilota, anche senza saper programmare.", href: "https://triskellacademy.com/" },
+        { id: "claude-da-zero-a-pro", title: "Claude da Zero a Pro", text: "Il percorso completo su Claude: impostarlo da zero, il metodo per smettere di cercare il prompt perfetto, Cowork per il lavoro quotidiano.", href: "https://triskellacademy.com/" },
+        { id: "chatgpt-e-codex", title: "ChatGPT e Codex al lavoro", text: "Cosa è diventato ChatGPT oltre la chat: le app integrate e Codex, l'agente che lavora sul tuo computer.", href: "https://triskellacademy.com/" },
+        { id: "ai-news", title: "AI News della Settimana", text: "Le novità dell'intelligenza artificiale: cosa è uscito, perché conta e cosa cambia nella pratica.", href: "https://triskellacademy.com/" },
+      ] satisfies Array<{ id: string; title: string; text: string; href: string }>,
       includes: {
         title: "Cosa troverai nell'Academy",
         items: [
@@ -462,7 +462,7 @@ export const site = {
       },
       youtube: {
         title: "Dal nostro canale [YouTube]",
-        line: "Tutorial e novità sull'AI, spiegati semplici. Ogni settimana un nuovo video.",
+        line: "Tutorial e novità sull'AI, spiegati semplici.",
         watch: "Guarda su YouTube",
         channel: { label: "Iscriviti al canale", href: "https://youtube.com/@triskellecosystem?sub_confirmation=1" },
         videos: [
@@ -488,7 +488,7 @@ export const site = {
   sitiWeb: {
     overline: "Agency · Siti web",
     title: "Ecco i siti web che [creiamo]",
-    line: "Veloci, curati e pensati per far contattare:\nclicca su un sito per visitarlo.",
+    line: "Siti veloci e curati, costruiti apposta per trasformare\ni visitatori in clienti. Clicca su un sito per visitarlo.",
     visit: "Apri il sito",
     visitDemo: "Vuoi un sito così?",
     featured: ["sfizi", "mani", "chiodo"],
@@ -726,43 +726,6 @@ export const site = {
     // TODO: collegare nel nuovo sito il modulo email (estratto PDF) e il checkout; per ora i pulsanti portano al sito originale.
     freeCta: { label: "Scarica l'estratto gratis", href: "https://www.triskellecosystem.com/risorse/vibe-coding-estratto" },
     buyCta: { label: "Leggi il libro completo", href: "https://www.triskellecosystem.com/vibe-coding" },
-    ideasTitle: "Il libro in [6 idee]",
-    ideasLine: "Leggi i titoli: bastano a farti un'idea. Tocca un punto per aprirlo.",
-    ideas: [
-      {
-        title: "Le idee restano ferme",
-        text: "Lo sviluppo tradizionale costa mesi prima di sapere se un'idea funziona. Preventivi, specifiche, passaggi di mano, attese: il costo vero non è solo economico, è tempo, energia e opportunità perse. La complessità tecnica ha reso lo sviluppo un territorio per pochi. Oggi nuovi strumenti stanno abbassando la barriera d'ingresso.",
-      },
-      {
-        title: "Descrivi il risultato, l'AI scrive il codice",
-        text: "È il passaggio dalla scrittura del codice all'orchestrazione dell'intento. Invece di dire al computer come fare ogni cosa, riga per riga, descrivi cosa vuoi ottenere. Conta meno la sintassi di un linguaggio, conta di più saper descrivere bene un problema e riconoscere quando la soluzione è giusta.",
-      },
-      {
-        title: "Funziona a giri: chiedi, guardi, correggi",
-        text: "Il processo non sparisce: diventa un giro di richieste, verifiche e correzioni che si ripete finché il risultato corrisponde all'obiettivo. Il giudizio finale resta sempre tuo.",
-      },
-      {
-        title: "Lo strumento giusto dipende dalla fase",
-        text: "Tre famiglie: dall'idea all'app, editor con l'AI dentro, agenti a cui delegare. I nomi degli strumenti cambiano in fretta, per questo il libro non ti dà «il migliore»: ti insegna a leggere la mappa.",
-      },
-      {
-        title: "Cambiano i numeri di un'attività",
-        text: "Il libro riporta una stima di costi di sviluppo più bassi del 20–40%. Tempo: una prima versione in ore o giorni invece che in mesi. Investimento iniziale: meno soldi da impegnare prima di avere risposte dal mercato. Produttività: più tempo su strategia e decisioni. Il vantaggio si sposta dal saper costruire al sapere che cosa vale la pena costruire.",
-      },
-      {
-        title: "Velocità sì, ma con metodo",
-        text: "Sicurezza, qualità e privacy non si saltano solo perché si fa prima. L'essere umano resta sempre dove si decide. Controlli prima di mettere online qualcosa. Prima il valore, poi lo strumento.",
-      },
-    ],
-    faqTitle: "Domande [veloci]",
-    faq: [
-      { q: "L'estratto è davvero gratuito?", a: "Sì. Lasci la tua email e scarichi subito il PDF. Nessun pagamento, nessun abbonamento." },
-      { q: "Serve saper programmare?", a: "No. Il libro è scritto per chi non è un programmatore: serve saper descrivere bene quello che vuoi ottenere." },
-      { q: "Cosa c'è nel libro completo in più?", a: "Tutti e dieci i capitoli: il processo passo per passo, la mappa degli strumenti per ogni fase, i numeri, i rischi da controllare e il metodo per iniziare." },
-      { q: "Come ricevo il libro dopo l'acquisto?", a: "Subito dopo il pagamento ricevi via email il link al PDF, e lo trovi sempre anche nella tua Area Membri Triskell." },
-    ],
-    disclaimer:
-      "Riassunto a scopo informativo del libro «Vibe Coding» (Serie AI & Futuro, Vol. 1, 2026). Le stime economiche sono quelle riportate nel libro e vanno lette come ordini di grandezza, non come garanzie di risultato. I nomi degli strumenti citati sono marchi dei rispettivi proprietari; Triskell Ecosystem non è affiliata a nessuno di loro.",
   },
 
   faq: {
@@ -845,7 +808,8 @@ export const site = {
         links: [
           { label: "Siti web", href: "/agency/siti-web" },
           { label: "Portfolio", href: "/agency/portfolio" },
-          { label: "Libretto Vibe Coding", href: "/vibe-coding" },
+          { label: "Risorse gratuite", href: "/risorse" },
+          { label: "Blog", href: "/blog" },
         ],
       },
       {
@@ -861,13 +825,27 @@ export const site = {
       overline: "Seguici",
       title: "Resta con [noi]",
       line: "Video, novità sull'AI e idee per far crescere il tuo business. Scegli dove seguirci.",
-      youtube: { title: "Il nostro canale YouTube", text: "Tutorial e novità sull'AI, spiegati semplici.", cta: "Iscriviti al canale" },
-      instagram: { title: "Instagram", text: "Idee, risultati e dietro le quinte.", cta: "Seguici su Instagram" },
+      /** Riquadro in evidenza sopra le schede (numeri dai profili reali). */
+      proof: {
+        lead: "Oltre",
+        value: 15000,
+        suffix: "+",
+        text: "persone già ci seguono",
+        chips: [
+          { label: "follower su Instagram", value: "15,6 mila" },
+          { label: "follower su TikTok", value: "2.460" },
+          { label: "visualizzazioni sul video più visto", value: "98.517" },
+        ],
+      },
+      youtube: { title: "Il nostro canale YouTube", text: "Tutorial e novità sull'AI, spiegati semplici.", cta: "Iscriviti al canale", subs: "1K iscritti · 212 video" },
+      instagram: { title: "Instagram", handle: "@triskell_ecosystem", text: "Idee, risultati e dietro le quinte.", cta: "Seguici su Instagram", stats: [{ v: "15,6 mila", l: "follower" }, { v: "36", l: "post" }] },
+      tiktok: { title: "TikTok", handle: "@triskell.ecosystem", text: "Video brevi sull'AI e sul business.", cta: "Seguici su TikTok", stats: [{ v: "2.460", l: "follower" }, { v: "9.916", l: "mi piace" }], top: "98.517 visualizzazioni sul video più visto" },
       whatsapp: { title: "WhatsApp", text: "Scrivici: ti rispondiamo noi.", cta: "Scrivici ora" },
       email: { title: "Email", cta: "Scrivici una mail" },
     },
     social: [
       { id: "instagram", label: "Instagram", href: "https://www.instagram.com/triskell_ecosystem" },
+      { id: "tiktok", label: "TikTok", href: "https://www.tiktok.com/@triskell.ecosystem" },
       { id: "youtube", label: "YouTube", href: "https://youtube.com/@triskellecosystem" },
       { id: "whatsapp", label: "WhatsApp", href: "https://wa.me/393484301500" },
     ] satisfies Social[],

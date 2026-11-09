@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { Icon } from "@/components/ui/Icon";
@@ -29,6 +29,54 @@ export function LessonPlayer() {
     setPlaying(true);
     setPaused(false);
     setMuted(false);
+  };
+
+  // Trascinamento col mouse (con inerzia): la fila si sposta fluida, senza scatti; il touch usa lo scorrimento nativo.
+  const drag = useRef({ down: false, moved: false, startX: 0, startLeft: 0, lastX: 0, lastT: 0, v: 0, raf: 0 });
+  useEffect(() => {
+    const d = drag.current;
+    return () => cancelAnimationFrame(d.raf);
+  }, []);
+  const onDown = (e: React.PointerEvent<HTMLUListElement>) => {
+    if (e.pointerType !== "mouse" || e.button !== 0 || !strip.current) return;
+    const d = drag.current;
+    cancelAnimationFrame(d.raf);
+    Object.assign(d, { down: true, moved: false, startX: e.clientX, startLeft: strip.current.scrollLeft, lastX: e.clientX, lastT: performance.now(), v: 0 });
+  };
+  const onMove = (e: React.PointerEvent<HTMLUListElement>) => {
+    const d = drag.current;
+    const el = strip.current;
+    if (!d.down || !el) return;
+    const dx = e.clientX - d.startX;
+    if (!d.moved && Math.abs(dx) > 5) {
+      d.moved = true;
+      el.setPointerCapture(e.pointerId);
+      el.dataset.dragging = "";
+    }
+    if (!d.moved) return;
+    el.scrollLeft = d.startLeft - dx;
+    const now = performance.now();
+    const dt = Math.max(1, now - d.lastT);
+    d.v = 0.8 * d.v + 0.2 * ((d.lastX - e.clientX) / dt);
+    d.lastX = e.clientX;
+    d.lastT = now;
+  };
+  const onUp = () => {
+    const d = drag.current;
+    const el = strip.current;
+    if (!d.down || !el) return;
+    d.down = false;
+    delete el.dataset.dragging;
+    if (!d.moved) return;
+    let v = d.v * 16; // px per frame
+    if (performance.now() - d.lastT > 80) v = 0;
+    const step = () => {
+      if (Math.abs(v) < 0.3) return;
+      el.scrollLeft += v;
+      v *= 0.94;
+      d.raf = requestAnimationFrame(step);
+    };
+    d.raf = requestAnimationFrame(step);
   };
   const scroll = (dir: 1 | -1) => strip.current?.scrollBy({ left: dir * strip.current.clientWidth * 0.8, behavior: "smooth" });
 
@@ -100,9 +148,24 @@ export function LessonPlayer() {
         <div className="p-4 sm:p-5">
           <p className="font-display text-[1.0625rem] font-semibold leading-snug tracking-tight text-fg">{cur.title}</p>
           <div className="relative mt-4">
-            <ul ref={strip} className="no-scrollbar flex snap-x snap-mandatory gap-2.5 overflow-x-auto scroll-smooth pb-1" aria-label="Altri video del canale">
+            <ul
+              ref={strip}
+              onPointerDown={onDown}
+              onPointerMove={onMove}
+              onPointerUp={onUp}
+              onPointerCancel={onUp}
+              onClickCapture={(e) => {
+                if (drag.current.moved) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  drag.current.moved = false;
+                }
+              }}
+              className="no-scrollbar flex cursor-grab touch-pan-x select-none gap-2.5 overflow-x-auto pb-1 data-[dragging]:cursor-grabbing"
+              aria-label="Altri video del canale (trascina per scorrere)"
+            >
               {list.map((v, k) => (
-                <li key={v.id} className="w-[31%] shrink-0 snap-start">
+                <li key={v.id} className="w-[31%] shrink-0">
                   <button
                     type="button"
                     onClick={() => pick(k)}
@@ -110,7 +173,7 @@ export function LessonPlayer() {
                     aria-label={v.title}
                     className={cn("relative block aspect-video w-full overflow-hidden rounded-lg border-2 transition-[border-color,opacity] duration-[var(--dur-base)]", k === i ? "border-gold-300" : "border-transparent opacity-75 hover:opacity-100")}
                   >
-                    <Image src={`/youtube/${v.id}.jpg`} alt="" fill sizes="10rem" className="object-cover" />
+                    <Image src={`/youtube/${v.id}.jpg`} alt="" fill sizes="10rem" draggable={false} className="pointer-events-none object-cover" />
                   </button>
                 </li>
               ))}

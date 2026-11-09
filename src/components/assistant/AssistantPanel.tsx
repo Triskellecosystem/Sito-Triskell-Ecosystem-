@@ -41,7 +41,7 @@ function Rich({ text, onNavigate }: { text: string; onNavigate: () => void }) {
   );
 }
 
-/** Chat di Triskiello: finestra con messaggi, risposte rapide e campo di testo. Esc la chiude. */
+/** Chat di Triskello: finestra con messaggi, risposte rapide e campo di testo. Esc la chiude. */
 export function AssistantPanel({ onClose }: { onClose: () => void }) {
   const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: GREETING }]);
   const [input, setInput] = useState("");

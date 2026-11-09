@@ -17,7 +17,7 @@ function limited(ip: string) {
 }
 
 /**
- * POST /api/assistant — risposta dell'assistente Triskiello.
+ * POST /api/assistant — risposta dell'assistente Triskello.
  * Con ANTHROPIC_API_KEY risponde un modello AI (Claude), guidato da un prompt con i soli fatti del sito.
  * Senza chiave, o se il servizio non risponde, usa le risposte a regole (`localAnswer`): l'assistente funziona sempre.
  * La chiave resta solo sul server e non è mai inviata al browser.

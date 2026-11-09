@@ -7,6 +7,7 @@ import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { RevealRoot } from "@/components/motion/RevealRoot";
 import { Header } from "@/components/sections/Header";
 import { Footer } from "@/components/sections/Footer";
+import { Loader } from "@/components/brand/Loader";
 import { Assistant } from "@/components/assistant/Assistant";
 import "./globals.css";
 
@@ -54,8 +55,13 @@ const organizationJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="it" className={`${sora.variable} ${inter.variable}`}>
+    <html lang="it" className={`${sora.variable} ${inter.variable}`} suppressHydrationWarning>
+      <head>
+        {/* una volta per sessione: se la schermata di caricamento è già stata vista, non compare di nuovo */}
+        <script dangerouslySetInnerHTML={{ __html: `try{if(sessionStorage.getItem("tk-loaded")){document.documentElement.setAttribute("data-no-loader","")}else{document.documentElement.setAttribute("data-loading","")}}catch(e){}` }} />
+      </head>
       <body>
+        <Loader />
         <noscript>
           <style>{`[data-reveal],[data-reveal-item],.split-word{opacity:1!important;transform:none!important;filter:none!important}[data-count]{visibility:visible!important}`}</style>
         </noscript>

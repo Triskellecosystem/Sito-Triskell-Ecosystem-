@@ -32,7 +32,7 @@ export const privacy: LegalDoc = {
       title: "Quali dati trattiamo",
       bullets: [
         "Dati che ci invii tu: nome, indirizzo email, servizio di interesse e testo del messaggio, quando compili il modulo contatti o scrivi per email, WhatsApp o sui social.",
-        "Messaggi che scrivi all'assistente virtuale Triskiello: il testo viene usato per generare la risposta.",
+        "Messaggi che scrivi all'assistente virtuale Triskello: il testo viene usato per generare la risposta.",
         "Dati tecnici di navigazione (ad esempio indirizzo IP, tipo di browser, pagine richieste): come per ogni sito, vengono registrati dal fornitore di hosting per il funzionamento e la sicurezza del servizio.",
       ],
     },
@@ -53,8 +53,8 @@ export const privacy: LegalDoc = {
       ],
     },
     {
-      title: "Assistente virtuale Triskiello",
-      paras: ["Le risposte di Triskiello sono generate da un sistema di intelligenza artificiale: puoi sbagliare a scrivere, ma non inserire dati sensibili o riservati (salute, documenti, dati di pagamento). Per decisioni importanti, prezzi e condizioni rivolgiti sempre al team."],
+      title: "Assistente virtuale Triskello",
+      paras: ["Le risposte di Triskello sono generate da un sistema di intelligenza artificiale: puoi sbagliare a scrivere, ma non inserire dati sensibili o riservati (salute, documenti, dati di pagamento). Per decisioni importanti, prezzi e condizioni rivolgiti sempre al team."],
     },
     {
       title: "Per quanto tempo conserviamo i dati",
@@ -86,7 +86,7 @@ export const cookie: LegalDoc = {
     {
       title: "Cosa usiamo",
       bullets: [
-        "Memoria temporanea del browser (sessionStorage) usata solo per ricordare, durante la visita, che hai già visto il messaggio di benvenuto di Triskiello. Resta sul tuo dispositivo e si cancella chiudendo la scheda.",
+        "Memoria temporanea del browser (sessionStorage) usata solo per ricordare, durante la visita, che hai già visto il messaggio di benvenuto di Triskello. Resta sul tuo dispositivo e si cancella chiudendo la scheda.",
         "Font e immagini sono serviti dal sito stesso.",
       ],
     },

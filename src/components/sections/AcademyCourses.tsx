@@ -3,7 +3,6 @@ import { site } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { SocialIcon } from "@/components/ui/SocialIcon";
-import { CourseCover } from "@/components/ui/CourseCover";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { TechBackdrop } from "@/components/ui/TechBackdrop";
 import { CountUp } from "@/components/motion/CountUp";
@@ -42,8 +41,15 @@ export function AcademyCourses() {
               rel="noopener noreferrer"
               className="group/c relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-[linear-gradient(170deg,var(--color-surface-2),var(--color-night-raised))] transition-[border-color,box-shadow] duration-[var(--dur-base)] ease-out-expo hover:border-azure-300/70 hover:shadow-[0_0_44px_-12px_rgb(42_144_195/0.55)]"
             >
-              <div className="relative">
-                <CourseCover title={it.title} tag={it.tag} icon={it.icon} tone={it.tone} free={c.free} className="transition-transform duration-[900ms] ease-out-expo group-hover/c:scale-[1.03]" />
+              <div className="relative aspect-video overflow-hidden bg-night">
+                <Image
+                  src={`/academy/${it.id}.webp`}
+                  alt={`Copertina del corso: ${it.title}`}
+                  fill
+                  sizes="(min-width: 1024px) 26rem, (min-width: 640px) 45vw, 92vw"
+                  className="object-cover transition-transform duration-[900ms] ease-out-expo group-hover/c:scale-[1.05]"
+                />
+                <span className="absolute left-3 top-3 rounded-full bg-gold-300 px-2.5 py-0.5 text-[0.6875rem] font-bold uppercase tracking-wider text-night">{c.free}</span>
                 <span aria-hidden="true" className="absolute inset-0 grid place-items-center bg-night/30 opacity-0 transition-opacity duration-[var(--dur-base)] group-hover/c:opacity-100">
                   <span className="grid h-14 w-14 place-items-center rounded-full bg-gold-300 text-night shadow-glow-gold">
                     <Icon name="play" className="h-6 w-6" />
@@ -115,7 +121,7 @@ export function AcademyCourses() {
                     </span>
                     <span className="text-[0.9375rem] leading-snug text-fg-2">
                       <strong className="block font-display text-[1.0625rem] font-semibold text-fg">{it.title}</strong>
-                      {it.text}
+                      <span className="block [text-wrap:balance]">{it.text}</span>
                     </span>
                   </li>
                 ))}

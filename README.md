@@ -50,7 +50,11 @@ Le fasce **"Prenota ora"** (`CtaBand`) compaiono in più punti; il pulsante è g
 - **Corsi Academy** (`AcademyCourses`): i 7 corsi gratuiti veri di https://triskellacademy.com con copertine in `public/academy`.
 - **Scroll legato al movimento** (`ScrollSlide`): i blocchi del funnel arrivano da fuori schermo mentre scorri.
 - **Team cinematografico** (`PersonScroll`, configurato in `site.about.people`): ritaglio vero dello sfondo (alpha, `public/team/*-cut.webp`, fatto con BiRefNet + decontaminazione dei bordi), camera 3D legata allo scroll (dolly, orbita ±12°, parallasse tra livelli), passaggio alla seconda foto, testi per fase. Telefono, reduced motion e dispositivi poco potenti: sequenza semplice senza pin. Per vere rotazioni servono più foto o un modello 3D.
-- **Assistente Triskiello** (`components/assistant`, `/api/assistant`): robottino in basso a destra con chat. Senza `ANTHROPIC_API_KEY` risponde con regole basate sui contenuti reali del sito; con la chiave (solo lato server) risponde un modello AI. Mai prezzi o promesse inventati.
+- **Assistente Triskello** (`components/assistant`, `/api/assistant`): robottino in basso a destra con chat. Senza `ANTHROPIC_API_KEY` risponde con regole basate sui contenuti reali del sito; con la chiave (solo lato server) risponde un modello AI. Mai prezzi o promesse inventati.
+- **Blog** (`/blog`, `/blog/[slug]`): i 16 articoli del sito originale, importati senza modifiche in `src/content/blog-data.json` (testo in Markdown + immagini in `public/blog`) e resi da `src/lib/blog.ts`. Per aggiungerne uno, aggiungi un oggetto al JSON con la stessa struttura.
+- **Risorse gratuite** (`/risorse`): archivio delle guide e dei tutorial (`src/content/risorse.ts`); le guide visuali aprono le pagine originali, il libretto ha la sua pagina `/vibe-coding`.
+- **Schermata di caricamento** (`components/brand/Loader*.tsx`, stili `.loader*` in `globals.css`): una volta per sessione, simbolo dorato + scritta su nero.
+- **Prenota ora**: tutti i pulsanti usano `site.cta.href` in `src/content/site.ts`; per collegare Calendly o Google Calendar basta cambiare quel link.
 - **Schede clienti** (`CaseModal`, dati in `content/cases.ts`): ogni caso del Portfolio si apre con sfida, soluzione, processo, prima/dopo e risultati.
 - **Pagine legali** (`/privacy`, `/cookie`, testi in `content/legal.ts`): solo informazioni note; mancano sede, dati REA, tempi di conservazione precisi, termini di vendita.
 - **Libro 3D** (`Book3D`): cuboide CSS trascinabile in ogni direzione, con inerzia.

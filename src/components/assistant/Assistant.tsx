@@ -8,7 +8,7 @@ import { TriskiRobot } from "./TriskiRobot";
 const Panel = dynamic(() => import("./AssistantPanel").then((m) => m.AssistantPanel), { ssr: false });
 
 /**
- * Triskiello: piccolo robot sempre presente in basso a destra. Si presenta una sola volta per visita con un fumetto,
+ * Triskello: piccolo robot sempre presente in basso a destra. Si presenta una sola volta per visita con un fumetto,
  * poi resta un pulsante discreto; al click si apre la chat (caricata solo allora, per non pesare sulla pagina).
  */
 export function Assistant() {
