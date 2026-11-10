@@ -18,9 +18,12 @@ Su Vercel: nuovo progetto con **Root Directory = `triskell-agency`**.
 
 | Pagina | Percorso | Contenuto |
 |---|---|---|
-| Home | `/` | Hero "Vuoi più clienti per la tua attività?" con telefono animato · nastri dei servizi · muro dei numeri · per chi è · servizi · agenti AI (console dal vivo) · come funziona · prima/dopo · casi studio · siti web (portatile 3D) · chi siamo · l'ecosistema dietro l'agenzia · FAQ · prenota · form |
+| Home | `/` | Hero "Vuoi più clienti per la tua attività?" · nastri dei servizi · numeri · per chi è · **Metodo Triskell** (formula, benefici, 6 mesi, base consigliata) · servizi · agenti AI · come funziona · prima/dopo · casi studio · siti web · chi siamo · ecosistema · FAQ · form |
+| Metodo Triskell | `/metodo-triskell` | Social + campagne (+ sito se serve), perché funziona, rodaggio di 6 mesi, niente pacchetti fissi e base consigliata (12 contenuti + 4–5 campagne al mese), extra urgenti, assistenza |
+| Social media | `/social` | Come lavoriamo (call, script, primo mese di registrazione, editing, pubblicazione, report), riprese sul posto o in autonomia, base consigliata, tutto ciò che è incluso, "tu registri, al resto pensiamo noi" |
+| Siti web | `/siti-web` | Il percorso dalla prima call al sito finito (stile, revisioni, pubblicazione, assistenza) e cosa è incluso |
+| Portfolio siti | `/siti-web/portfolio` | I siti realizzati |
 | Risultati | `/risultati` | Tutti i casi studio con scheda completa + muro dei numeri |
-| Siti web | `/siti-web` | Vetrina dei siti realizzati |
 | Chi siamo | `/chi-siamo` | Tomaso e William, presentazione cinematografica + metodo |
 | Contatti | `/contatti` | Form "Prenota la call gratuita" + FAQ |
 | Legali | `/privacy`, `/cookie` | |

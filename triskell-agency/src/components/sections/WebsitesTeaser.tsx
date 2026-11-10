@@ -16,7 +16,7 @@ const points = [
  * Muro di siti: le schermate vere in tre colonne che scorrono in verticale a velocità diverse (in versi opposti),
  * su un piano inclinato in 3D. Solo transform; con reduced motion resta fermo.
  */
-function SitesWall() {
+export function SitesWall() {
   const items = site.sitiWeb.items.filter((i) => !i.demo);
   const cols = [0, 1, 2].map((c) => items.filter((_, i) => i % 3 === c));
   return (
@@ -67,9 +67,14 @@ export function WebsitesTeaser() {
             ))}
           </RevealGroup>
           <Reveal className="mt-9" y={14} blur={0}>
-            <Button href="/siti-web" size="lg" icon="arrow-right">
-              Guarda tutti i siti
-            </Button>
+            <div className="flex flex-wrap gap-3">
+              <Button href="/siti-web" size="lg" icon="arrow-right">
+                Come lo creiamo
+              </Button>
+              <Button href="/siti-web/portfolio" size="lg" variant="secondary" icon="monitor" iconPosition="start">
+                Portfolio siti
+              </Button>
+            </div>
           </Reveal>
         </div>
         <div className="min-w-0 lg:col-span-7 lg:-mr-6">

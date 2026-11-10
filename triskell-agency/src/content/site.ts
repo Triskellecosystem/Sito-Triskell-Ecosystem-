@@ -200,17 +200,17 @@ export const site = {
   nav: {
     items: [
       { label: "Home", href: "/" },
+      { label: "Metodo Triskell", href: "/metodo-triskell" },
+      { label: "Social media", href: "/social" },
       {
-        label: "Servizi",
-        href: "/#servizi",
+        label: "Siti web",
+        href: "/siti-web",
         children: [
-          { label: "Tutti i servizi", href: "/#servizi", hint: "Marketing, ADV, siti, CRM e AI" },
-          { label: "Agenti AI e automazioni", href: "/#ai", hint: "Deleghi il lavoro ripetitivo all'AI" },
-          { label: "Come lavoriamo", href: "/#metodo", hint: "Dalla call ai risultati, step by step" },
+          { label: "Come lo creiamo", href: "/siti-web", hint: "Dalla prima call al sito finito" },
+          { label: "Portfolio siti", href: "/siti-web/portfolio", hint: "I siti che abbiamo realizzato" },
         ],
       },
       { label: "Risultati", href: "/risultati" },
-      { label: "Siti web", href: "/siti-web" },
       { label: "Chi siamo", href: "/chi-siamo" },
     ] satisfies NavLink[],
     cta: { label: "Prenota ora", href: "/contatti" },
@@ -289,8 +289,8 @@ export const site = {
     line: "Scegli un servizio e guarda cosa facciamo, e cosa ottieni. Scegliamo insieme cosa serve davvero.",
     items: [
       { icon: "click", title: "Meta Ads e Google Ads", text: "Campagne che portano contatti e clienti veri.", kpi: { value: "30–60", label: "lead al mese per cliente" }, details: ["Strategia e obiettivi di campagna", "Creatività e testi, anche con l'AI", "Test A/B: teniamo ciò che funziona", "Ottimizzazione e report costanti"] },
-      { icon: "smartphone", title: "Gestione social media", text: "Contenuti curati e pubblicati con costanza.", kpi: { value: "15K+", label: "follower costruiti sui nostri canali" }, details: ["Piano editoriale mensile", "Reel, caroselli e storie curati", "Pubblicazione e community management", "Report mensile con i numeri"] },
-      { icon: "monitor", title: "Siti web e landing", text: "Siti veloci e chiari, pensati per farti contattare.", kpi: { value: "10–30", label: "richieste al mese da una landing" }, details: ["Design su misura, anche in WordPress", "Veloce e perfetto sul telefono", "Costruito per trasformare i visitatori in contatti", "Form, WhatsApp e tracciamento collegati"] },
+      { icon: "smartphone", title: "Gestione social media", text: "Tu registri, al resto pensiamo noi.", kpi: { value: "12", label: "contenuti al mese: la base consigliata" }, details: ["Script pronti e indicazioni per le riprese", "Editing professionale dei video", "Pubblicazione e gestione del profilo", "Report mensile con i numeri"], href: "/social" },
+      { icon: "monitor", href: "/siti-web", title: "Siti web e landing", text: "Siti veloci e chiari, pensati per farti contattare.", kpi: { value: "10–30", label: "richieste al mese da una landing" }, details: ["Design su misura, anche in WordPress", "Veloce e perfetto sul telefono", "Costruito per trasformare i visitatori in contatti", "Form, WhatsApp e tracciamento collegati"] },
       { icon: "database", title: "CRM su misura", text: "Contatti e vendite in un posto solo.", kpi: { value: "~1 su 3", label: "contatti che prenotano la prova" }, details: ["Tutti i contatti in un posto solo", "Pipeline delle vendite chiara", "Follow-up e promemoria automatici", "Collegato a campagne e sito"] },
       { icon: "bot", title: "Agenti AI", text: "Assistenti che rispondono, qualificano e prenotano.", kpi: { value: "24/7", label: "risposte ai clienti, senza pause" }, details: ["Risposte immediate, anche di notte", "Qualifica dei contatti in automatico", "Appuntamenti fissati in agenda", "Su WhatsApp, sito e social"] },
       { icon: "workflow", title: "Automazioni", text: "Il lavoro ripetitivo si fa da solo.", kpi: { value: "0", label: "contatti dimenticati" }, details: ["Messaggi e promemoria automatici", "Report che arrivano da soli", "Preventivi e documenti generati", "I tuoi strumenti collegati tra loro"] },
@@ -378,6 +378,178 @@ export const site = {
     getLabel: "Ricevi",
     /** Cosa ricevi a ogni passo (stesso ordine di paths.agency.steps). */
     gets: ["Un'analisi gratuita", "La mappa del tuo funnel", "Un piano d'azione", "Campagne attive", "Sito o landing online", "CRM e agente AI attivi", "Report mensile chiaro"],
+  },
+
+  /* ------------------------------------------------------------------------
+     METODO TRISKELL: gestione social + campagne (+ sito, se serve)
+     ------------------------------------------------------------------------ */
+  metodo: {
+    overline: "Il Metodo Triskell",
+    title: "Social + campagne: [la combinazione che fa crescere]",
+    line: "Un profilo curato e attivo, più campagne che portano contatti ogni giorno. Insieme si rinforzano a vicenda: è il cuore del nostro metodo.",
+    formula: {
+      parts: [
+        { icon: "smartphone", name: "Gestione social", text: "Il profilo è curato, aggiornato e vivo." },
+        { icon: "click", name: "Campagne pubblicitarie", text: "Meta Ads e Google Ads portano contatti nuovi." },
+      ],
+      optional: { icon: "monitor", name: "Sito web", text: "Se serve, lo rifacciamo per convertire di più.", tag: "Se serve" },
+      result: { icon: "trending", name: "Più clienti", text: "Un sistema che cresce mese dopo mese." },
+    } satisfies {
+      parts: Array<{ icon: IconName; name: string; text: string }>;
+      optional: { icon: IconName; name: string; text: string; tag: string };
+      result: { icon: IconName; name: string; text: string };
+    },
+    whyTitle: "Perché insieme [funzionano meglio]",
+    why: [
+      { icon: "eye", title: "Chi vede la pubblicità, visita il profilo", text: "Se trova un profilo attivo e curato si fida, e ti contatta. Se lo trova fermo, se ne va." },
+      { icon: "shield", title: "Un profilo seguito dà credibilità", text: "Contenuti costanti mostrano che l'attività è viva, seguita e professionale: le campagne convertono di più." },
+      { icon: "users", title: "Le campagne fanno crescere il profilo", text: "Più persone ti scoprono, più follower, più interazioni: il profilo diventa una vetrina sempre più forte." },
+      { icon: "chart", title: "I dati guidano i contenuti", text: "Le campagne ci dicono cosa piace al tuo pubblico: lo usiamo per creare contenuti che rendono di più." },
+    ] satisfies Array<{ icon: IconName; title: string; text: string }>,
+    /** Collaborazione minima e rodaggio. */
+    rodaggio: {
+      overline: "Collaborazioni da minimo 6 mesi",
+      title: "Serve un [tempo di rodaggio]",
+      line: "Per creare la struttura, metterla in moto e vedere i risultati servono almeno 6 mesi. Con meno tempo non è possibile coordinare tutto: l'abbiamo visto in tanti casi, i risultati restano troppo relativi.",
+      months: 6,
+      phases: [
+        { from: 1, to: 1, title: "Creiamo la struttura", text: "Call, strategia, registrazione ed editing dei primi contenuti, campagne pronte." },
+        { from: 2, to: 3, title: "La mettiamo in moto", text: "Contenuti costanti, campagne attive, test e primi contatti." },
+        { from: 4, to: 6, title: "Vediamo i risultati", text: "Ottimizziamo ciò che funziona e spingiamo dove rende di più." },
+      ],
+      badge: "Minimo 6 mesi",
+    },
+    /** Niente pacchetti fissi: base consigliata. */
+    base: {
+      overline: "La base che consigliamo",
+      title: "Niente pacchetti fissi: [tutto su misura]",
+      line: "Ogni attività è un caso a sé: dopo la prima call costruiamo la collaborazione sulla tua situazione. Ma c'è una base che consigliamo sempre ai nostri clienti.",
+      label: "Base consigliata",
+      items: [
+        { value: 12, label: "contenuti al mese", unit: "contenuti al mese", note: "3 contenuti a settimana", icon: "film" },
+        { value: 5, prefix: "4–", label: "campagne al mese", unit: "campagne al mese", note: "Meta Ads e Google Ads", icon: "click" },
+      ] satisfies Array<Metric & { unit: string; note: string; icon: IconName }>,
+      weeks: ["Sett. 1", "Sett. 2", "Sett. 3", "Sett. 4"],
+      days: ["L", "M", "M", "G", "V", "S", "D"],
+      /** Giorni di pubblicazione in ogni settimana (indice 0 = lunedì). */
+      postDays: [0, 2, 4],
+      extrasTitle: "Extra, quando serve davvero",
+      extrasLine: "Hai una locandina da far uscire subito o qualcosa da sponsorizzare in fretta? Interveniamo in tempi rapidi.",
+      extras: [
+        { icon: "image", text: "Grafica al volo" },
+        { icon: "zap", text: "Sponsorizzata veloce" },
+        { icon: "megaphone", text: "Locandina o evento urgente" },
+      ] satisfies Array<{ icon: IconName; text: string }>,
+      note: "Ci occupiamo di tutto: la base è il punto di partenza consigliato, non un limite.",
+      fits: ["Dopo la prima call la adattiamo alla tua attività", "Più contenuti o più campagne, se servono", "Contenuti e campagne lavorano insieme", "Collaborazione da minimo 6 mesi"],
+    },
+    support: {
+      icon: "headphones" as IconName,
+      title: "Assistenza sempre, [per qualunque emergenza]",
+      text: "Puoi chiamarci quando serve: siamo sempre disponibili. Nei giorni di riposo rispondiamo solo per questioni urgenti.",
+      points: ["Un referente diretto", "WhatsApp e telefono", "Call incluse, in base alla collaborazione"],
+    },
+    homeCta: { label: "Scopri il Metodo Triskell", href: "/metodo-triskell" },
+    socialCta: { label: "Come gestiamo i social", href: "/social" },
+  },
+
+  /* ------------------------------------------------------------------------
+     GESTIONE SOCIAL (pagina dedicata)
+     ------------------------------------------------------------------------ */
+  social: {
+    overline: "Gestione social media",
+    title: "Tu registri. [Al resto pensiamo noi.]",
+    line: "Strategia, script, editing, pubblicazione e crescita del profilo: un team che segue i tuoi social ogni giorno, mentre tu pensi alla tua attività.",
+    heroPoints: ["Script pronti da leggere", "Editing professionale", "Pubblicazione e report"],
+    processTitle: "Come lavoriamo, [passo dopo passo]",
+    processLine: "Dalla prima call al profilo che cresce: sai sempre cosa succede e cosa ricevi.",
+    getLabel: "Ricevi",
+    steps: [
+      { icon: "phone", title: "Call iniziali", text: "Conosciamo la tua attività, gli obiettivi e il tuo pubblico. Il numero di call dipende dalla collaborazione.", get: "Un piano su misura" },
+      { icon: "pen", title: "Strategia e script", text: "Decidiamo cosa raccontare e scriviamo tutti gli script: tu non devi inventarti niente.", get: "Script e piano editoriale" },
+      { icon: "camera", title: "Primo mese: registrazione", text: "Il primo mese è dedicato a registrare e montare i contenuti, così partiamo con una scorta pronta.", get: "Una scorta di contenuti" },
+      { icon: "scissors", title: "Editing ogni mese", text: "Ogni mese montiamo i nuovi contenuti in anticipo: niente ritardi, niente corse all'ultimo.", get: "Contenuti sempre pronti" },
+      { icon: "send", title: "Pubblicazione", text: "Pubblichiamo noi, con testi, copertine e orari giusti, e teniamo vivo il profilo.", get: "Un profilo sempre attivo" },
+      { icon: "chart", title: "Report e miglioramento", text: "Guardiamo i numeri insieme e miglioriamo i contenuti mese dopo mese.", get: "Report mensile chiaro" },
+    ] satisfies Array<{ icon: IconName; title: string; text: string; get: string }>,
+    recording: {
+      overline: "Le riprese",
+      title: "Veniamo noi, [o registri tu]",
+      line: "Scegli tu come registrare i contenuti: cambia molto il prezzo finale, non la qualità del lavoro.",
+      options: [
+        {
+          id: "posto",
+          icon: "car",
+          title: "Veniamo noi sul posto",
+          tag: "Investimento maggiore",
+          text: "Ogni mese, o ogni tot mesi, veniamo direttamente da te e registriamo tutto noi.",
+          points: ["Riprese professionali sul posto", "Frequenza scelta da te: mensile o a blocchi", "Tu ci metti solo la faccia", "Montaggio e pubblicazione inclusi"],
+        },
+        {
+          id: "autonomia",
+          icon: "video",
+          title: "Registri in autonomia",
+          tag: "Costa meno",
+          text: "Registri tu, ma non sei mai da solo: ti prepariamo tutto e ti insegniamo come fare.",
+          points: ["Call in cui ti spieghiamo personalmente come registrare", "Script pronti: li leggi, li memorizzi e registri", "Tutti i cambi di inquadratura indicati", "Ci mandi i video: li ordiniamo, montiamo e pubblichiamo noi"],
+        },
+      ] satisfies Array<{ id: string; icon: IconName; title: string; tag: string; text: string; points: string[] }>,
+    },
+    includes: {
+      overline: "Cosa è incluso",
+      title: "Tutto quello che [facciamo per te]",
+      line: "Una lista lunga, perché il lavoro dietro un profilo che cresce è tanto. Te lo togliamo noi.",
+      groups: [
+        { icon: "pen", title: "Strategia", items: ["Analisi del profilo e dei concorrenti", "Piano editoriale mensile", "Idee e format su misura", "Script per ogni contenuto"] },
+        { icon: "camera", title: "Riprese", items: ["Indicazioni su luci e inquadrature", "Cambi di inquadratura nello script", "Call di formazione alle riprese", "Riprese sul posto (se scelte)"] },
+        { icon: "scissors", title: "Editing", items: ["Ordine e archivio di tutti i video", "Montaggio professionale", "Sottotitoli, grafiche e musica", "Copertine coordinate"] },
+        { icon: "send", title: "Pubblicazione", items: ["Testi, hashtag e call to action", "Programmazione negli orari migliori", "Storie e caroselli", "Bio e highlights curati"] },
+        { icon: "users", title: "Crescita", items: ["Gestione commenti e messaggi", "Contenuti collegati alle campagne", "Trend e novità del momento", "Consigli per far crescere il profilo"] },
+        { icon: "chart", title: "Controllo", items: ["Report mensile con i numeri", "Cosa ha funzionato e cosa no", "Miglioramenti continui", "Assistenza sempre disponibile"] },
+      ] satisfies Array<{ icon: IconName; title: string; items: string[] }>,
+    },
+    finale: {
+      title: "Dopo aver registrato, [non devi più pensare a niente]",
+      text: "Ordiniamo, montiamo, scriviamo, pubblichiamo e misuriamo. Tu torni a fare il tuo lavoro: ai tuoi social pensiamo noi.",
+      words: ["Ordiniamo", "Montiamo", "Scriviamo", "Pubblichiamo", "Misuriamo", "Miglioriamo"],
+    },
+  },
+
+  /* ------------------------------------------------------------------------
+     SITI WEB: come lo creiamo
+     ------------------------------------------------------------------------ */
+  sitiProcess: {
+    overline: "Siti web",
+    title: "Dalla prima call al [sito finito]",
+    line: "Ti seguiamo in ogni passaggio: decidiamo lo stile insieme, rivediamo tutto quante volte serve e ti consegniamo un sito pronto a portarti clienti.",
+    processTitle: "Il percorso, [dall'idea al sito online]",
+    processLine: "Ogni passaggio ha un risultato chiaro: sai sempre a che punto siamo.",
+    getLabel: "Ricevi",
+    steps: [
+      { icon: "phone", title: "Call iniziale", text: "Capiamo la tua attività, i tuoi clienti e cosa deve fare il sito per te.", get: "Obiettivi chiari" },
+      { icon: "palette", title: "Scegliamo lo stile insieme", text: "Colori, caratteri, atmosfera e siti di riferimento: decidiamo insieme che faccia avrà.", get: "Lo stile del sito" },
+      { icon: "layout", title: "Struttura e testi", text: "Pagine, sezioni e testi pensati per far contattare chi visita.", get: "La mappa del sito" },
+      { icon: "monitor", title: "Prima versione", text: "Ti mostriamo il sito vero, navigabile, su computer e telefono.", get: "Un'anteprima online" },
+      { icon: "refresh", title: "Revisioni", text: "Diverse revisioni: sistemiamo ogni dettaglio finché non è come lo vuoi.", get: "Il sito come lo vuoi" },
+      { icon: "rocket", title: "Online e collegato", text: "Dominio, form, WhatsApp e tracciamento collegati: il sito è pubblico.", get: "Il sito online" },
+      { icon: "headphones", title: "Assistenza dopo", text: "Non ti lasciamo solo: restiamo per modifiche, aggiornamenti e dubbi.", get: "Un referente sempre" },
+    ] satisfies Array<{ icon: IconName; title: string; text: string; get: string }>,
+    includes: {
+      overline: "Cosa è incluso",
+      title: "Un sito [fatto e finito]",
+      line: "Non solo bello: veloce, chiaro e costruito per trasformare i visitatori in clienti.",
+      items: [
+        { icon: "palette", title: "Design su misura", text: "Niente modelli uguali per tutti." },
+        { icon: "smartphone", title: "Perfetto sul telefono", text: "La maggior parte delle visite arriva da lì." },
+        { icon: "zap", title: "Veloce", text: "Si apre subito, anche con connessioni lente." },
+        { icon: "pen", title: "Testi che convincono", text: "Scritti per far agire chi legge." },
+        { icon: "chat", title: "Form e WhatsApp", text: "I contatti arrivano direttamente a te." },
+        { icon: "search", title: "SEO di base", text: "Pronto per essere trovato su Google." },
+        { icon: "chart", title: "Tracciamento", text: "Sai quanti contatti porta e da dove." },
+        { icon: "refresh", title: "Revisioni incluse", text: "Lo sistemiamo finché non ti convince." },
+      ] satisfies Array<{ icon: IconName; title: string; text: string }>,
+    },
+    portfolioCta: { label: "Guarda i siti che abbiamo creato", href: "/siti-web/portfolio" },
   },
 
   /** Teaser "Chi siamo" sulla home. */
@@ -491,7 +663,7 @@ export const site = {
   },
 
   sitiWeb: {
-    overline: "Siti web",
+    overline: "Portfolio siti",
     title: "Ecco i siti web che [creiamo]",
     line: "Siti veloci e curati, costruiti apposta per trasformare\ni visitatori in clienti. Clicca su un sito per visitarlo.",
     visit: "Apri il sito",
@@ -684,7 +856,10 @@ export const site = {
       { q: "Cosa fa Triskell Agency?", a: "Ti porta più clienti: campagne, social, siti, CRM, automazioni e agenti AI, gestiti da un unico team." },
       { q: "Posso delegarvi davvero tutto?", a: "Sì. Dalla strategia alle campagne, dal sito al CRM: tu ci dici gli obiettivi, al resto pensiamo noi." },
       { q: "Cosa fa un agente AI per la mia attività?", a: "Risponde ai clienti in pochi secondi, qualifica i contatti, fissa appuntamenti e invia promemoria, 24 ore su 24." },
-      { q: "Quanto costa lavorare con voi?", a: "Dipende dagli obiettivi. Dopo la call gratuita ricevi un piano con costi chiari." }, // TODO: conferma copy
+      { q: "Cos'è il Metodo Triskell?", a: "La combinazione di gestione social e campagne pubblicitarie, più il sito se serve: il profilo attivo dà fiducia, le campagne portano contatti." },
+      { q: "Avete pacchetti fissi?", a: "No: ogni collaborazione è su misura. Come base consigliamo 12 contenuti al mese e 4–5 campagne al mese." },
+      { q: "Quanto dura la collaborazione?", a: "Minimo 6 mesi: è il tempo di rodaggio per creare la struttura, metterla in moto e vedere i risultati." },
+      { q: "Quanto costa lavorare con voi?", a: "Dipende da cosa serve, per esempio se veniamo noi a registrare o registri in autonomia. Dopo la call gratuita ricevi una proposta chiara." },
       { q: "In quanto tempo arrivano i risultati?", a: "Le prime richieste arrivano già nelle prime settimane di campagna. Tempi e obiettivi li definiamo insieme." }, // TODO: conferma copy
       { q: "Lavorate solo con il fitness?", a: "No. Seguiamo attività di ogni settore: salute, ristorazione, ospitalità, formazione, professionisti." },
     ] satisfies Faq[],
@@ -729,11 +904,12 @@ export const site = {
       {
         title: "Agency",
         links: [
-          { label: "Home", href: "/" },
-          { label: "Servizi", href: "/#servizi" },
-          { label: "Agenti AI", href: "/#ai" },
-          { label: "Risultati", href: "/risultati" },
+          { label: "Metodo Triskell", href: "/metodo-triskell" },
+          { label: "Gestione social", href: "/social" },
           { label: "Siti web", href: "/siti-web" },
+          { label: "Portfolio siti", href: "/siti-web/portfolio" },
+          { label: "Risultati", href: "/risultati" },
+          { label: "Agenti AI", href: "/#ai" },
         ],
       },
       {

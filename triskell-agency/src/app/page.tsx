@@ -13,6 +13,7 @@ import { ServiceMarquee } from "@/components/sections/ServiceMarquee";
 import { TeamTeaser } from "@/components/sections/TeamTeaser";
 import { WebsitesTeaser } from "@/components/sections/WebsitesTeaser";
 import { MethodStack } from "@/components/sections/MethodStack";
+import { MetodoTeaser } from "@/components/sections/MetodoTeaser";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { TechBackdrop } from "@/components/ui/TechBackdrop";
@@ -31,6 +32,7 @@ export default function HomePage() {
       <ServiceMarquee />
       <NumbersWall />
       <ForWho />
+      <MetodoTeaser />
       <CtaBand content={site.cta.home} />
 
       <Section id="servizi" labelledBy="servizi-title">
