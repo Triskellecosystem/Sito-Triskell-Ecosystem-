@@ -2,28 +2,25 @@ import { site } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { TechBackdrop } from "@/components/ui/TechBackdrop";
-import { RevealGroup, RevealItem, Reveal } from "@/components/motion/Reveal";
-import { CaseCard } from "./CaseCard";
+import { Reveal } from "@/components/motion/Reveal";
+import { CaseSpotlight } from "./CaseSpotlight";
 
-/** Risultati sulla home: titolo centrato, quattro casi reali a tutta larghezza su sfondo tech, link a tutti i progetti. */
+/** Risultati sulla home: un cliente alla volta in vetrina, gli altri da scegliere a lato, link a tutti i risultati. */
 export function Results() {
   const { results } = site;
   return (
     <Section id={results.id} labelledBy="results-title">
       <TechBackdrop tone="azure" cursor rich />
-      <SectionHeading id="results-title" overline={results.overline} title={results.title} line={results.line} align="center" />
-      <RevealGroup className="m-carousel m-auto mt-10 grid gap-5 sm:grid-cols-2 sm:mt-12 xl:grid-cols-4" stagger={0.12} alternate>
-        {results.items.slice(0, 4).map((item) => (
-          <RevealItem key={item.id} y={34} className="h-full">
-            <CaseCard item={item} href={`/agency/portfolio#${item.id}`} />
-          </RevealItem>
-        ))}
-      </RevealGroup>
-      <p className="mt-1 text-center text-small text-fg-3 md:hidden">Scorri per vedere gli altri →</p>
-      <Reveal className="mt-9 flex justify-center max-md:mt-5" y={16} blur={0}>
-        <Button href={results.all.href} size="lg" icon="arrow-right" variant="secondary">
-          {results.all.label}
-        </Button>
+      <div className="flex flex-wrap items-end justify-between gap-6">
+        <SectionHeading id="results-title" overline={results.overline} title={results.title} line={results.line} />
+        <Reveal y={12} blur={0}>
+          <Button href={results.all.href} size="lg" icon="arrow-right" variant="secondary">
+            {results.all.label}
+          </Button>
+        </Reveal>
+      </div>
+      <Reveal y={30} blur={0} className="mt-10 sm:mt-12">
+        <CaseSpotlight />
       </Reveal>
     </Section>
   );

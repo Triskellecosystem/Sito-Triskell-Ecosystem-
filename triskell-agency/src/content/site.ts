@@ -65,6 +65,8 @@ export interface Service {
   text: string;
   /** Cosa facciamo, in 4 punti brevi: compaiono quando si apre la scheda. */
   details: string[];
+  /** Risultato tipico, mostrato in grande nel pannello del servizio. */
+  kpi?: { value: string; label: string };
   href?: string;
 }
 
@@ -284,16 +286,16 @@ export const site = {
   services: {
     overline: "Servizi",
     title: "Tutto quello che ti serve, [in un solo team]",
-    line: "Clicca su un servizio per vedere cosa facciamo. Scegliamo insieme cosa serve davvero.",
+    line: "Scegli un servizio e guarda cosa facciamo, e cosa ottieni. Scegliamo insieme cosa serve davvero.",
     items: [
-      { icon: "click", title: "Meta Ads e Google Ads", text: "Campagne che portano contatti e clienti veri.", details: ["Strategia e obiettivi di campagna", "Creatività e testi, anche con l'AI", "Test A/B: teniamo ciò che funziona", "Ottimizzazione e report costanti"] },
-      { icon: "smartphone", title: "Gestione social media", text: "Contenuti curati e pubblicati con costanza.", details: ["Piano editoriale mensile", "Reel, caroselli e storie curati", "Pubblicazione e community management", "Report mensile con i numeri"] },
-      { icon: "monitor", title: "Siti web e landing", text: "Siti veloci e chiari, pensati per farti contattare.", details: ["Design su misura, anche in WordPress", "Veloce e perfetto sul telefono", "Costruito per trasformare i visitatori in contatti", "Form, WhatsApp e tracciamento collegati"] },
-      { icon: "database", title: "CRM su misura", text: "Contatti e vendite in un posto solo.", details: ["Tutti i contatti in un posto solo", "Pipeline delle vendite chiara", "Follow-up e promemoria automatici", "Collegato a campagne e sito"] },
-      { icon: "bot", title: "Agenti AI", text: "Assistenti che rispondono, qualificano e prenotano.", details: ["Risposte immediate, anche di notte", "Qualifica dei contatti in automatico", "Appuntamenti fissati in agenda", "Su WhatsApp, sito e social"] },
-      { icon: "workflow", title: "Automazioni", text: "Il lavoro ripetitivo si fa da solo.", details: ["Messaggi e promemoria automatici", "Report che arrivano da soli", "Preventivi e documenti generati", "I tuoi strumenti collegati tra loro"] },
-      { icon: "code", title: "Applicazioni su misura", text: "Strumenti digitali sul tuo modo di lavorare.", details: ["Partiamo dalla tua esigenza", "Prototipo veloce con l'AI", "Su misura sui tuoi processi", "Online e seguita nel tempo"] },
-      { icon: "film", title: "Video e contenuti AI", text: "Video professionali creati con l'AI.", details: ["Idea e sceneggiatura", "Video e immagini creati con l'AI", "Formati per social e ADV", "Pronti da pubblicare"] },
+      { icon: "click", title: "Meta Ads e Google Ads", text: "Campagne che portano contatti e clienti veri.", kpi: { value: "30–60", label: "lead al mese per cliente" }, details: ["Strategia e obiettivi di campagna", "Creatività e testi, anche con l'AI", "Test A/B: teniamo ciò che funziona", "Ottimizzazione e report costanti"] },
+      { icon: "smartphone", title: "Gestione social media", text: "Contenuti curati e pubblicati con costanza.", kpi: { value: "15K+", label: "follower costruiti sui nostri canali" }, details: ["Piano editoriale mensile", "Reel, caroselli e storie curati", "Pubblicazione e community management", "Report mensile con i numeri"] },
+      { icon: "monitor", title: "Siti web e landing", text: "Siti veloci e chiari, pensati per farti contattare.", kpi: { value: "10–30", label: "richieste al mese da una landing" }, details: ["Design su misura, anche in WordPress", "Veloce e perfetto sul telefono", "Costruito per trasformare i visitatori in contatti", "Form, WhatsApp e tracciamento collegati"] },
+      { icon: "database", title: "CRM su misura", text: "Contatti e vendite in un posto solo.", kpi: { value: "~1 su 3", label: "contatti che prenotano la prova" }, details: ["Tutti i contatti in un posto solo", "Pipeline delle vendite chiara", "Follow-up e promemoria automatici", "Collegato a campagne e sito"] },
+      { icon: "bot", title: "Agenti AI", text: "Assistenti che rispondono, qualificano e prenotano.", kpi: { value: "24/7", label: "risposte ai clienti, senza pause" }, details: ["Risposte immediate, anche di notte", "Qualifica dei contatti in automatico", "Appuntamenti fissati in agenda", "Su WhatsApp, sito e social"] },
+      { icon: "workflow", title: "Automazioni", text: "Il lavoro ripetitivo si fa da solo.", kpi: { value: "0", label: "contatti dimenticati" }, details: ["Messaggi e promemoria automatici", "Report che arrivano da soli", "Preventivi e documenti generati", "I tuoi strumenti collegati tra loro"] },
+      { icon: "code", title: "Applicazioni su misura", text: "Strumenti digitali sul tuo modo di lavorare.", kpi: { value: "Da 0", label: "a piattaforma con area membri" }, details: ["Partiamo dalla tua esigenza", "Prototipo veloce con l'AI", "Su misura sui tuoi processi", "Online e seguita nel tempo"] },
+      { icon: "film", title: "Video e contenuti AI", text: "Video professionali creati con l'AI.", kpi: { value: "x10", label: "contenuti, nello stesso tempo" /* TODO: conferma */ }, details: ["Idea e sceneggiatura", "Video e immagini creati con l'AI", "Formati per social e ADV", "Pronti da pubblicare"] },
     ] satisfies Service[],
   },
 
@@ -373,6 +375,9 @@ export const site = {
     overline: "Come funziona",
     title: "Dalla call ai risultati, [step by step]",
     line: "Un percorso chiaro: sai sempre cosa stiamo facendo e perché.",
+    getLabel: "Ricevi",
+    /** Cosa ricevi a ogni passo (stesso ordine di paths.agency.steps). */
+    gets: ["Un'analisi gratuita", "La mappa del tuo funnel", "Un piano d'azione", "Campagne attive", "Sito o landing online", "CRM e agente AI attivi", "Report mensile chiaro"],
   },
 
   /** Teaser "Chi siamo" sulla home. */

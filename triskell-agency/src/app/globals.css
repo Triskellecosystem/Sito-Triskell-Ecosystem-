@@ -1142,3 +1142,69 @@ html[data-no-loader] .loader { display: none; }
   .ba-strike { background-size: 100% 1px; transition: none; }
   .eco-ring { opacity: 0; }
 }
+
+/* ==========================================================================
+   TRISKELL AGENCY — identità propria (v2)
+   ========================================================================== */
+
+/* Etichetta delle sezioni: punto oro che pulsa */
+@keyframes ag-chip-ping { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(1.9); opacity: 0; } }
+.ag-chip-dot > span:first-child { animation: ag-chip-ping 1.8s ease-out infinite; }
+
+/* Esploratore dei servizi */
+@keyframes sx-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.sx-progress { animation: sx-progress linear forwards; transform: scaleX(0); }
+@keyframes sx-in { from { opacity: 0; transform: translate3d(28px, 0, 0); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+.sx-in { animation: sx-in 0.7s var(--ease-out-expo) backwards; }
+@keyframes sx-item { from { opacity: 0; transform: translate3d(0, 12px, 0); } to { opacity: 1; transform: none; } }
+.sx-item { animation: sx-item 0.55s var(--ease-out-expo) backwards; }
+@keyframes sx-bigicon { from { opacity: 0; transform: rotate(-18deg) scale(0.8); } to { opacity: 1; transform: rotate(-8deg) scale(1); } }
+.sx-bigicon { transform: rotate(-8deg); animation: sx-bigicon 1s var(--ease-out-expo) backwards; }
+.sx-orb { background: conic-gradient(from 0deg, rgb(247 200 92 / 0.35), transparent 35%, rgb(58 164 212 / 0.3) 60%, transparent 85%, rgb(247 200 92 / 0.35)); filter: blur(30px); animation: call-spin 18s linear infinite; }
+.sx-list::-webkit-scrollbar { display: none; }
+
+/* Metodo: schede che si impilano allo scroll */
+.ms-item { position: sticky; top: calc(var(--header-h) + 1.25rem + var(--k, 0) * 1.1rem); padding-bottom: 1.25rem; }
+.ms-item:last-child { padding-bottom: 0; }
+.ms-card {
+  background: linear-gradient(120deg, color-mix(in srgb, var(--color-cobalt-700) calc(30% + var(--k, 0) * 8%), var(--color-surface)), var(--color-night-raised) 70%);
+  box-shadow: 0 -18px 50px -20px rgb(0 0 0 / 0.85), 0 0 0 1px rgb(255 255 255 / 0.02) inset;
+  transition: border-color var(--dur-base) var(--ease-out-expo);
+}
+.ms-card:hover { border-color: rgb(247 200 92 / 0.7); }
+.ms-num { color: transparent; -webkit-text-stroke: 1.5px rgb(247 200 92 / 0.75); background: linear-gradient(180deg, rgb(247 200 92 / 0.25), transparent 75%); -webkit-background-clip: text; background-clip: text; }
+@media (max-width: 639px) { .ms-item { top: calc(var(--header-h) + 0.75rem + var(--k, 0) * 0.5rem); } }
+
+/* Casi in vetrina */
+@keyframes cs-img { from { opacity: 0; transform: scale(1.12); } to { opacity: 1; transform: scale(1.02); } }
+@keyframes cs-drift { from { transform: scale(1.02) translate3d(0, 0, 0); } to { transform: scale(1.1) translate3d(-2%, -1%, 0); } }
+.cs-img { animation: cs-img 1s var(--ease-out-expo) backwards, cs-drift 9s 1s ease-in-out alternate infinite; }
+.cs-in > * { animation: sx-in 0.7s var(--ease-out-expo) backwards; }
+.cs-in > :nth-child(2) { animation-delay: 0.06s; }
+.cs-in > :nth-child(3) { animation-delay: 0.12s; }
+@keyframes cs-stat { from { opacity: 0; transform: translate3d(0, 24px, 0) scale(0.9); } to { opacity: 1; transform: none; } }
+.cs-stat { animation: cs-stat 0.8s var(--ease-out-expo) backwards; }
+
+/* Fascia oro "Prenota ora" */
+.cta-gold { background: linear-gradient(115deg, #fde08a 0%, var(--color-gold-300) 38%, #e9ad3a 70%, #f8d276 100%); box-shadow: 0 30px 80px -30px rgb(247 200 92 / 0.55); }
+@keyframes cta-shine { 0%, 55% { transform: translate3d(-140%, 0, 0) skewX(-20deg); } 100% { transform: translate3d(360%, 0, 0) skewX(-20deg); } }
+.cta-gold-shine { position: absolute; inset: 0 auto 0 0; width: 30%; pointer-events: none; background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent); animation: cta-shine 5.5s ease-in-out infinite; }
+@keyframes cta-ring { to { transform: rotate(360deg); } }
+.cta-ring { animation: cta-ring 16s linear infinite; }
+.cta-round { transition: transform var(--dur-base) var(--ease-out-expo), box-shadow var(--dur-base); }
+.cta-round:hover { transform: scale(1.05); box-shadow: 0 0 0 6px rgb(1 15 28 / 0.15), 0 24px 60px -15px rgb(1 15 28 / 0.9); }
+.cta-round:hover .cta-ring { animation-duration: 6s; }
+
+/* Muro di siti inclinato */
+.sw { perspective: 1400px; mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent), linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent); mask-composite: intersect; }
+.sw-plane { transform: translate(-50%, -50%) rotateX(24deg) rotateZ(-10deg); transform-style: preserve-3d; }
+@keyframes sw-up { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, -50%, 0); } }
+.sw-col { animation: sw-up 32s linear infinite; }
+.sw-col--0 { animation-delay: -6s; }
+.sw-col--1 { animation-direction: reverse; animation-duration: 40s; }
+.sw-col--2 { animation-duration: 36s; animation-delay: -12s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ag-chip-dot > span:first-child, .sx-progress, .sx-in, .sx-item, .sx-bigicon, .sx-orb, .cs-img, .cs-in > *, .cs-stat, .cta-gold-shine, .cta-ring, .sw-col { animation: none !important; }
+  .sx-progress { transform: scaleX(1); }
+}

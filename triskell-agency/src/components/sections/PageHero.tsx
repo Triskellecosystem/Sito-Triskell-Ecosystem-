@@ -59,8 +59,11 @@ export function PageHero({ overline, title, line, crumbs = [], children, aside, 
             </ol>
           </nav>
         )}
-        <p className="mb-5 inline-flex items-center gap-3 text-overline font-semibold uppercase tracking-[var(--text-overline--letter-spacing)] text-gold-400">
-          <span aria-hidden="true" className="h-px w-8 bg-gold-400/70" />
+        <p className="ag-chip mb-5 inline-flex items-center gap-2.5 rounded-full border border-gold-400/40 bg-gold-300/[0.06] py-1.5 pl-2 pr-3.5 text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-gold-300">
+          <span aria-hidden="true" className="ag-chip-dot relative grid h-4 w-4 place-items-center">
+            <span className="absolute inset-0 rounded-full bg-gold-300/30" />
+            <span className="h-1.5 w-1.5 rounded-full bg-gold-300" />
+          </span>
           {overline}
         </p>
         <h1 className="max-w-3xl animate-[line-up_1s_var(--ease-out-expo)_backwards] text-[clamp(2.25rem,1.3rem+3.6vw,4.25rem)] leading-[1.04] tracking-[-0.035em] text-fg">

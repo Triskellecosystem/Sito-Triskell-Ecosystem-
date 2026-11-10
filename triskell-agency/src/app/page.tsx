@@ -1,7 +1,6 @@
 import { AgencyHero } from "@/components/sections/AgencyHero";
 import { AiAgents } from "@/components/sections/AiAgents";
 import { Benefits } from "@/components/sections/Benefits";
-import { CallBlock } from "@/components/sections/CallBlock";
 import { Contact } from "@/components/sections/Contact";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { EcosystemLink } from "@/components/sections/EcosystemLink";
@@ -9,11 +8,11 @@ import { Faq } from "@/components/sections/Faq";
 import { ForWho } from "@/components/sections/ForWho";
 import { NumbersWall } from "@/components/sections/NumbersWall";
 import { Results } from "@/components/sections/Results";
-import { ServiceList } from "@/components/sections/ServiceList";
+import { ServiceExplorer } from "@/components/sections/ServiceExplorer";
 import { ServiceMarquee } from "@/components/sections/ServiceMarquee";
 import { TeamTeaser } from "@/components/sections/TeamTeaser";
 import { WebsitesTeaser } from "@/components/sections/WebsitesTeaser";
-import { ZigZagSteps } from "@/components/sections/ZigZagSteps";
+import { MethodStack } from "@/components/sections/MethodStack";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { TechBackdrop } from "@/components/ui/TechBackdrop";
@@ -25,7 +24,7 @@ import { site } from "@/content/site";
  * i risultati veri → i siti → chi siamo → l'ecosistema dietro → domande → prenota.
  */
 export default function HomePage() {
-  const { services, method, paths } = site;
+  const { services, method } = site;
   return (
     <>
       <AgencyHero />
@@ -38,7 +37,7 @@ export default function HomePage() {
         <TechBackdrop tone="gold" rich />
         <SectionHeading id="servizi-title" overline={services.overline} title={services.title} line={services.line} />
         <div className="mt-8 sm:mt-10">
-          <ServiceList items={services.items} />
+          <ServiceExplorer items={services.items} />
         </div>
       </Section>
 
@@ -46,10 +45,10 @@ export default function HomePage() {
       <CtaBand content={site.cta.ai} />
 
       <Section id="metodo" labelledBy="metodo-title">
-        <TechBackdrop tone="gold" cursor rich />
+        <TechBackdrop tone="gold" rich />
         <SectionHeading id="metodo-title" overline={method.overline} title={method.title} line={method.line} align="center" />
         <div className="mt-12 sm:mt-16">
-          <ZigZagSteps path={paths.agency} tone="gold" />
+          <MethodStack />
         </div>
       </Section>
 
@@ -61,7 +60,6 @@ export default function HomePage() {
       <TeamTeaser />
       <EcosystemLink />
       <Faq />
-      <CallBlock />
       <Contact />
     </>
   );

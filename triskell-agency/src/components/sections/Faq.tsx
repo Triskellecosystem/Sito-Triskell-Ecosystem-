@@ -4,7 +4,9 @@ import { useId, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { RevealGroup, RevealItem } from "@/components/motion/Reveal";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
+import { Icon } from "@/components/ui/Icon";
+import { SocialIcon } from "@/components/ui/SocialIcon";
 
 /**
  * FAQ: colonna centrata (non la solita coppia titolo-sx / contenuto-dx), accordion accessibile:
@@ -29,11 +31,27 @@ export function Faq() {
   };
 
   return (
-    <Section id={faq.id} labelledBy="faq-title" innerClassName="max-w-4xl">
+    <Section id={faq.id} labelledBy="faq-title">
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px hairline" />
-      <SectionHeading id="faq-title" overline={faq.overline} title={faq.title} line={faq.line} />
+      <div className="grid gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+      {/* colonna sinistra ferma: titolo e un aiuto diretto */}
+      <div className="lg:sticky lg:top-[calc(var(--header-h)+2rem)] lg:self-start">
+        <SectionHeading id="faq-title" overline={faq.overline} title={faq.title} line={faq.line} />
+        <Reveal y={16} blur={0} delay={0.2} className="mt-8">
+          <a href={site.brand.whatsapp} target="_blank" rel="noopener noreferrer" className="group/wa flex items-center gap-4 rounded-2xl border border-gold-400/40 bg-[linear-gradient(135deg,#2b2410,#0a1626_70%)] p-4 transition-[border-color,box-shadow] duration-[var(--dur-base)] hover:border-gold-300 hover:shadow-[0_0_36px_-10px_rgb(247_200_92/0.55)]">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[image:var(--gradient-gold-btn)] text-night">
+              <SocialIcon id="whatsapp" className="h-6 w-6" />
+            </span>
+            <span className="min-w-0">
+              <span className="block font-display text-[1.0625rem] font-bold text-fg">Hai un&apos;altra domanda?</span>
+              <span className="block text-small text-fg-2">Scrivici su WhatsApp, ti risponde una persona.</span>
+            </span>
+            <Icon name="arrow-up-right" className="ml-auto h-5 w-5 shrink-0 text-gold-300 transition-transform duration-[var(--dur-base)] group-hover/wa:-translate-y-0.5 group-hover/wa:translate-x-0.5" />
+          </a>
+        </Reveal>
+      </div>
 
-      <RevealGroup className="mt-12 sm:mt-14" stagger={0.07}>
+      <RevealGroup stagger={0.07}>
         {faq.items.map((item, i) => {
           const isOpen = open === i;
           const btnId = `${uid}-b${i}`;
@@ -79,6 +97,7 @@ export function Faq() {
           );
         })}
       </RevealGroup>
+      </div>
     </Section>
   );
 }

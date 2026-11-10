@@ -36,8 +36,12 @@ export function SectionHeading({ id, overline, title, line, align = "left", clas
   return (
     <header className={cn(oneLine ? "max-w-none" : "max-w-2xl", align === "center" && "mx-auto text-center", className)}>
       <Reveal blur={0} y={12}>
-        <p className="mb-4 inline-flex items-center gap-3 text-overline font-semibold uppercase text-gold-400 tracking-[var(--text-overline--letter-spacing)]">
-          <span aria-hidden="true" className="h-px w-8 bg-gold-400/70" />
+        {/* Etichetta "Agency": pillola con punto oro che pulsa (diversa dal filetto del sito Ecosystem) */}
+        <p className={cn("ag-chip mb-5 inline-flex items-center gap-2.5 rounded-full border border-gold-400/40 bg-gold-300/[0.06] py-1.5 pl-2 pr-3.5 text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-gold-300", align === "center" && "mx-auto")}>
+          <span aria-hidden="true" className="ag-chip-dot relative grid h-4 w-4 place-items-center">
+            <span className="absolute inset-0 rounded-full bg-gold-300/30" />
+            <span className="h-1.5 w-1.5 rounded-full bg-gold-300" />
+          </span>
           {overline}
         </p>
       </Reveal>
