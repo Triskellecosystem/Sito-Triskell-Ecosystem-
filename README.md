@@ -10,6 +10,10 @@ npm run lint && npm run typecheck
 npm run todos      # elenco dei segnaposto da sostituire (--strict per fallire se ne restano)
 ```
 
+## Triskell Agency
+
+Il sito dell'agenzia è un progetto separato nella cartella [`triskell-agency/`](triskell-agency/README.md), con lo stesso stile di questo sito.
+
 ## Struttura del sito
 
 | Pagina | Percorso | Contenuto |
