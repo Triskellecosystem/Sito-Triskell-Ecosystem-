@@ -18,9 +18,6 @@ export function CtaBand({ content }: { content: CtaContent }) {
         <Reveal y={26} blur={0} from="scale">
           <div className="cta-gold relative overflow-hidden rounded-[2rem] px-6 py-8 sm:px-10 sm:py-10 lg:px-14">
             <span aria-hidden="true" className="cta-gold-shine" />
-            <span aria-hidden="true" className="pointer-events-none absolute -left-10 -top-24 font-display text-[16rem] font-bold leading-none text-night/[0.05]">
-              ?
-            </span>
             <div className="relative grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-14">
               <div>
                 <h2 className="font-display text-[clamp(1.875rem,1.2rem+2.6vw,3.5rem)] font-bold leading-[1.02] tracking-[-0.04em] text-night">
